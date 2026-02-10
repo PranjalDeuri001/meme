@@ -19,4 +19,11 @@ class AppConfig {
     'GOOGLE_MAPS_API_KEY',
     defaultValue: '',
   );
+
+  // Safety switch for iOS Google Maps rendering.
+  // Keep false until native iOS key wiring is completed in AppDelegate.
+  static const bool enableIosGoogleMaps = bool.fromEnvironment(
+    'ENABLE_IOS_GOOGLE_MAPS',
+    defaultValue: false,
+  );
 }

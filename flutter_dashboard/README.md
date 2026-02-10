@@ -64,6 +64,7 @@ If you omit `dart-define` values, defaults are:
 - `API_URL = http://localhost:8002`
 - `WS_URL = ws://localhost:8002`
 - `GOOGLE_MAPS_API_KEY = ""`
+- `ENABLE_IOS_GOOGLE_MAPS = false`
 
 ## Notes
 
@@ -76,3 +77,53 @@ If you omit `dart-define` values, defaults are:
   - Android: `android/app/src/main/AndroidManifest.xml`
   - iOS: `ios/Runner/AppDelegate.swift` (or `AppDelegate.m`)
   - Web: `web/index.html` script tag key
+
+## iPhone auto-close fix (Google Maps)
+
+If the app closes immediately on iPhone, it is usually iOS Google Maps native key setup.
+
+1) Generate iOS folder if needed:
+
+```bash
+flutter create . --platforms=ios
+```
+
+2) Update `ios/Runner/AppDelegate.swift`:
+
+```swift
+import UIKit
+import Flutter
+import GoogleMaps
+
+@main
+@objc class AppDelegate: FlutterAppDelegate {
+  override func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  ) -> Bool {
+    GMSServices.provideAPIKey("YOUR_GOOGLE_MAPS_KEY")
+    GeneratedPluginRegistrant.register(with: self)
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+}
+```
+
+3) If your backend is HTTP/IP (like `http://192.168.x.x:8002`), add ATS exception in `ios/Runner/Info.plist`:
+
+```xml
+<key>NSAppTransportSecurity</key>
+<dict>
+  <key>NSAllowsArbitraryLoads</key>
+  <true/>
+</dict>
+```
+
+4) Then enable iOS map rendering:
+
+```bash
+flutter run \
+  --dart-define=API_URL=http://192.168.24.130:8002 \
+  --dart-define=WS_URL=ws://192.168.24.130:8002 \
+  --dart-define=GOOGLE_MAPS_API_KEY=<YOUR_GOOGLE_MAPS_KEY> \
+  --dart-define=ENABLE_IOS_GOOGLE_MAPS=true
+```

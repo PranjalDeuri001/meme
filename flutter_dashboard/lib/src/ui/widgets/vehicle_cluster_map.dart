@@ -1,8 +1,10 @@
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../config/app_config.dart';
 import '../../models/vehicle.dart';
 
 class VehicleClusterMap extends StatefulWidget {
@@ -57,6 +59,10 @@ class _VehicleClusterMapState extends State<VehicleClusterMap> {
 
   @override
   Widget build(BuildContext context) {
+    if (_iosMapGuardEnabled()) {
+      return _buildIosConfigurationHint(context);
+    }
+
     final validVehicles = _validVehicles(widget.vehicles);
     final initialTarget = _centroidOfVehicles(validVehicles) ?? _indiaCenter;
 
@@ -290,6 +296,43 @@ class _VehicleClusterMapState extends State<VehicleClusterMap> {
         title: vehicle.displayId,
         snippet:
             '${vehicle.vehicleType} • ${vehicle.city}\nSpeed ${vehicle.speed.toStringAsFixed(1)} km/h • SoC $socText',
+      ),
+    );
+  }
+
+  bool _iosMapGuardEnabled() {
+    return !kIsWeb &&
+        defaultTargetPlatform == TargetPlatform.iOS &&
+        !AppConfig.enableIosGoogleMaps;
+  }
+
+  Widget _buildIosConfigurationHint(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 560),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const <Widget>[
+                  Text(
+                    'Google Maps is disabled on iOS by safety guard.',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Complete iOS native map setup first (AppDelegate + API key), then run with '
+                    '--dart-define=ENABLE_IOS_GOOGLE_MAPS=true.',
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
