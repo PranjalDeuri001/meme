@@ -1,0 +1,2895 @@
+:root {
+  --primary-color: #0b5297;
+  --primary-color-dark-hover: #08437a;
+  --primary-text-color: #1e293b;
+  --secondary-text-color: #475569;
+  --border-color: #dee2e6;
+  --border-color-medium: #e2e8f0;
+  --page-background: #fff;
+  --row-background-odd: #eef2f9;
+  --row-background-even: #fff;
+  --row-background-hover: #dbeafe;
+  --row-background-fleet-hover: #e2e8f0;
+  --pagination-row-background: #f1f5f9;
+  --shadow-color: rgba(160, 160, 160, 0.25);
+  --border-radius-main: 16px;
+}
+
+.dark {
+  --primary-color: #374155;
+  --primary-color-dark-hover: #4a5568;
+  --primary-text-color: #e2e8f0;
+  --secondary-text-color: #a0aec0;
+  --border-color: #4a5568;
+  --border-color-medium: #4a5568;
+  --page-background: #2d3748;
+  --row-background-odd: #2d3748;
+  --row-background-even: #27303f;
+  --row-background-hover: #4a5568;
+  --row-background-fleet-hover: #4a5568;
+  --pagination-row-background: #27303f;
+  --shadow-color: transparent;
+  --green-text: #60a5fa;
+}
+
+/* Container */
+#vehicleSelection {
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-3d-container {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  margin: 0 auto;
+}
+
+/* Carousel */
+.carousel-3d {
+  display: flex;
+  flex-direction: column;
+  width: 370px;
+  height: 40vh;
+  transform-style: preserve-3d;
+  position: relative;
+  transition: transform 1s ease-in-out;
+  margin: 0 auto;
+}
+
+/* Each slide */
+.carousel-3d-slide {
+  width: 90%;
+  height: 94%;
+  border-radius: 5%;
+  position: absolute;
+  top: 5px;
+  left: 5%;
+  background-color: #d3e1ef;
+  transform-origin: center center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 0;
+  transition: transform 1s ease-in-out, opacity 0.5s ease, visibility 0.5s ease;
+  cursor: pointer;
+
+  /* --- CHANGE #1: Using Flexbox to manage internal layout --- */
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  /* Reduced padding to maximize space */
+  box-sizing: border-box;
+}
+
+.carousel-3d-slide img {
+  filter: blur(8px);
+  opacity: 0.4;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 5%;
+}
+
+.carousel-3d-slide.active {
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 10;
+}
+
+.carousel-3d-slide.active img {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+.carousel-3d-slide.next,
+.carousel-3d-slide.prev {
+  opacity: 0.5;
+  visibility: visible;
+  z-index: 5;
+}
+
+.carousel-3d-slide.next img,
+.carousel-3d-slide.prev img {
+  filter: blur(4px);
+  opacity: 0.6;
+}
+
+/* Image styling container */
+.vs-image-container {
+  width: 100%;
+  /* REMOVED height: 45% */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+
+  /* --- CHANGE #2: Constraining the image size --- */
+  flex: 0 1 45%;
+  /* Don't grow, shrink if needed, ideal size is 45% */
+  overflow: hidden;
+  /* Important to contain the image */
+}
+
+/* Added to ensure the image respects the container's flexible height */
+.vs-image-container img {
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Hover message (model config) */
+.image-hover-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  /* REMOVED rigid height, position, and bottom properties */
+  padding: 10px;
+  border-bottom-left-radius: 5%;
+  border-bottom-right-radius: 5%;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 10;
+  font-family: "Exo 2", sans-serif;
+  font-weight: 500;
+
+  /* --- CHANGE #3: Allowing the text block to fill remaining space --- */
+  flex: 1 1 auto;
+  /* Grow and shrink to fill available space */
+  min-height: 0;
+  /* Important for flex-shrink to work correctly in some browsers */
+}
+
+#model_config {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 2%;
+  background-color: #d3e1ef;
+  border-radius: 5%;
+  text-align: left;
+}
+
+#model_config h3 {
+  text-align: center;
+  color: #295792;
+  font-family: "Exo 2", sans-serif;
+  font-weight: 600;
+  margin: 0;
+  margin-top: -10px;
+  font-size: clamp(16px, 4vw, 22px);
+}
+
+.vehicle-carousel-vconfig {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.vehicle-carousel-vconfig p {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 15px;
+  align-items: center;
+  text-align: left;
+  font-size: clamp(11px, 2.5vw, 14px);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.vehicle-carousel-vconfig p strong {
+  justify-self: end;
+  font-weight: 700;
+  text-align: right;
+  /* Ensures text inside is right-aligned */
+  white-space: normal;
+  /* Allows text to wrap to a new line */
+  word-break: break-word;
+  /* Helps break text to prevent overflow */
+}
+
+/* Arrows */
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(113, 113, 113, 0.8);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.carousel-button:hover {
+  background: rgba(113, 113, 113, 1);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-button:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.carousel-button.prev {
+  left: 2%;
+}
+
+.carousel-button.next {
+  right: 2%;
+}
+
+.vehicle-carousel-vconfig {
+  width: 70%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: auto 0px;
+  justify-content: space-evenly;
+}
+
+.vehicle-carousel-vconfig p {
+  display: flex;
+  justify-content: space-between;
+  color: #295792;
+  font-family: "Exo 2";
+  font-size: 9px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.vs-image-container img {
+  width: 100%;
+  height: 97%;
+  object-fit: contain;
+}
+
+
+/* --- ADD THESE STYLES TO Vehicle_selection.css --- */
+
+/* Badge for "Coming Soon" card in carousel */
+.carousel-coming-soon-badge {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #D97706;
+  /* Amber/Orange */
+  color: #ffffff;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 100;
+}
+
+/* Styles for the "Coming Soon" card itself */
+.carousel-3d-slide.is-coming-soon {
+  cursor: not-allowed;
+  opacity: 0.7;
+  /* Make it slightly faded */
+}
+
+/* Blur the image and text specs */
+.carousel-3d-slide.is-coming-soon .vs-image-container img,
+.carousel-3d-slide.is-coming-soon .image-hover-message {
+  filter: blur(4px) grayscale(50%);
+  opacity: 0.6;
+}
+
+/* On hover, don't remove the blur */
+.carousel-3d-slide.is-coming-soon.active img,
+.carousel-3d-slide.is-coming-soon:hover img {
+  filter: blur(4px) grayscale(50%) !important;
+  opacity: 0.6 !important;
+}
+
+.dark .carousel-coming-soon-badge {
+  background-color: #FBBF24;
+  /* Lighter yellow for dark mode */
+  color: #1F2937;
+}
+
+
+/* =================================== */
+/* Responsive Design                   */
+/* =================================== */
+
+@media screen and (max-width: 1200px) {
+  .carousel-3d {
+    width: 320px;
+    height: 42vh;
+  }
+
+  /* --- UPDATED RULES TO FIX TEXT WRAPPING --- */
+  .vehicle-carousel-vconfig {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
+  }
+
+  .vehicle-carousel-vconfig p {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 15px;
+    align-items: center;
+    text-align: left;
+  }
+
+  .vehicle-carousel-vconfig p strong {
+    text-align: end;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .carousel-3d {
+    width: 300px;
+    height: 45vh;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .carousel-3d-container {
+    perspective: 1600px;
+  }
+
+  .carousel-3d {
+    width: 280px;
+    height: 60%;
+  }
+
+  .carousel-button.prev {
+    left: 1%;
+  }
+
+  .carousel-button.next {
+    right: 1%;
+  }
+
+  .vehicle-carousel-vconfig {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
+  }
+
+  .vehicle-carousel-vconfig p {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 15px;
+    align-items: center;
+    text-align: left;
+  }
+
+  .vehicle-carousel-vconfig p strong {
+    text-align: end;
+  }
+
+  .vehicle-selector-trigger {
+    padding: 5px 15px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .carousel-3d-container {
+    perspective: 1700px;
+  }
+
+  .carousel-3d {
+    width: 260px;
+    height: 60%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .carousel-3d-container {
+    perspective: 1800px;
+  }
+
+  .carousel-3d {
+    width: 240px;
+    height: 60%;
+  }
+
+  .carousel-button {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
+
+  .vehicle-selector-trigger {
+    padding: 4px 15px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .carousel-3d-container {
+    perspective: 1900px;
+  }
+
+  .carousel-3d {
+    width: 220px;
+    height: 60%;
+  }
+
+  .carousel-button {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .carousel-button.prev {
+    left: 0.5%;
+  }
+
+  .carousel-button.next {
+    right: 0.5%;
+  }
+}
+
+/* Ed */
+.vehicleSelection-info-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.top-section-container {
+  flex-shrink: 0;
+}
+
+.bottom-section-container {
+  flex-grow: 1;
+  min-height: 0;
+}
+
+/* Styles for the new redesigned header */
+.vehicle-overview-header {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  font-family: "Exo 2", sans-serif;
+  padding-bottom: 15px;
+}
+
+.vehicle-overview-header i {
+  font-size: 30px;
+  color: #0b5297;
+}
+
+.vehicle-overview-header .model-name {
+  color: #0b5297;
+  font-size: 30px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.vehicle-overview-header .model-name span {
+  font-weight: 400;
+}
+
+.vehicle-overview-header .active-status,
+.vehicle-overview-header .inactive-status {
+  font-size: 22px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.vehicle-overview-header .active-status {
+  color: #09a76d;
+}
+
+.vehicle-overview-header .inactive-status {
+  color: #df3535;
+}
+
+.vehicle-overview-header .active-status span,
+.vehicle-overview-header .inactive-status span {
+  font-weight: 600;
+}
+
+.vehicleSelection-info-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#vehicleSelection-info-container-1 {
+  flex-shrink: 0;
+  padding-bottom: 25px;
+}
+
+#vehicleSelection-info-container-2 {
+  height: 100%;
+  display: flex;
+  border-radius: 10px;
+  background: #fff;
+  flex-direction: row;
+  padding: 10px;
+  gap: 1%;
+  box-shadow: 0px 2px 2px 0px rgba(160, 160, 160, 0.25);
+}
+
+#vehicleSelection-vehicle-specifications {
+  width: 29%;
+  height: 100%;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(160, 160, 160, 0.25);
+  padding: 10px;
+}
+
+#vehicleSelection-fow-specifications {
+  padding: 7px;
+  border-radius: 10px;
+  background: var(--page-background);
+  /* This now uses the theme variable */
+  box-shadow: 0px 2px 2px 0px var(--shadow-color);
+  /* Also update the shadow color */
+}
+
+#vsl-cont #vehicleSelection-fow-specifications {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(160, 160, 160, 0.25);
+  padding: 10px;
+}
+
+#vehicleSelection-vehicle-specifications h3,
+#vehicleSelection-fow-specifications h3 {
+  color: #0b5297;
+  font-family: "Exo 2";
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+#vehicleSelection-fow-specifications h3 {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+#vehicleSelection-vehicle-specifications button {
+  border: none;
+  background-color: transparent;
+}
+
+#vehicleSelection-fow-specifications-list {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: auto;
+  justify-content: flex-start;
+}
+
+/* =================================== */
+/* Data Card Styles with Image Hover   */
+/* =================================== */
+
+/* --- Base Card Layout --- */
+.vehicleSelection-fow-specifications-info {
+  width: 200px;
+  height: 200px;
+  margin: 10px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: "Exo 2", sans-serif;
+  border-radius: var(--border-radius-main);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  position: relative;
+  /* Required for the overlay effect */
+  overflow: hidden;
+  /* Keeps the image within the rounded corners */
+  z-index: 1;
+  /* Establishes a stacking context */
+}
+
+.vehicleSelection-fow-specifications-info:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Content Wrapper --- */
+/* This ensures your icon and text stay on top of the background image */
+.card-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Background Image Hover Effect --- */
+.card-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  /* Hidden by default */
+  transition: opacity 0.3s ease-in-out;
+  z-index: -1;
+  /* Places the image layer behind the gradient */
+}
+
+.vehicleSelection-fow-specifications-info:hover .card-background-image {
+  opacity: 0.1;
+  /* A subtle opacity looks best */
+}
+
+/* --- Icon and Text Styles --- */
+.vehicleSelection-fow-specifications-info img {
+  width: 55px !important;
+  height: 55px !important;
+  margin-bottom: 8px;
+  filter: brightness(0) saturate(100%) invert(12%) sepia(21%) saturate(5833%) hue-rotate(204deg) brightness(93%) contrast(93%);
+}
+
+.vehicleSelection-fow-specifications-info p {
+  color: #151d48;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
+
+.vehicleSelection-fow-specifications-info p+p {
+  color: #425166;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* --- Light Mode Card Backgrounds --- */
+.card-distance {
+  background: linear-gradient(180deg, #ffe7ea 0%, #f3949eff 100%);
+  border: 1px solid #e6c2c7;
+}
+
+.card-co2 {
+  background: linear-gradient(180deg, #e7fef6 0%, #a9dcc9 100%);
+  border: 1px solid #bde7d6;
+}
+
+.card-charging-units {
+  background: linear-gradient(180deg, #fffaef 0%, #ffebc4 100%);
+  border: 1px solid #e6ddbf;
+}
+
+.card-run-time {
+  background: linear-gradient(180deg, #fff3fc 0%, #ffcff2 100%);
+  border: 1px solid #e6c4dc;
+}
+
+.card-traction {
+  background: linear-gradient(180deg, #f1f3ff 0%, #cdd5ff 100%);
+  border: 1px solid #c4c9e6;
+}
+
+.card-regeneration {
+  background: linear-gradient(180deg, #e6fdffff 0%, #b5f8ff 100%);
+  border: 1px solid #94dce6;
+}
+
+.card-cost-saving {
+  background: linear-gradient(180deg, #fbe4c3ff 0%, #f2aa96 100%);
+  border: 1px solid #f2aa96;
+}
+
+.card-trees-saved {
+  background: linear-gradient(180deg, #EFF5D2 0%, #BFEA7C 100%);
+  border: 1px solid #BFEA7C;
+}
+
+/* --- Dark Mode Card Styles --- */
+.dark .vehicleSelection-fow-specifications-info {
+  background: var(--row-background-even);
+  border: 1px solid var(--border-color);
+}
+
+.dark .vehicleSelection-fow-specifications-info p {
+  color: var(--primary-text-color);
+}
+
+.dark .vehicleSelection-fow-specifications-info p+p {
+  color: var(--secondary-text-color);
+}
+
+
+.dark .vehicleSelection-fow-specifications-info:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.dark .vehicleSelection-fow-specifications-info img {
+  filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(105deg) brightness(102%) contrast(102%);
+}
+
+#vehicleSelection-info-container-2-map {
+  width: 55%;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #dfdfdf;
+  box-shadow: 0 0 15px rgb(0, 0, 0, 0.35);
+  border-radius: var(--border-radius-main);
+}
+
+#vehicleSelection-info-container-2-vlist {
+  width: 45%;
+  height: 100%;
+  max-height: calc(100vh - 280px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#vsl-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  background-color: #f8fafc;
+  overflow-y: auto;
+  gap: 30px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+.dark #vsl-cont {
+  background-color: var(--page-background);
+}
+
+
+
+#vs-lcontainer {
+  width: 90%;
+  height: 187.901px;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  background-color: #e7f8ef;
+  stroke-width: 1px;
+  stroke: #000;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  margin: 0 auto;
+  border-radius: 23px;
+}
+
+/* --- REPLACE the old "Coming Soon" styles with THIS block --- */
+
+/* --- Card Styles --- */
+
+/* This makes the whole card slightly faded and non-clickable */
+#vs-lcontainer.is-coming-soon {
+  position: relative;
+  /* Needed for the badge */
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* This is the NEW rule: It targets ONLY the image */
+#vs-lcontainer.is-coming-soon #vsl-vd-image img {
+  filter: blur(4px) grayscale(50%);
+  opacity: 0.6;
+}
+
+/* --- Card Styles for No GPS --- */
+
+/* This makes the whole card faded and non-clickable */
+#vs-lcontainer.is-nogps {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* This blurs ONLY the image on a No GPS card */
+#vs-lcontainer.is-nogps #vsl-vd-image img {
+  filter: grayscale(80%);
+  opacity: 0.7;
+}
+
+/* This styles the "No GPS" text in the side bar */
+#vs-lcontainer.is-nogps #vsl-status p {
+  font-size: 1.2rem;
+  /* Make it fit */
+  letter-spacing: 0.5px;
+}
+
+/* --- Dropdown List Styles for No GPS --- */
+
+/* This grays out the "No GPS" item in the dropdown */
+.vehicle-selector-list-item.is-nogps label {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Changes the status dot to gray */
+.vehicle-status-dot.nogps {
+  background-color: #9ca3af;
+  /* Gray */
+  border: 1px solid #6b7280;
+}
+
+/* The small badge INSIDE the dropdown list */
+.vsl-dropdown-nogps-badge {
+  background-color: #9ca3af;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 4px;
+  margin-left: 10px;
+  text-transform: uppercase;
+}
+
+.dark .vsl-dropdown-nogps-badge {
+  background-color: #6b7280;
+  color: #e5e7eb;
+}
+
+/* The badge for the CARD (Unchanged) */
+.vsl-coming-soon-badge {
+  position: absolute;
+  top: 33px;
+  /* Aligns with the "Active/Inactive" text's left edge */
+  left: 85px;
+  background-color: #D97706;
+  /* Amber/Orange */
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 10;
+  /* Make sure it's on top */
+}
+
+.dark .vsl-coming-soon-badge {
+  background-color: #FBBF24;
+  /* Lighter yellow for dark mode */
+  color: #1F2937;
+}
+
+
+/* --- Dropdown List Styles (Unchanged) --- */
+
+/* This grays out the "Coming Soon" item in the dropdown */
+.vehicle-selector-list-item.is-coming-soon label {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* The small badge INSIDE the dropdown list */
+.vsl-dropdown-coming-soon-badge {
+  background-color: #D97706;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 4px;
+  margin-left: 10px;
+  text-transform: uppercase;
+}
+
+.dark .vsl-dropdown-coming-soon-badge {
+  background-color: #FBBF24;
+  color: #1F2937;
+}
+
+.vs-multisl {
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#vsl-cont .css-1dyz3mf {
+  height: 40px;
+  overflow: auto;
+}
+
+#vsl-cont .css-1jqq78o-placeholder {
+  font-family: "Exo 2";
+}
+
+/* makes sure last card doesnt touchs the buttom */
+#vsl-cont>#vs-lcontainer:last-child {
+  margin-bottom: 15px;
+}
+
+#vsl-status {
+  position: relative;
+  align-items: center;
+  justify-items: center;
+  height: 100%;
+  width: 42px;
+  border-radius: 21px 0px 0px 21px;
+  background: #68df91;
+}
+
+#vsl-status p {
+  color: #000;
+  text-align: center;
+  font-family: "Exo 2";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 500;
+  margin: 0;
+  white-space: nowrap;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+/* --- FIX FOR JAPANESE --- */
+:lang(ja) #vsl-status p {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  white-space: normal;
+  font-size: 19px;
+  transform: translate(-50%, -50%);
+}
+
+#vsl-vdetails {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 0 25px 25px 0;
+}
+
+#vsl-fleetOwnertitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0px 10px;
+  align-items: center;
+  border-bottom: 1px dashed #c2c2c2;
+}
+
+#vsl-fleetOwnerList,
+#vsl-fleetInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 25px;
+}
+
+#vsl-fleetOwnerList img,
+#vsl-fleetInfo img {
+  width: 22px;
+  height: 18px;
+}
+
+#vsl-fleetOwnerList p,
+#vsl-fleetInfo p {
+  color: #09a76d;
+  margin-left: 5px;
+  font-family: "Exo 2";
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  vertical-align: middle;
+  margin-bottom: 0px;
+}
+
+/* --- NEW, MORE OBVIOUS CAN Data Status Pill --- */
+.can-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-family: "Exo 2", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  /* Bolder text */
+  gap: 5px;
+  /* Adjusted gap for icon */
+  transition: all 0.2s ease;
+}
+
+.status-icon {
+  font-size: 14px;
+  /* Icon size */
+  line-height: 1;
+  /* Aligns icon better with text */
+}
+
+/* --- Available State (Green) --- */
+.can-status.available {
+  /* background-color: #DEF7EC; Lighter green */
+  color: #047857;
+  /* Darker green for text */
+}
+
+.can-status.available .status-icon {
+  color: #047857;
+  /* Bright green for icon */
+}
+
+/* --- Unavailable State (Red) --- */
+.can-status.unavailable {
+  /* background-color: #FEE2E2; Light red */
+  color: #991B1B;
+  /* Dark red for text */
+}
+
+.can-status.unavailable .status-icon {
+  color: #991B1B;
+  /* Bright red for icon */
+}
+
+/* --- Dark Mode Overrides --- */
+.dark .can-status.available {
+  /* background-color: #052e16; Dark green */
+  color: #047857;
+}
+
+.dark .can-status.available .status-icon {
+  color: #047857;
+}
+
+.dark .can-status.unavailable {
+  /* background-color: #450a0a; Dark red */
+  color: #991B1B;
+}
+
+.dark .can-status.unavailable .status-icon {
+  color: #991B1B;
+}
+
+#vsl-dscore {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100px;
+  height: 17.871px;
+  flex-shrink: 0;
+  border-radius: 25px;
+  border: 0.5px solid #1a3d71;
+  font-size: 12px;
+}
+
+#vsl-dscore p {
+  color: #1a3d71;
+  width: auto;
+  height: 12px;
+  font-family: "Exo 2";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 100;
+  text-transform: capitalize;
+  margin: 0px;
+  margin-top: -1.1px;
+  margin-right: 4px;
+  padding: 0px;
+}
+
+#vsl-vinfo {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  align-items: center;
+}
+
+#vsl-vd-image p {
+  margin: 0px;
+  padding: 0px;
+  color: #000;
+  text-align: center;
+  text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
+  font-family: "Exo 2";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+#vsl-vd-image img {
+  width: 126.722px;
+  height: 90.674px;
+  object-fit: contain;
+}
+
+#vsl-vd-image {
+  width: 160px;
+  height: 90%;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 10px;
+  text-align: center;
+}
+
+#vsl-dinfo {
+  width: 70%;
+  height: 90%;
+  margin: auto;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}
+
+#vsl-vd-ow {
+  border-radius: 23px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  transform: scale(0.95);
+}
+
+#vsl-ow-val p {
+  color: #0f8b5e;
+  text-align: center;
+  font-family: "Exo 2";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  margin: 0px;
+}
+
+#vsl-ow-val {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  align-content: space-evenly;
+}
+
+#vsl-vl-add {
+  color: #000;
+  font-family: "Exo 2";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+}
+
+#vsl-vl-add i {
+  font-size: 15px;
+  color: rgba(5, 180, 5, 0.54);
+}
+
+/* =================================== */
+/* Vehicle Selector Dropdown Styles    */
+/* =================================== */
+
+.vehicle-selector-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.2s ease-in-out;
+  font-weight: 500;
+}
+
+.vehicle-selector-wrapper {
+  position: sticky;
+  top: 0px;
+  z-index: 1000;
+  background-color: #f8fafc;
+  width: 100%;
+  padding: 15px 0;
+  font-family: "Exo 2", sans-serif;
+}
+
+.vehicle-selector-content {
+  /* width: 60%; */
+  margin: 0 auto;
+  position: relative;
+}
+
+
+.vehicle-selector-trigger.is-open {
+  border-color: #0b5297;
+}
+
+.vehicle-selector-panel {
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+  /* overflow: hidden; <-- THIS WAS REMOVED */
+}
+
+.vehicle-selector-search-container {
+  padding: 8px 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.vehicle-selector-search-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.vehicle-selector-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  /* --- ADDED FOR SCROLL --- */
+  max-height: 250px;
+  /* Or any height you prefer */
+  overflow-y: auto;
+}
+
+.vehicle-selector-list-item {
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+}
+
+.vehicle-selector-list-item:last-child {
+  border-bottom: none;
+}
+
+.vehicle-selector-list-item.header {
+  background-color: #f1f1f1;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.vehicle-selector-list-item label {
+  /* Make the label a flex container to align the dot and text */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* Space between checkbox (handled by margin) and dot/text */
+  flex: 1;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.vehicle-selector-list-item.header label {
+  font-weight: bold;
+}
+
+.vehicle-selector-list-item input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+  flex-shrink: 0;
+  /* Prevent checkbox from shrinking */
+}
+
+/* --- ADDED FOR PROFESSIONAL DROPDOWN --- */
+
+/* Style for the new status dot */
+.vehicle-status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  /* Prevent dot from shrinking */
+}
+
+.vehicle-status-dot.active {
+  background-color: #09a76d;
+  /* Green */
+  border: 1px solid #067a4e;
+}
+
+.vehicle-status-dot.inactive {
+  background-color: #df3535;
+  /* Red */
+  border: 1px solid #a82828;
+}
+
+.vehicle-item-text {
+  /* Allows text to wrap if it's too long */
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Style for the "No results" message */
+.vehicle-selector-no-results {
+  padding: 12px 15px;
+  color: var(--secondary-text-color);
+  text-align: center;
+  font-style: italic;
+}
+
+
+/* =================================== */
+/* Dark Mode Overrides for Dropdown    */
+/* =================================== */
+
+.dark .vehicle-selector-wrapper {
+  background-color: var(--page-background);
+  /* Use theme variable */
+}
+
+.dark .vehicle-selector-trigger {
+  background-color: #2d3748;
+  /* Dark Gray */
+  color: #edf2f7;
+  /* Light Gray */
+  border-color: #4a5568;
+  /* Gray */
+}
+
+.dark .vehicle-selector-trigger.is-open {
+  border-color: #63b3ed;
+  /* Light Blue */
+}
+
+.dark .vehicle-selector-panel {
+  background-color: #2d3748;
+  /* Dark Gray */
+  border-color: #4a5568;
+  /* Gray */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.dark .vehicle-selector-search-container {
+  border-bottom-color: #4a5568;
+  /* Gray */
+}
+
+.dark .vehicle-selector-search-input {
+  background-color: #1a202c;
+  /* Very Dark Blue */
+  color: #edf2f7;
+  /* Light Gray */
+  border-color: #4a5568;
+  /* Gray */
+}
+
+.dark .vehicle-selector-search-input::placeholder {
+  color: #a0aec0;
+  /* Cool Gray */
+}
+
+.dark .vehicle-selector-list-item {
+  border-bottom-color: #4a5568;
+  /* Gray */
+  color: #edf2f7;
+  /* Light Gray */
+}
+
+.dark .vehicle-selector-list-item.header {
+  background-color: #4a5568;
+  /* Gray */
+}
+
+
+/* Add this to your Vehicle_selection.css file */
+
+.vs-kpi-icon {
+  width: 55px;
+  height: 55px;
+  margin-bottom: 8px;
+  color: #151d48;
+  /* Default icon color for light mode */
+}
+
+/* Dark mode override for the icon color */
+.dark .vs-kpi-icon {
+  color: #e2e8f0;
+}
+
+/* This replaces the old direct `img` selector to avoid conflicts */
+.vehicleSelection-fow-specifications-info .card-content p {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
+
+.vehicleSelection-fow-specifications-info .card-content p+p {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* Dark mode text colors */
+.dark .vehicleSelection-fow-specifications-info .card-content p {
+  color: var(--primary-text-color);
+}
+
+.dark .vehicleSelection-fow-specifications-info .card-content p+p {
+  color: var(--secondary-text-color);
+}
+
+/* =================================== */
+/* DARK MODE OVERRIDES FOR VEHICLE LIST CARDS */
+/* =================================== */
+
+.dark #vs-lcontainer {
+  background-color: #1f2937;
+  /* Dark Slate to match sidebar/theme */
+  border: 1px solid #374151;
+  /* Subtle border */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  /* Deeper shadow */
+}
+
+/* Vehicle ID Text */
+.dark #vsl-vd-image p {
+  color: #f3f4f6;
+  /* White text */
+  text-shadow: none;
+}
+
+/* Fleet Owner & Type Text */
+.dark #vsl-fleetOwnerList p,
+.dark #vsl-fleetInfo p {
+  color: #60a5fa;
+  /* Light Blue for accents */
+}
+
+/* Stat Values (Speed, SOC, DTE) */
+.dark #vsl-ow-val p {
+  color: #34d399;
+  /* Emerald 400 - Readable Green */
+}
+
+/* Address Text */
+.dark #vsl-vl-add {
+  color: #9ca3af;
+  /* Gray 400 */
+}
+
+/* Address Icon */
+.dark #vsl-vl-add i,
+.dark .vsl-icon-location {
+  color: #60a5fa !important;
+  /* Blue icon */
+}
+
+/* Stat Icons */
+.dark .vsl-mui-icon {
+  color: #9ca3af;
+  /* Gray icons */
+}
+
+/* Invert Image brightness for dark mode if needed (Optional, usually specific to certain icons) */
+/* .dark #vsl-vd-image img { filter: ... } */
+
+/* "No GPS" Status Background within Card */
+.dark #vsl-vdetails {
+  background-color: transparent !important;
+  /* Remove light red/gray backgrounds in dark mode */
+}
+
+
+/* ======================
+  Responsive Section
+======================
+*/
+
+/* --- MORE AGGRESSIVE STYLE for screens under 1650px --- */
+@media (max-width: 1800px) {
+
+  /* Overall card container scaling is now smaller */
+  #vs-lcontainer {
+    transform: scale(0.92);
+    transform-origin: center;
+    width: 98%;
+    margin: 0 auto;
+    height: auto;
+  }
+
+  #vsl-vd-image img {
+    width: 122.722px;
+    height: 90.674px;
+    object-fit: contain;
+  }
+
+  #vsl-vd-image p {
+    font-size: 12px;
+  }
+
+  #vsl-dinfo {
+    height: 100%;
+  }
+
+  /* Further reduce the gap between cards */
+  #vsl-cont {
+    gap: 5px;
+  }
+
+  /* Make the row of stat icons smaller */
+  #vsl-vd-ow {
+    transform: scale(0.70);
+  }
+
+  /* Reduce the font size of the address text */
+  #vsl-vl-add {
+    font-size: 11px;
+    margin-top: 0px;
+  }
+
+  /* Make the vehicle image smaller */
+  #vsl-vd-image {
+    width: 135px;
+  }
+
+  /* Adjust various internal font sizes */
+  #vsl-vd-image p {
+    font-size: 11px;
+  }
+
+  #vsl-vdetails {
+    font-size: 12px;
+  }
+
+  #vsl-status p {
+    font-size: 18px;
+  }
+
+  .vsl-coming-soon-badge {
+    top: 31px;
+    left: 81px;
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 1460px) {
+
+  /* Adjust various internal font sizes */
+  #vsl-vd-image {
+    width: auto;
+    height: auto;
+  }
+
+  #vsl-vd-image p {
+    font-size: 11px;
+  }
+
+  #vsl-vdetails {
+    font-size: 11px;
+  }
+
+  #vsl-status p {
+    font-size: 18px;
+  }
+
+  .vsl-coming-soon-badge {
+    top: 51px;
+    left: 83px;
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 1260px) {
+  #vsl-cont {
+    gap: 20px;
+  }
+
+  #vehicleSelection-fow-specifications-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 7px;
+  }
+
+  #vehicleSelection-fow-specifications-list .vehicleSelection-fow-specifications-info {
+    width: 100%;
+    margin: 0;
+    height: 140px;
+  }
+
+  /*
+    On smaller screens, this container stacks the map and list vertically.
+    These rules make the container itself invisible (no background or padding)
+    to fix the visual issue of its white background showing behind the stacked items.
+    The gap property is retained to maintain space between the map and the list.
+  */
+  #vehicleSelection-info-container-2 {
+    background: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #vehicleSelection-info-container-2-map {
+    width: 100%;
+    border-radius: 10px;
+    min-height: 400px;
+  }
+
+  #vehicleSelection-info-container-2-vlist {
+    width: 100%;
+  }
+
+  #vs-lcontainer {
+    width: 97%;
+    transform: scale(0.95);
+    transform-origin: center;
+    height: auto;
+    margin: 0;
+  }
+
+  #vehicleSelection-fow-specifications-list .vehicleSelection-fow-specifications-info img {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  #vehicleSelection-fow-specifications-list .vehicleSelection-fow-specifications-info p {
+    font-size: 15px;
+    margin-top: 5px;
+  }
+
+  #vehicleSelection-fow-specifications-list .vehicleSelection-fow-specifications-info p+p {
+    font-size: 12px;
+    margin-top: 0;
+  }
+
+  #vsl-dinfo {
+    width: 90%;
+  }
+
+  #vsl-status {
+    width: 28px;
+  }
+
+  #vsl-vd-image {
+    width: 85px;
+    height: auto;
+  }
+
+  #vsl-vdetails {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  #vsl-fleetOwnertitle {
+    font-size: 11px;
+  }
+
+  #vsl-vl-add {
+    font-size: 12px;
+    margin-top: 15px;
+  }
+
+  .vsl-coming-soon-badge {
+    top: 47px;
+    left: 68px;
+    font-size: 7px;
+  }
+}
+
+@media (max-width: 1190px) {
+  #vehicleSelection-info-container-2-map {
+    width: 100%;
+    border-radius: 10px;
+    min-height: 430px;
+  }
+}
+
+@media (max-width: 768px) {
+  #vsl-cont {
+    gap: 10px;
+  }
+
+  #vehicleSelection-fow-specifications-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 5px;
+  }
+
+  #vehicleSelection-info-container-2-vlist {
+    width: 100%;
+  }
+
+  #vehicleSelection-fow-specifications h3 {
+    font-size: 1rem;
+    flex-direction: row;
+    gap: 5px;
+  }
+
+  #vehicleSelection-info-container-2-map {
+    width: 100%;
+    border-radius: 10px;
+    min-height: 400px;
+  }
+
+  #vehicleSelection-info-container-2 {
+    flex-direction: column;
+  }
+
+  .vehicleSelection-fow-specifications-info p {
+    font-size: 14px;
+  }
+
+  #vs-lcontainer {
+    transform: scale(0.96);
+    transform-origin: center;
+    width: 95%;
+    margin: 0 auto;
+    height: auto;
+  }
+
+  .vehicleSelection-fow-specifications-info img {
+    width: 2.5em !important;
+    height: auto !important;
+  }
+
+  .vehicleSelection-fow-specifications-info {
+    width: 44%;
+    height: 120px;
+  }
+
+  #vsl-dinfo {
+    width: 85%;
+  }
+
+  #vsl-status {
+    width: 30px;
+  }
+
+  #vsl-vd-image {
+    width: 100px;
+    height: auto;
+    margin-left: -5px;
+  }
+
+  #vsl-vdetails {
+    padding: 5px;
+  }
+
+  #vsl-fleetOwnertitle {
+    font-size: 12px;
+  }
+
+  #vsl-vl-add {
+    font-size: 14px;
+    transform: scale(0.88);
+    margin-left: 5%;
+    margin-top: 5px;
+  }
+
+  .responsive-header {
+    flex-direction: column;
+    gap: 5px;
+    font-size: 14px;
+  }
+
+  .responsive-header i {
+    font-size: 18px;
+  }
+
+  #vehicleSelection-info-container-1 {
+    flex-direction: column;
+    gap: 15px;
+    height: auto;
+  }
+
+  #vehicleSelection-fow-specifications {
+    padding: 2px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 2px 0px rgba(160, 160, 160, 0.25);
+  }
+
+  #vsl-status p {
+    font-size: 18px;
+  }
+
+  #vehicleSelection-fow-specifications-info {
+    display: grid;
+    grid-template-columns: repeat(2, 3fr);
+    grid-gap: 10px;
+  }
+
+  #vsl-vd-image p {
+    font-size: 12px;
+  }
+
+  #vsl-fleetOwnerList,
+  #vsl-fleetInfo {
+    transform: scale(0.92);
+  }
+
+  #vsl-dscore {
+    transform: scale(0.92);
+  }
+
+  #vsl-vinfo {
+    transform: scale(0.92);
+  }
+
+  #vsl-vd-image {
+    transform: scale(0.93);
+  }
+
+  #vsl-vd-ow {
+    transform: scale(0.87);
+  }
+}
+
+@media (max-width: 480px) {
+  #vsl-cont {
+    gap: 1px;
+  }
+
+  #vehicleSelection-fow-specifications h3 {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  #vehicleSelection-info-container-2-map {
+    width: 100%;
+    border-radius: 10px;
+    min-height: 325px;
+  }
+
+  #vehicleSelection-fow-specifications i {
+    font-size: 1rem;
+  }
+
+  #vehicleSelection-fow-specifications-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 5px;
+  }
+
+  .vehicleSelection-fow-specifications-info img {
+    width: 2em !important;
+    height: auto !important;
+  }
+
+  .vehicleSelection-fow-specifications-info p {
+    font-size: 14px;
+  }
+
+  .vehicleSelection-fow-specifications-info p+p {
+    font-size: 12px !important;
+  }
+
+  #vs-lcontainer {
+    transform: scale(0.96);
+    transform-origin: center;
+    width: 96%;
+    margin: 0 auto;
+    height: auto;
+  }
+
+  #vsl-status {
+    width: 35px;
+  }
+
+  #vsl-vd-ow {
+    margin-left: 5%;
+    margin-top: -5%;
+    transform: scale(0.81);
+  }
+
+  #vsl-vd-image p {
+    font-size: 10px;
+    margin-bottom: -15%;
+  }
+
+  #vsl-dinfo {
+    width: 100%;
+    text-align: center;
+  }
+
+  #vsl-vd-image {
+    width: 80px;
+    height: auto;
+    margin-left: -1%;
+    margin-top: -5%;
+  }
+
+  #vsl-vl-add {
+    font-size: 10px;
+    margin-bottom: -5%;
+    margin-left: 10%;
+    margin-top: 2px;
+  }
+
+  #vsl-vdetails {
+    font-size: 12px;
+  }
+
+  #vsl-status p {
+    font-size: 16px;
+  }
+
+  .vsl-coming-soon-badge {
+    top: 37px;
+    left: 58px;
+    font-size: 5px;
+  }
+}
+
+@media screen and (max-width: 363px) {
+  #vehicleSelection-fow-specifications-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 5px;
+  }
+
+  #vehicleSelection-fow-specifications-list .vehicleSelection-fow-specifications-info {
+    width: 100%;
+    margin: 0;
+    height: 137px;
+  }
+
+  #vsl-vd-ow {
+    transform: scale(0.77);
+  }
+}
+
+/* Dark Mode Theme            */
+
+.dark .carousel-3d-slide {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+.dark #vehicleSelection-fow-specifications,
+.dark #vehicleSelection-info-container-2,
+.dark #vehicleSelection-info-container-2-map,
+.dark #vehicleSelection-info-container-2-vlist {
+  /* This rule now correctly uses the theme's page background variable */
+  background: var(--page-background);
+  color: var(--primary-text-color);
+  /* Use the theme's text color variable */
+}
+
+/* =================================== */
+/* Dark Mode Overrides for Header Text */
+/* =================================== */
+
+.dark #vehicleSelection-fow-specifications h3 {
+  color: var(--primary-text-color);
+}
+
+.dark #vehicleSelection-fow-specifications h3 span {
+  color: var(--primary-text-color);
+}
+
+.dark #vehicleSelection-fow-specifications h3 .active-status,
+.dark #vehicleSelection-fow-specifications h3 span[style*="color: green"] {
+  color: var(--green-text);
+}
+
+/* ======================================================= */
+/* Final Header Styles (Desktop & Tablet Default)          */
+/* ======================================================= */
+
+#vehicleSelection-fow-specifications h3 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 10px;
+}
+
+/* Style for the main title (e.g., "6S") */
+.vehicle-header-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: var(--primary-color);
+  /* UPDATE: Reduced font size for a more compact look */
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  font-weight: 700;
+}
+
+/* Style for the stats line (e.g., "Total: 19 | ...") */
+.vehicle-header-stats {
+  /* UPDATE: Reduced font size for a more compact look */
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  font-weight: 400;
+  color: var(--secondary-text-color);
+  /* UPDATE: Adjusted indent to match new size */
+  padding-left: clamp(2rem, 5.5vw, 2.75rem);
+}
+
+.vehicle-header-stats .count {
+  font-weight: 600;
+}
+
+.vehicle-header-stats .active-count {
+  color: #09a76d;
+}
+
+.vehicle-header-stats .inactive-count {
+  color: #df3535;
+}
+
+.vehicle-header-stats .nogps-count {
+  color: #D97706;
+  /* Amber */
+}
+
+.dark .vehicle-header-stats .nogps-count {
+  color: #FCD34D;
+  /* Soothing Amber for dark mode */
+}
+
+/* --- Dark Mode Overrides --- */
+.dark .vehicle-header-title {
+  color: var(--primary-text-color);
+}
+
+.dark .vehicle-header-stats {
+  color: var(--secondary-text-color);
+}
+
+.dark .vehicle-header-stats .active-count {
+  color: var(--green-text);
+}
+
+/* ======================================================= */
+/* Mobile Styles (Switches to horizontal below 768px)      */
+/* ======================================================= */
+
+@media (max-width: 768px) {
+  #vehicleSelection-fow-specifications h3 {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .vehicle-header-title {
+    /* UPDATE: Reduced mobile font size */
+    font-size: clamp(1.1rem, 4vw, 1.35rem);
+    gap: 10px;
+  }
+
+  .vehicle-header-stats {
+    padding-left: 0;
+    text-align: right;
+    font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+  }
+}
+
+/* ==================================================================== */
+/* === V V V NEW STYLES for Filter Button, Popup, and InfoWindow V V V === */
+/* ==================================================================== */
+
+
+/* --- Styles for Floating Filter Button & Popup --- */
+
+/* Default (Mobile) styles for the filter button */
+#vehicleSelection-info-container-2-map .map-filter-fab {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 5;
+  width: 48px;
+  height: 48px;
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #151d48;
+}
+
+/* Default (Mobile) styles for the popup panel */
+#vehicleSelection-info-container-2-map .map-filter-popup {
+  position: absolute;
+  top: 75px;
+  left: 15px;
+  z-index: 5;
+  width: 250px;
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+  padding: 12px;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transform-origin: top left;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  transform: scale(0.95);
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* --- Hover and Dark Mode Styles --- */
+#vehicleSelection-info-container-2-map .map-filter-fab:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dark #vehicleSelection-info-container-2-map {
+  border: 1px solid #1a1a1a;
+}
+
+.dark #vehicleSelection-info-container-2-map .map-filter-fab {
+  background-color: rgba(31, 41, 55, 0.92) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45) !important;
+  color: #e5e7eb !important;
+}
+
+.dark #vehicleSelection-info-container-2-map .map-filter-popup {
+  background-color: #2a374a;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* --- Popup Content Styles --- */
+#vehicleSelection-info-container-2-map .map-filter-popup.is-open {
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+#vehicleSelection-info-container-2-map .filter-section {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.dark #vehicleSelection-info-container-2-map .filter-section {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#vehicleSelection-info-container-2-map .filter-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+#vehicleSelection-info-container-2-map .filter-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #151d48;
+  margin-bottom: 8px;
+}
+
+.dark #vehicleSelection-info-container-2-map .filter-title {
+  color: #f0f0f0;
+}
+
+#vehicleSelection-info-container-2-map .checkbox-row,
+#vehicleSelection-info-container-2-map .radio-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+#vehicleSelection-info-container-2-map .checkbox-row label,
+#vehicleSelection-info-container-2-map .radio-row label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #333;
+}
+
+.dark #vehicleSelection-info-container-2-map .checkbox-row label,
+.dark #vehicleSelection-info-container-2-map .radio-row label {
+  color: #eee;
+}
+
+#vehicleSelection-info-container-2-map .checkbox-row input[type="checkbox"],
+#vehicleSelection-info-container-2-map .radio-row input[type="radio"] {
+  width: 15px;
+  height: 15px;
+  accent-color: #0b5297;
+}
+
+
+/* --- Desktop Overrides for Filter Button --- */
+@media (min-width: 1201px) {
+
+  /* On desktop, the list is on the right, so we move the button */
+  #vehicleSelection-info-container-2-map .map-filter-fab {
+    top: auto;
+    left: auto;
+    bottom: 200px;
+    right: 10px;
+    width: 41px;
+    height: 41px;
+  }
+
+  #vehicleSelection-info-container-2-map .map-filter-popup {
+    top: auto;
+    left: auto;
+    bottom: 249px;
+    right: 17px;
+    transform-origin: bottom right;
+  }
+}
+
+/* ======================================================= */
+/* === FINAL, REDESIGNED STYLES FOR MAP INFO-WINDOW === */
+/* ======================================================= */
+
+.custom-infowindow {
+  min-width: 240px;
+  padding: 4px;
+  font-family: "Exo 2", sans-serif;
+  color: #151d48;
+}
+
+.infowindow-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 8px 3px;
+}
+
+.infowindow-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.infowindow-icon {
+  color: #0b5297;
+  flex-shrink: 0;
+  width: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.infowindow-title {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.title-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: #5a6a85;
+  text-transform: uppercase;
+}
+
+.title-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0b5297;
+}
+
+.infowindow-divider {
+  border: none;
+  height: 1px;
+  background-color: #e0e4e8;
+  margin: 4px 0;
+}
+
+.infowindow-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+  padding: 12px 4px 8px 4px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-item-full {
+  grid-column: 1 / -1;
+}
+
+.stat-icon {
+  color: #425166;
+  flex-shrink: 0;
+  width: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stat-item div {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.stat-value {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #5a6a85;
+}
+
+/* --- Dark Mode Overrides for Custom Content --- */
+.custom-infowindow.dark {
+  color: #e2e8f0;
+}
+
+.custom-infowindow.dark .infowindow-icon {
+  color: #a0aec0 !important;
+}
+
+.custom-infowindow.dark .title-label {
+  color: #a0aec0;
+}
+
+.custom-infowindow.dark .title-value {
+  color: #e2e8f0;
+}
+
+.custom-infowindow.dark .infowindow-divider {
+  background-color: #4a5568;
+}
+
+.custom-infowindow.dark .stat-icon {
+  color: #a0aec0;
+}
+
+.custom-infowindow.dark .stat-label {
+  color: #a0aec0;
+}
+
+
+
+/* ==========================================================================
+   UNIVERSAL SKELETON LOADER STYLES
+   ========================================================================== */
+
+.vsl-page-skeleton .skeleton {
+  background-color: #c7c7c7;
+  /* Light mode shape color */
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dark mode version with a color that contrasts well with this page */
+.dark .vsl-page-skeleton .skeleton {
+  background-color: #4a5568;
+  /* A higher-contrast gray from your theme */
+}
+
+/* The shimmer animation effect */
+.vsl-page-skeleton .skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+.dark .vsl-page-skeleton .skeleton::after {
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent);
+}
+
+@keyframes shimmer {
+  0% {
+    left: -150%;
+  }
+
+  100% {
+    left: 150%;
+  }
+}
+
+/* --- SKELETON LAYOUT FIX --- */
+/* This class FORCES the horizontal grid layout for the skeleton cards. */
+.skeleton-card-grid {
+  display: grid !important;
+  gap: 1.5rem !important;
+  grid-template-columns: repeat(5, 1fr) !important;
+}
+
+@media (max-width: 1400px) {
+  .skeleton-card-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .skeleton-card-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .skeleton-card-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .skeleton-card-grid {
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+}
+
+/* ============================================= */
+/* === MATERIAL UI ICONS - PREMIUM STYLING === */
+/* ============================================= */
+
+/* Base icon styling */
+.vsl-mui-icon {
+  flex-shrink: 0;
+  vertical-align: middle;
+  transition: transform 0.2s ease;
+}
+
+/* Fleet header icons */
+.vsl-icon-fleet,
+.vsl-icon-type {
+  font-size: 20px;
+  color: #0b5297;
+}
+
+/* CAN Status icons */
+.vsl-icon-can-ok {
+  font-size: 16px;
+  color: #22c55e;
+  filter: drop-shadow(0 1px 2px rgba(34, 197, 94, 0.3));
+}
+
+.vsl-icon-can-na {
+  font-size: 16px;
+  color: #ef4444;
+  filter: drop-shadow(0 1px 2px rgba(239, 68, 68, 0.3));
+}
+
+/* ========================================= */
+/* === CLEAN STAT ITEMS - NO BOXES === */
+/* ========================================= */
+
+#vsl-vd-ow {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vsl-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 55px;
+  padding: 4px 8px;
+}
+
+.vsl-stat-item p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+}
+
+/* Clean icons - just colors, no backgrounds */
+.vsl-icon-speed {
+  font-size: 32px;
+  color: #0b5297;
+}
+
+.vsl-icon-soc {
+  font-size: 32px;
+  color: #22c55e;
+}
+
+.vsl-icon-dte {
+  font-size: 32px;
+  color: #0b5297;
+}
+
+.vsl-icon-temp {
+  font-size: 32px;
+  color: #f59e0b;
+}
+
+/* Location - clean style without box */
+#vsl-vl-add {
+  display: flex;
+  align-items: flex-start;
+  gap: 1px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.vsl-icon-location {
+  font-size: 18px;
+  color: #ef4444;
+}
+
+/* Service contact - minimal styling */
+.vsl-icon-service,
+.vsl-icon-contact,
+.vsl-icon-phone {
+  font-size: 15px;
+  color: #0b5297;
+}
+
+/* ========================================= */
+/* === DARK MODE - CLEAN === */
+/* ========================================= */
+
+.dark .vsl-stat-item p {
+  color: #e5e7eb;
+}
+
+.dark .vsl-icon-fleet,
+.dark .vsl-icon-type {
+  color: #60a5fa;
+}
+
+.dark .vsl-icon-speed,
+.dark .vsl-icon-dte {
+  color: #60a5fa;
+}
+
+.dark .vsl-icon-soc {
+  color: #4ade80;
+}
+
+.dark .vsl-icon-temp {
+  color: #fbbf24;
+}
+
+.dark #vsl-vl-add {
+  color: #d1d5db;
+}
+
+.dark .vsl-icon-location {
+  color: #f87171;
+}
+
+.dark .vsl-icon-service,
+.dark .vsl-icon-contact,
+.dark .vsl-icon-phone {
+  color: #60a5fa;
+}
+
+/* ========================================= */
+/* === ENHANCED RESPONSIVE - NEVER BREAKS === */
+/* ========================================= */
+
+/* Stats container - flexible grid */
+#vsl-vd-ow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.vsl-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.375rem 0.25rem;
+  min-width: 0;
+  /* Allow shrinking */
+  width: 100%;
+}
+
+.vsl-stat-item p {
+  margin: 0;
+  font-size: clamp(0.625rem, 2vw, 0.8125rem);
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Scalable icons using clamp */
+.vsl-icon-speed,
+.vsl-icon-soc,
+.vsl-icon-dte,
+.vsl-icon-temp {
+  font-size: clamp(1.375rem, 4vw, 2rem);
+}
+
+/* Location - with text truncation */
+#vsl-vl-add {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+  font-size: clamp(0.65rem, 2vw, 0.75rem);
+  color: #475569;
+  line-height: 1.4;
+  max-width: 100%;
+}
+
+#vsl-vl-add span,
+#vsl-vl-add:not(:has(span)) {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.vsl-icon-location {
+  font-size: clamp(0.875rem, 2.5vw, 1.125rem);
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+/* Service contact - compact */
+#vsl-service-info {
+  font-size: clamp(0.6rem, 1.8vw, 0.75rem);
+}
+
+.vsl-icon-service,
+.vsl-icon-contact,
+.vsl-icon-phone {
+  font-size: clamp(0.75rem, 2vw, 0.9375rem);
+}
+
+/* ========================================= */
+/* === TABLET BREAKPOINT (768px) === */
+/* ========================================= */
+
+@media (max-width: 768px) {
+  #vsl-vd-ow {
+    gap: 0.375rem;
+  }
+
+  .vsl-stat-item {
+    padding: 0.25rem;
+  }
+}
+
+/* ========================================= */
+/* === MOBILE BREAKPOINT (480px) - 2x2 GRID === */
+/* ========================================= */
+
+@media (max-width: 480px) {
+
+  /* Switch to 2x2 grid for better fit */
+  #vsl-vd-ow {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem 0.75rem;
+  }
+
+  .vsl-stat-item {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+  }
+
+  .vsl-stat-item p {
+    text-align: left;
+  }
+
+  /* Address - single line with ellipsis */
+  #vsl-vl-add {
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+  }
+}
+
+/* ========================================= */
+/* === EXTRA SMALL (360px) === */
+/* ========================================= */
+
+@media (max-width: 360px) {
+  #vsl-vd-ow {
+    gap: 0.375rem 0.5rem;
+  }
+
+  .vsl-stat-item {
+    gap: 0.375rem;
+  }
+}
+
+/* =================================== */
+/* VEHICLE STATUS COLORS (Class-Based) */
+/* =================================== */
+
+/* Common base for all cards - Box Shadow only, No colored border by default */
+#vs-lcontainer {
+  border: 1px solid transparent;
+  /* Placeholder to prevent layout shift on select */
+}
+
+/* 1. ACTIVE STATUS - Green */
+.v-status-active {
+  /* No border */
+}
+
+.v-status-active #vsl-status {
+  background-color: #68df91;
+}
+
+/* Dark Mode Active: Emerald */
+.dark .v-status-active {
+  /* No border */
+}
+
+.dark .v-status-active #vsl-status {
+  background-color: #059669;
+}
+
+
+/* 2. INACTIVE STATUS - Red */
+.v-status-inactive {
+  /* No border */
+}
+
+.v-status-inactive #vsl-status {
+  background-color: #ff7777;
+}
+
+/* Light mode tint override if needed, but keeping it simple for now */
+.v-status-inactive #vsl-vdetails {
+  background-color: #ffe1e1;
+}
+
+/* Dark Mode Inactive: Ruby Red */
+.dark .v-status-inactive {
+  /* No border */
+}
+
+.dark .v-status-inactive #vsl-status {
+  background-color: #b91c1c;
+}
+
+.dark .v-status-inactive #vsl-vdetails {
+  background-color: transparent !important;
+}
+
+
+/* 3. NO GPS STATUS - Gray */
+.v-status-nogps {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.v-status-nogps #vsl-status {
+  background-color: #aaaaaa;
+}
+
+.v-status-nogps #vsl-vdetails {
+  background-color: #f0f0f0;
+}
+
+/* Dark Mode No GPS: Slate */
+.dark .v-status-nogps {
+  /* No border */
+}
+
+.dark .v-status-nogps #vsl-status {
+  background-color: #4b5563;
+}
+
+.dark .v-status-nogps #vsl-vdetails {
+  background-color: transparent !important;
+}
+
+
+/* 4. COMING SOON STATUS */
+.v-status-coming-soon {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.v-status-coming-soon #vsl-status {
+  background-color: #ff7777;
+}
+
+/* Dark Mode Coming Soon */
+.dark .v-status-coming-soon {
+  /* No border */
+}
+
+.dark .v-status-coming-soon #vsl-status {
+  background-color: #b91c1c;
+}
+
+
+/* 5. SELECTED STATE */
+.is-selected {
+  border-color: #0b5297 !important;
+}
+
+.dark .is-selected {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3) !important;
+}

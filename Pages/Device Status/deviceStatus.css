@@ -1,0 +1,437 @@
+/* ==========================================================================
+   Base Theme & Variables
+   ========================================================================== */
+:root {
+  --primary-color: #0b5297;
+  --primary-color-dark-hover: #08437a;
+  --primary-text-color: #1e293b;
+  --secondary-text-color: #475569;
+  --border-color: #dee2e6;
+  --border-color-medium: #e2e8f0;
+  --page-background: #fff;
+  --row-background-odd: #eef2f9;
+  --row-background-even: #fff;
+  --row-background-hover: #dbeafe;
+  --shadow-color: rgba(160, 160, 160, 0.25);
+}
+
+.dark {
+  --primary-color: #374155;
+  --primary-color-dark-hover: #4a5568;
+  --primary-text-color: #e2e8f0;
+  --secondary-text-color: #a0aec0;
+  --border-color: #4a5568;
+  --border-color-medium: #4a5568;
+  --page-background: #2d3748;
+  --row-background-odd: #2d3748;
+  --row-background-even: #27303f;
+  --row-background-hover: #4a5568;
+  --shadow-color: transparent;
+}
+
+/* ==========================================================================
+   General Layout & Typography
+   ========================================================================== */
+.FM_Page {
+  background: var(--page-background);
+  color: var(--primary-text-color);
+  box-shadow: 0px 4px 4px 0px var(--shadow-color);
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 20px;
+}
+
+#FM-Title {
+  color: var(--primary-color);
+  font-family: "Exo 2", sans-serif;
+  font-size: 27px;
+  font-weight: 600;
+  padding: 0 10px 10px 10px;
+  margin: 0;
+}
+
+.dark #FM-Title {
+  color: var(--primary-text-color);
+}
+
+/* ==========================================================================
+   Controls: Filters & Search
+   ========================================================================== */
+.controls-container {
+  display: flex;
+  gap: 1rem;
+  padding: 0px 0px 15px 0px;
+  align-items: center;
+}
+
+.filter-dropdown,
+.search-input {
+  font-family: "Exo 2", sans-serif;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 16px;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.search-input {
+  width: 250px;
+}
+
+.filter-dropdown {
+  background-color: var(--page-background);
+  color: var(--primary-text-color);
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 1em;
+  padding-right: 2.5rem;
+}
+
+.dark .filter-dropdown {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0aec0' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.dark .search-input::placeholder {
+  color: var(--secondary-text-color);
+}
+
+/* ==========================================================================
+   Two-Column Table Layout
+   ========================================================================== */
+.ds-tables-container {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+}
+
+.ds-table-wrapper {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ds-table-caption {
+  font-family: "Exo 2", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 12px 15px;
+  margin: 0;
+  color: var(--primary-text-color);
+  background-color: var(--row-background-odd);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dark .ds-table-caption {
+  background-color: var(--row-background-even);
+}
+
+.ds-table-caption .count {
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--secondary-text-color);
+  margin-left: 8px;
+}
+
+/* ==========================================================================
+   Table Styles
+   ========================================================================== */
+.fm-table-container {
+  flex-grow: 1;
+  overflow: auto;
+  width: 100%;
+}
+
+.FM-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  font-family: "Exo 2", sans-serif;
+}
+
+.FM-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  color: #fff;
+  background-color: var(--primary-color);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 15px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.FM-table td {
+  color: var(--primary-text-color);
+  font-size: 15px;
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-color-medium);
+}
+
+.dark .FM-table td {
+  color: var(--primary-text-color);
+}
+
+.FM-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.FM-table tbody .vehicle-row:nth-child(odd) {
+  background-color: var(--row-background-odd);
+}
+
+.FM-table tbody .vehicle-row:nth-child(even) {
+  background-color: var(--row-background-even);
+}
+
+.FM-table .vehicle-row:hover {
+  background-color: var(--row-background-hover) !important;
+}
+
+.FM-table thead th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.FM-table thead th.sortable:hover {
+  background-color: var(--primary-color-dark-hover);
+}
+
+/* ==========================================================================
+   Pagination Controls
+   ========================================================================== */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background-color: var(--row-background-odd);
+  border-top: 1px solid var(--border-color);
+}
+
+.dark .pagination-container {
+  background-color: var(--row-background-even);
+}
+
+.pagination-text {
+  margin: 0 1rem;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--secondary-text-color);
+}
+
+.theme-btn {
+  font-family: "Exo 2", sans-serif !important;
+  text-transform: none !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  padding: 6px 16px !important;
+  box-shadow: none !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
+  cursor: pointer;
+}
+
+.theme-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.theme-btn-outlined {
+  border: 1px solid var(--border-color) !important;
+  color: var(--primary-color) !important;
+  background-color: transparent;
+}
+
+.theme-btn-outlined:hover:not(:disabled) {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+.dark .theme-btn-outlined {
+  border-color: var(--border-color) !important;
+  color: var(--primary-text-color) !important;
+}
+
+.dark .theme-btn-outlined:hover:not(:disabled) {
+  background-color: var(--primary-text-color) !important;
+  color: var(--page-background) !important;
+}
+
+/* ==========================================================================
+   Specific Styles & Responsive Design
+   ========================================================================== */
+.status-badge {
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+}
+
+.status-badge.active {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.inactive {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.dark .status-badge.active {
+  background-color: #166534;
+  color: #dcfce7;
+}
+
+.dark .status-badge.inactive {
+  background-color: #991b1b;
+  color: #fee2e2;
+}
+
+.info-message {
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--secondary-text-color);
+}
+
+.info-message.error {
+  color: #991b1b;
+}
+
+.dark .info-message.error {
+  color: #fee2e2;
+}
+
+@media screen and (max-width: 1024px) {
+  .ds-tables-container {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .FM-table thead {
+    display: none;
+  }
+
+  .FM-table tr,
+  .FM-table td {
+    display: block;
+  }
+
+  .FM-table tr {
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .search-input {
+    width: 170px;
+  }
+
+  .FM-table tr:last-child {
+    border-bottom: none;
+  }
+
+  .FM-table td {
+    text-align: right;
+    padding-left: 50% !important;
+    position: relative;
+    border-bottom: 1px solid var(--border-color-medium);
+  }
+
+  .FM-table td:last-child {
+    border-bottom: none;
+  }
+
+  .FM-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    width: calc(50% - 20px);
+    padding-right: 10px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+
+  .dark .FM-table td::before {
+    color: var(--secondary-text-color);
+  }
+}
+
+/* ==========================================================================
+   Status Color Coding (OK, Vehicle Off, No Data)
+   ========================================================================== */
+
+/* This base class is already in your stylesheet but shown here for context.
+   The styles below will apply to the same .status-badge element. */
+.status-badge {
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  min-width: 90px; /* Ensures badges have a consistent width */
+}
+
+/* 1. OK - Green */
+.status-badge.status-ok {
+  background-color: #dcfce7; /* Light Green */
+  color: #166534; /* Dark Green */
+}
+
+/* 2. Vehicle Off - Yellow */
+.status-badge.status-vehicle-off {
+  background-color: #fef9c3; /* Light Yellow */
+  color: #854d0e; /* Dark Yellow/Brown */
+}
+
+/* 3. No Data - Red */
+.status-badge.status-no-data {
+  background-color: #fee2e2; /* Light Red */
+  color: #991b1b; /* Dark Red */
+}
+
+/* Fallback for other statuses like "GPS Only" */
+.status-badge.status-gps-only {
+  background-color: #dbeafe; /* Light Blue */
+  color: #1e40af; /* Dark Blue */
+}
+
+/* ==========================================================================
+   Dark Mode Overrides for Status Colors
+   ========================================================================== */
+
+/* 1. OK - Green (Dark Mode) */
+.dark .status-badge.status-ok {
+  background-color: #166534; /* Dark Green */
+  color: #dcfce7; /* Light Green */
+}
+
+/* 2. Vehicle Off - Yellow (Dark Mode) */
+.dark .status-badge.status-vehicle-off {
+  background-color: #854d0e; /* Dark Yellow/Brown */
+  color: #fef9c3; /* Light Yellow */
+}
+
+/* 3. No Data - Red (Dark Mode) */
+.dark .status-badge.status-no-data {
+  background-color: #991b1b; /* Dark Red */
+  color: #fee2e2; /* Light Red */
+}
+
+/* Fallback for other statuses (Dark Mode) */
+.dark .status-badge.status-gps-only {
+  background-color: #1e40af; /* Dark Blue */
+  color: #dbeafe; /* Light Blue */
+}

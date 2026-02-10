@@ -1,0 +1,97 @@
+/* App.css */
+
+* {
+  font-family: "Exo 2", sans-serif;
+  /* Added sans-serif as a fallback */
+}
+
+:root {
+  --EKA1: #17479e;
+  --EKA2: #76ddda;
+  --EKA3: #d9d9d9;
+  --EKA4: #792b2b;
+}
+
+/* Base App Layout for Desktop */
+.App {
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "topnav topnav"
+    "sidebar content";
+  min-height: 100dvh;
+  /* Optimized for performance - reduced from 0.7s to 0.4s */
+  transition: grid-template-columns 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: grid-template-columns;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  background-color: #E8F2FA;
+}
+
+.dark .App {
+  background-color: #0f172a;
+  /* Dark background matching the theme */
+}
+
+.App.sidebar-collapsed {
+  grid-template-columns: 60px 1fr;
+}
+
+.content {
+  grid-area: content;
+  padding: 20px;
+  background-color: #f9f9f9;
+  /* Removed generic 'transition: all' to prevent layout fighting with parent grid */
+  height: 100%;
+  overflow: auto;
+}
+
+.Toastify__toast-container {
+  top: 70px !important;
+}
+
+@media (max-width: 360px) {
+  .Toastify__toast-container {
+    top: 58px !important;
+  }
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .App {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "topnav"
+      "content";
+  }
+
+  .App.sidebar-collapsed {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    height: var(--sidebar-mobile-height);
+    width: 260px;
+    z-index: 1040;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    transform: translateX(0);
+    transition: transform 0.5s ease-in-out;
+    overflow-y: auto;
+  }
+
+  .sidebar.collapsed {
+    transform: translateX(-100%);
+  }
+
+  .Toastify__toast-container {
+    top: 62px !important;
+  }
+
+  .content {
+    padding: 10px;
+  }
+}

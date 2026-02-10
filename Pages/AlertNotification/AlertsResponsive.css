@@ -1,0 +1,666 @@
+/* ===========================================
+   Responsive Design for Alerts Page
+   =========================================== */
+
+/* --- Page Title Color (EKA Blue Theme) --- */
+.alerts-top-bar h1,
+.alerts-title {
+    color: var(--al-primary) !important;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+}
+
+.dark .alerts-top-bar h1,
+.dark .alerts-title {
+    color: var(--al-primary) !important;
+}
+
+/* ===========================================
+   RESPONSIVE BREAKPOINTS
+   =========================================== */
+
+/* --- Tablet & Small Laptop (max-width: 1200px) --- */
+@media (max-width: 1200px) {
+    .alerts-page {
+        flex-direction: column;
+        /* Stack vertically on tablets */
+        padding: 16px;
+        gap: 16px;
+    }
+
+    /* Sidebar becomes full width stack */
+    .alerts-sidebar {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .sidebar-title {
+        font-size: 0.85rem;
+    }
+
+    /* Main content adjusts */
+    .alerts-main-content {
+        flex: 1;
+        width: 100%;
+    }
+
+    /* KPI strip adjusts */
+    .kpi-strip {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    /* Search input shrinks */
+    .search-wrapper {
+        width: 100%;
+    }
+
+    .search-input {
+        font-size: 0.9rem;
+    }
+
+    /* Table adjustments */
+    .charging-table-wrapper,
+    .alerts-list-container {
+        max-height: 400px;
+    }
+
+    .charging-table th,
+    .charging-table td {
+        padding: 12px 14px;
+        font-size: 0.85rem;
+    }
+}
+
+/* --- Mobile Landscape / Small Tablet (max-width: 768px) - COMPACT --- */
+@media (max-width: 768px) {
+    .alerts-page {
+        flex-direction: column;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    /* Sidebar collapses or hides */
+    .alerts-sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        flex-direction: column;
+        gap: 12px;
+        overflow-x: visible;
+    }
+
+    .sidebar-group {
+        min-width: 180px;
+        padding: 12px;
+    }
+
+    .filter-pills {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .filter-pill {
+        padding: 7px 11px;
+        font-size: 0.8rem;
+    }
+
+    .filter-count {
+        font-size: 0.7rem;
+        padding: 1px 5px;
+    }
+
+    /* Top bar stacks smartly */
+    .alerts-top-bar {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .alerts-title {
+        font-size: 1.3rem;
+        margin-bottom: 4px;
+    }
+
+    .alerts-subtitle {
+        font-size: 0.75rem;
+    }
+
+    .alerts-actions {
+        width: auto;
+        flex-direction: row;
+    }
+
+    /* Live Status button */
+    .theme-btn,
+    .btn-live-status {
+        padding: 7px 14px;
+        font-size: 0.8rem;
+    }
+
+    /* KPI strip stacks 2 columns */
+    .kpi-strip {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .kpi-unit {
+        padding: 10px 14px;
+    }
+
+    .kpi-count {
+        font-size: 1.2rem;
+    }
+
+    .kpi-label {
+        font-size: 0.68rem;
+    }
+
+    /* Charging dashboard */
+    .charging-dashboard {
+        padding: 12px;
+    }
+
+    .charging-table-wrapper {
+        max-height: 300px;
+        overflow-x: scroll;
+    }
+
+    .charging-table {
+        min-width: 600px;
+    }
+
+    .charging-table th,
+    .charging-table td {
+        padding: 7px 9px;
+        font-size: 0.75rem;
+    }
+
+    /* Alerts list header stacks */
+    .alerts-list-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .header-right {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .alerts-filter-dropdown,
+    .search-wrapper-mini,
+    .search-input-mini {
+        width: 100%;
+    }
+
+    /* Alert list items - INLINE ICON LAYOUT for 768px - COMPACT */
+    .alert-list-item {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        padding: 10px;
+        gap: 4px;
+    }
+
+    /* Icon inline with content */
+    .alert-list-icon {
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .icon-wrapper {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+    }
+
+    /* Content takes remaining space */
+    .alert-list-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    /* Header row with title and priority */
+    .alert-list-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 4px;
+    }
+
+    .alert-list-title {
+        font-size: 0.85rem;
+    }
+
+    .alert-list-meta {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.7rem;
+    }
+
+    .meta-item {
+        font-size: 0.7rem;
+    }
+
+    /* Actions container - full width below content */
+    .alert-list-actions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        margin-top: 0px;
+    }
+
+    .btn-analyze-mini {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .btn-details {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .alert-card-actions {
+        width: 100%;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    /* Sections and containers - compact */
+    .alerts-list-section,
+    .charging-dashboard {
+        margin-bottom: 10px;
+    }
+
+    .sidebar-title,
+    .section-title {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    /* Badges and priority tags - compact */
+    .vehicle-badge,
+    .cost-badge,
+    .priority-tag,
+    .severity-badge {
+        font-size: 0.7rem;
+        padding: 3px 7px;
+    }
+
+    /* Operational links - compact */
+    .nav-link,
+    .operational-link {
+        padding: 9px 11px;
+        font-size: 0.8rem;
+    }
+}
+
+/* --- Mobile Portrait (max-width: 480px) - ULTRA COMPACT --- */
+@media (max-width: 480px) {
+    .alerts-page {
+        padding: 6px;
+        gap: 4px;
+    }
+
+    /* Sidebar scrolls horizontally if visible */
+    .alerts-sidebar {
+        gap: 6px;
+        padding: 0;
+    }
+
+    .sidebar-group {
+        min-width: 160px;
+        padding: 10px;
+    }
+
+    /* Top bar - significantly reduced */
+    .alerts-top-bar {
+        padding: 8px;
+    }
+
+    /* Page title - smaller */
+    .alerts-title {
+        font-size: 1.1rem;
+        margin-bottom: 4px;
+    }
+
+    /* Subtitle - smaller */
+    .alerts-subtitle {
+        font-size: 0.7rem;
+        margin-bottom: 6px;
+    }
+
+    /* Live Status button - ultra compact and right-aligned */
+    .theme-btn,
+    .btn-live-status {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+        border-radius: 6px;
+        margin-left: auto;
+    }
+
+    /* Ensure actions container allows flex layout for right alignment */
+    .alerts-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* KPI strip - compact */
+    .kpi-strip {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .kpi-unit {
+        padding: 8px 12px;
+    }
+
+    .kpi-count {
+        font-size: 1rem;
+    }
+
+    .kpi-label {
+        font-size: 0.65rem;
+    }
+
+    /* Charging section - ultra compact */
+    .charging-dashboard,
+    .alerts-list-section {
+        padding: 8px;
+        border-radius: 12px;
+    }
+
+    .sidebar-title,
+    .alerts-list-title {
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+    }
+
+    .charging-table-wrapper,
+    .alerts-list-container {
+        max-height: 250px;
+    }
+
+    .charging-table th,
+    .charging-table td {
+        padding: 6px 8px;
+        font-size: 0.7rem;
+    }
+
+    .vehicle-badge,
+    .cost-badge {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+    }
+
+    .soc-text {
+        font-size: 0.85rem;
+    }
+
+    .soc-progress-bar {
+        height: 6px;
+    }
+
+    /* Priority filter pills - compact */
+    .filter-pill {
+        padding: 6px 10px;
+        font-size: 0.7rem;
+        border-radius: 8px;
+    }
+
+    .filter-count {
+        font-size: 0.65rem;
+        padding: 1px 4px;
+        min-width: 16px;
+    }
+
+    /* Operational Links - compact */
+    .sidebar-group h3,
+    .section-title {
+        font-size: 0.75rem;
+        margin-bottom: 8px;
+    }
+
+    .nav-link,
+    .operational-link {
+        padding: 8px 10px;
+        font-size: 0.75rem;
+        border-radius: 8px;
+    }
+
+    /* Alert card premium - reduced padding */
+    .alert-card-premium {
+        padding: 10px;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+
+    .alert-item-meta .meta-token {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+    }
+
+    /* Priority tags - smaller */
+    .priority-tag {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+    }
+
+
+    /* ===========================================
+       INLINE ICON LAYOUT - Icon before alert title (MASTER OVERRIDE)
+       =========================================== */
+
+    /* For .alert-card-premium component (from Alerts.css) */
+    .alert-card-premium {
+        padding: 10px !important;
+        gap: 6px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .alert-main-content {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+
+    .alert-icon-wrapper {
+        flex-shrink: 0 !important;
+        width: 22px !important;
+        height: 22px !important;
+        font-size: 0.8rem !important;
+        margin-top: 2px !important;
+        margin-bottom: 0 !important;
+    }
+
+    .alert-item-info {
+        flex: 1 !important;
+        min-width: 0 !important;
+    }
+
+    .alert-item-title {
+        font-size: 0.8rem !important;
+        margin-bottom: 3px !important;
+    }
+
+    /* For .alert-list-item component - INLINE ICON LAYOUT */
+    .alert-list-item {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        align-items: flex-start !important;
+        padding: 8px !important;
+        gap: 3px !important;
+    }
+
+    .alert-list-icon {
+        display: inline-flex !important;
+        margin-bottom: 0 !important;
+        margin-right: 6px !important;
+    }
+
+    .icon-wrapper {
+        width: 22px !important;
+        height: 22px !important;
+        font-size: 0.8rem !important;
+    }
+
+    .alert-list-title {
+        font-size: 0.8rem !important;
+    }
+
+    .alert-list-meta {
+        font-size: 0.65rem !important;
+    }
+
+    .meta-item {
+        gap: 3px !important;
+        font-size: 0.65rem !important;
+    }
+
+    .vehicle-badge-mini {
+        font-size: 0.7rem !important;
+        padding: 2px 6px !important;
+    }
+
+    .alert-list-actions {
+        margin-top: 0px !important;
+    }
+
+    .priority-badge-mini {
+        font-size: 0.7rem !important;
+        padding: 3px 8px !important;
+    }
+
+    .btn-analyze-mini {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 8px 12px !important;
+        font-size: 0.75rem !important;
+        text-align: center !important;
+    }
+
+    /* Full-width View Details button (alert-card-premium) */
+    .btn-details {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 10px 16px !important;
+        font-size: 0.8rem !important;
+        text-align: center !important;
+    }
+
+    /* Actions container full width */
+    .alert-card-actions {
+        width: 100% !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    /* Modal adjustments */
+    .alert-modal-content {
+        max-width: 95%;
+        max-height: 90vh;
+        padding: 0;
+    }
+
+    .modal-header {
+        padding: 16px;
+    }
+
+    .modal-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .modal-body {
+        padding: 16px;
+    }
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .detail-item {
+        padding: 12px;
+    }
+
+    .detail-label {
+        font-size: 0.75rem;
+    }
+
+    .detail-value {
+        font-size: 0.9rem;
+    }
+}
+
+/* --- Extra Small Screens (max-width: 360px) --- */
+@media (max-width: 360px) {
+    .alerts-title {
+        font-size: 1.1rem;
+    }
+
+    .kpi-count {
+        font-size: 1.1rem;
+    }
+
+    .kpi-label {
+        font-size: 0.65rem;
+    }
+
+    .charging-table {
+        font-size: 0.75rem;
+    }
+
+    .alert-list-item {
+        padding: 8px;
+    }
+
+    .icon-wrapper {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* --- Horizontal Scrolling Utilities --- */
+.charging-table-wrapper,
+.alerts-sidebar {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbars on mobile for cleaner look */
+@media (max-width: 768px) {
+
+    .alerts-sidebar::-webkit-scrollbar,
+    .charging-table-wrapper::-webkit-scrollbar,
+    .alerts-list-container::-webkit-scrollbar {
+        height: 4px;
+        width: 4px;
+    }
+
+    .alerts-sidebar::-webkit-scrollbar-thumb,
+    .charging-table-wrapper::-webkit-scrollbar-thumb,
+    .alerts-list-container::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+    }
+}

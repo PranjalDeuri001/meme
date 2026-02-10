@@ -1,0 +1,1391 @@
+/* ==========================================================================
+   EKA Connect Notification Ecosystem - Compact & Professional UI
+   ========================================================================== */
+
+:root {
+    /* EKA Connect Theme */
+    --nt-bg-glass: rgba(255, 255, 255, 0.95);
+    --nt-border-glass: rgba(226, 232, 240, 0.6);
+    --nt-shadow-premium: 0 20px 50px rgba(0, 0, 0, 0.12), 0 6px 18px rgba(0, 0, 0, 0.06);
+
+    --nt-primary: #0b5297;
+    --nt-primary-soft: rgba(11, 82, 151, 0.1);
+    --nt-primary-lighter: rgba(11, 82, 151, 0.05);
+    --nt-success: #10b981;
+    --nt-warning: #f59e0b;
+    --nt-danger: #ef4444;
+
+    --nt-text-main: #0f172a;
+    --nt-text-sub: #64748b;
+    --nt-border-light: #e2e8f0;
+    --nt-bg-hover: #f8fafc;
+    --nt-hover-bg: #f8fafc;
+    --nt-unread-bg: #f0f9ff;
+    --nt-icon-color: #64748b;
+    --nt-icon-bg: rgba(100, 116, 139, 0.08);
+}
+
+.dark {
+    --nt-bg-glass: #212529;
+    /* Matching Topnav Dark */
+    --nt-border-glass: rgba(255, 255, 255, 0.1);
+
+    --nt-primary: #60a5fa;
+    /* EKA Light Blue */
+
+    --nt-text-main: #f8f9fa;
+    /* White Text */
+    --nt-text-sub: #adb5bd;
+    /* Muted Text */
+    --nt-border-light: #343a40;
+    /* Dark Border */
+
+    --nt-primary-soft: rgba(96, 165, 250, 0.15);
+    --nt-primary-lighter: rgba(255, 255, 255, 0.05);
+    --nt-bg-hover: rgba(255, 255, 255, 0.08);
+
+    --nt-hover-bg: rgba(255, 255, 255, 0.08);
+    --nt-unread-bg: rgba(96, 165, 250, 0.08);
+    --nt-icon-color: #9ca3af;
+    --nt-icon-bg: rgba(255, 255, 255, 0.06);
+}
+
+/* --- Dropdown Wrapper --- */
+.notification-dropdown-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* --- Bell Button --- */
+.notification-bell-btn {
+    position: relative;
+    padding: 5px !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    border: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.notification-bell-icon {
+    font-size: 26px !important;
+    color: #64748b !important;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 0;
+    background: var(--nt-primary, #0b5297);
+    color: white;
+    border-radius: 10px;
+    min-width: 20px;
+    height: 20px;
+    font-size: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    padding: 0 4px;
+    border: 1.1px solid #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    line-height: 1;
+}
+
+.dark .notification-badge {
+    border-color: #1e293b;
+    background: #3b82f6;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Backdrop Overlay (when dropdown is open) --- */
+.notification-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 999;
+    animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.dark .notification-backdrop {
+    background: rgba(0, 0, 0, 0.45);
+}
+
+/* --- Main Dropdown Container --- */
+.notification-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: -10px;
+    width: 400px;
+    max-width: 95vw;
+    background: var(--nt-bg-glass);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--nt-border-glass);
+    border-radius: 20px;
+    box-shadow: var(--nt-shadow-premium);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: nt-slide-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: top right;
+}
+
+@keyframes nt-slide-in {
+    from {
+        opacity: 0;
+        transform: scale(0.94) translateY(-12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* --- Header --- */
+.notification-dropdown-header {
+    padding: 12px 16px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.03), transparent);
+    border-bottom: 1px solid var(--nt-border-light);
+}
+
+.notification-dropdown-title {
+    font-family: 'Exo 2', 'Inter', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--nt-text-main);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+/* Removed btn-mark-all-read styles as button is removed */
+
+/* --- Tabs --- */
+.notification-tabs {
+    padding: 4px;
+    margin: 10px 16px 8px;
+    background: var(--nt-primary-lighter);
+    border-radius: 10px;
+    display: flex;
+    gap: 3px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.notification-tab {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 6px 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--nt-text-sub);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.notification-tab:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.4);
+    color: var(--nt-text-main);
+}
+
+.dark .notification-tab:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.notification-tab.active {
+    background: #fff;
+    color: var(--nt-primary);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.dark .notification-tab.active {
+    background: #60a5fa;
+    /* Matching --EKA2 */
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(96, 165, 250, 0.25);
+}
+
+.tab-count {
+    font-size: 0.65rem;
+    background: linear-gradient(135deg, var(--nt-primary), #094176);
+    color: white;
+    padding: 0 5px;
+    border-radius: 5px;
+    font-weight: 900;
+    min-width: 16px;
+    text-align: center;
+}
+
+.notification-tab.active .tab-count {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.dark .notification-tab.active .tab-count {
+    background: #ffffff;
+    color: #2563eb;
+    /* Darker blue for text readability on white */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Filter Bar --- */
+.notification-filter-bar {
+    padding: 0 16px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-toggle-btn {
+    border: none;
+    background: var(--nt-primary-soft);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--nt-primary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 5px 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.filter-toggle-btn:hover {
+    background: var(--nt-primary);
+    color: white;
+}
+
+.filter-count {
+    font-size: 0.72rem;
+    color: var(--nt-text-sub);
+    font-weight: 700;
+    background: var(--nt-primary-lighter);
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+/* --- Notification List --- */
+.notification-list-enhanced {
+    list-style: none;
+    margin: 0;
+    padding: 0 12px 12px;
+    overflow-y: auto;
+    max-height: 360px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--nt-primary-soft) transparent;
+}
+
+.notification-list-enhanced::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notification-list-enhanced::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 6px 0;
+}
+
+.notification-list-enhanced::-webkit-scrollbar-thumb {
+    background: var(--nt-primary-soft);
+    border-radius: 10px;
+}
+
+.notification-list-enhanced::-webkit-scrollbar-thumb:hover {
+    background: var(--nt-primary);
+}
+
+/* --- Notification Item --- */
+.notification-item-enhanced {
+    padding: 14px 18px;
+    margin-bottom: 0;
+    border-radius: 0;
+    background: #fff;
+    border: none;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+}
+
+.notification-item-enhanced:last-child {
+    border-bottom: none;
+}
+
+.dark .notification-item-enhanced {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.notification-item-enhanced:hover {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border-color: var(--nt-border-light);
+}
+
+.dark .notification-item-enhanced:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Unread Indicator */
+/* Unread - Soft Blue Background */
+.notification-item-enhanced.unread {
+    background: rgba(240, 249, 255, 0.6);
+    /* Very soft blue */
+    border-left: none;
+    /* Removed thick border */
+    padding-left: 18px;
+    /* Maintain padding */
+}
+
+.notification-item-enhanced.unread .notification-item-title {
+    color: #0b5297;
+    /* Primary Blue for unread title */
+}
+
+.dark .notification-item-enhanced.unread {
+    background: linear-gradient(to right, rgba(11, 82, 151, 0.15), rgba(11, 82, 151, 0.05));
+}
+
+.unread-dot {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 9px !important;
+    color: var(--nt-primary) !important;
+}
+
+/* Priority Markers */
+/* Priority Markers removed to prevent visual conflict with unread indicator */
+
+/* Item Content */
+.notification-item-content {
+    padding-left: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-item-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1e293b;
+    /* Dark Slate */
+    margin-bottom: 4px;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+}
+
+.notification-item-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.72rem;
+    color: var(--nt-text-sub);
+    flex-wrap: wrap;
+}
+
+.notification-time {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.notification-vehicle {
+    background: var(--nt-primary-soft);
+    color: var(--nt-primary);
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-weight: 800;
+    font-size: 0.68rem;
+    white-space: normal;
+    word-break: break-word;
+    max-width: 120px;
+}
+
+/* Category Icon */
+.notification-item-category {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--nt-primary-soft), var(--nt-primary-lighter));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.25s;
+}
+
+/* Removed hover effect on icon background as per request */
+
+.category-icon {
+    font-size: 20px !important;
+    color: var(--nt-primary);
+    transition: color 0.25s;
+}
+
+/* Removed hover effect on icon color as per request */
+
+/* --- Footer --- */
+.notification-footer {
+    padding: 16px 22px 18px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.03), transparent);
+    border-top: 1px solid var(--nt-border-light);
+}
+
+.btn-load-more {
+    width: 100%;
+    padding: 11px;
+    border-radius: 12px;
+    border: 1.5px solid var(--nt-border-light);
+    background: linear-gradient(to bottom, #fff, #f8fafc);
+    color: var(--nt-text-main);
+    font-weight: 800;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.dark .btn-load-more {
+    background: transparent;
+    color: #e2e8f0;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark .btn-load-more:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: none;
+    color: #fff;
+}
+
+.btn-load-more:hover {
+    background: linear-gradient(135deg, var(--nt-primary), #094176);
+    color: white;
+    border-color: var(--nt-primary);
+    box-shadow: 0 3px 10px rgba(11, 82, 151, 0.2);
+}
+
+/* Empty State */
+.notification-empty-state {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 48px !important;
+    color: var(--nt-text-sub) !important;
+    margin-bottom: 12px;
+    opacity: 0.4;
+}
+
+.notification-empty-state p {
+    color: var(--nt-text-sub);
+    font-weight: 600;
+    font-size: 0.88rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+    .notification-dropdown {
+        width: 340px;
+        right: -60px;
+    }
+
+    .notification-dropdown-header {
+        padding: 16px 18px 14px;
+    }
+
+    .notification-dropdown-title {
+        font-size: 1.05rem;
+    }
+
+    .notification-tabs {
+        margin: 12px 18px 10px;
+    }
+
+    .notification-list-enhanced {
+        padding: 0 14px 14px;
+    }
+
+    .notification-item-enhanced {
+        padding: 10px 12px;
+    }
+
+    .notification-item-category {
+        width: 36px;
+        height: 36px;
+    }
+
+    .category-icon {
+        font-size: 18px !important;
+    }
+}
+
+/* ============================================================================
+   PROFESSIONAL SEVERITY SYSTEM - Subtle & Enterprise-Grade
+   ============================================================================ */
+
+/* --- Muted Severity Colors --- */
+:root {
+    --sev-critical: #64748b;
+    --sev-high: #64748b;
+    --sev-medium: #94a3b8;
+    --sev-low: #94a3b8;
+    --sev-bg: rgba(100, 116, 139, 0.06);
+}
+
+/* --- Icon Container - Neutral styling --- */
+.notification-item-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    /* Circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: #f1f5f9;
+    color: var(--nt-text-sub);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
+}
+
+.notification-item-icon .alert-type-icon,
+.notification-item-icon svg {
+    font-size: 18px !important;
+    width: 18px;
+    height: 18px;
+    opacity: 1;
+}
+
+/* No colored icon backgrounds - keep neutral */
+.severity-icon-critical,
+.severity-icon-high,
+.severity-icon-medium,
+.severity-icon-low {
+    background: var(--sev-bg);
+    color: var(--nt-text-sub);
+}
+
+/* --- Header Row - Clean layout --- */
+.notification-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.notification-item-header .notification-item-title {
+    margin-bottom: 0;
+    font-size: 0.82rem;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- Severity Badges - Text-only, subtle --- */
+/* --- Severity Badges - Professional Pills --- */
+.severity-badge {
+    font-size: 0.7rem;
+    /* Larger text */
+    font-weight: 700;
+    padding: 3px 10px;
+    /* Pillow padding */
+    border-radius: 12px;
+    /* Pill shape */
+    text-transform: capitalize;
+    /* "Critical" not "CRITICAL" */
+    letter-spacing: 0;
+    white-space: nowrap;
+    flex-shrink: 0;
+    border: none;
+}
+
+/* Pill Colors (Modern Inbox Style) */
+.severity-badge.severity-critical {
+    background: #fee2e2;
+    /* Soft Red */
+    color: #dc2626;
+    /* Dark Red Text */
+    border: none;
+}
+
+.severity-badge.severity-high {
+    background: #ffedd5;
+    /* Soft Orange */
+    color: #ea580c;
+    /* Dark Orange Text */
+    border: none;
+}
+
+.severity-badge.severity-medium,
+.severity-badge.severity-low {
+    background: #e0f2fe;
+    /* Soft Blue */
+    color: #0284c7;
+    /* Dark Blue Text */
+    border: none;
+}
+
+/* Category Badge (if used) */
+.notification-vehicle {
+    background: #f1f5f9;
+    color: #475569;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.7rem;
+    border: 1px solid #e2e8f0;
+}
+
+
+
+/* --- Subheader - Simple text --- */
+.notification-item-subheader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+    font-size: 0.68rem;
+}
+
+.category-label {
+    color: var(--nt-text-sub);
+    font-weight: 500;
+    font-size: 0.65rem;
+    opacity: 0.7;
+}
+
+.response-time {
+    color: var(--nt-text-sub);
+    font-weight: 400;
+    font-size: 0.65rem;
+    opacity: 0.6;
+}
+
+.response-time::before {
+    content: '· ';
+}
+
+/* --- Remove colored borders from items --- */
+.notification-item-enhanced.severity-critical,
+.notification-item-enhanced.severity-high,
+.notification-item-enhanced.severity-medium,
+.notification-item-enhanced.severity-low {
+    border-left: none;
+}
+
+/* Simpler unread styling */
+.notification-item-enhanced.unread.severity-critical,
+.notification-item-enhanced.unread.severity-high,
+.notification-item-enhanced.unread.severity-medium,
+.notification-item-enhanced.unread.severity-low {
+    background: var(--nt-bg-hover);
+    border-left: 2px solid var(--nt-primary);
+}
+
+/* --- Dark Mode - Same subtle approach --- */
+.dark .severity-icon-critical,
+.dark .severity-icon-high,
+.dark .severity-icon-medium,
+.dark .severity-icon-low {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--nt-text-sub);
+}
+
+.dark .severity-badge {
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--nt-text-sub);
+}
+
+.dark .notification-item-enhanced.unread.severity-critical,
+.dark .notification-item-enhanced.unread.severity-high,
+.dark .notification-item-enhanced.unread.severity-medium,
+.dark .notification-item-enhanced.unread.severity-low {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 2px solid var(--nt-primary);
+}
+
+/* ============================================================================
+   MODERN NOTIFICATION DROPDOWN - Compact Card Design
+   ============================================================================ */
+
+.notification-dropdown-modern {
+    position: absolute;
+    top: calc(100% + 2px);
+    right: -2px;
+    width: 340px;
+    max-height: 80vh;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.dark .notification-dropdown-modern {
+    background: #1f2937;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Header --- */
+.noti-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 10px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.dark .noti-header {
+    border-bottom-color: #374151;
+}
+
+.noti-header-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.noti-header-icon {
+    font-size: 16px !important;
+    color: var(--nt-primary);
+}
+
+.noti-header-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--nt-text-main);
+}
+
+.noti-header-count {
+    background: #e5e7eb;
+    color: #374151;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 10px;
+}
+
+.dark .noti-header-count {
+    background: #374151;
+    color: #9ca3af;
+}
+
+/* Header Right Section */
+.noti-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Mark All as Read Button */
+.noti-mark-all-btn {
+    background: none;
+    border: none;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--nt-primary);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.noti-mark-all-btn:hover {
+    background: rgba(11, 82, 151, 0.08);
+    text-decoration: underline;
+}
+
+.dark .noti-mark-all-btn {
+    color: #60a5fa;
+}
+
+.dark .noti-mark-all-btn:hover {
+    background: rgba(96, 165, 250, 0.1);
+}
+
+.noti-close-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #9ca3af;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+
+.noti-close-btn:hover {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.dark .noti-close-btn:hover {
+    background: #374151;
+    color: #e5e7eb;
+}
+
+/* --- Category Tabs --- */
+.noti-tabs {
+    display: flex;
+    gap: 3px;
+    padding: 3px 12px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.dark .noti-tabs {
+    border-bottom-color: #374151;
+}
+
+.noti-tab {
+    padding: 4px 12px;
+    border-radius: 0;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.15s ease;
+}
+
+.noti-tab:hover {
+    color: var(--nt-primary);
+    background: transparent;
+}
+
+.dark .noti-tab:hover {
+    color: #60a5fa;
+}
+
+/* Underlined Active Tab */
+.noti-tab.active {
+    background: transparent;
+    color: var(--nt-primary);
+    border-bottom-color: var(--nt-primary);
+}
+
+.dark .noti-tab.active {
+    color: #60a5fa;
+    border-bottom-color: #60a5fa;
+}
+
+.noti-tab-badge {
+    background: #e2e8f0;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-size: 0.58rem;
+    color: #475569;
+    font-weight: 700;
+}
+
+.noti-tab.active .noti-tab-badge {
+    background: var(--nt-primary);
+    color: #fff;
+}
+
+.dark .noti-tab.active .noti-tab-badge {
+    background: #60a5fa;
+}
+
+
+/* ==========================================================================
+   MOBILE SCALING FOR NOTIFICATION DROPDOWN (MODERN)
+   ========================================================================== */
+
+/* Tablet & Large Mobile (< 768px) */
+@media (max-width: 768px) {
+    .notification-dropdown-modern {
+        width: 300px;
+        right: -10px;
+        top: calc(100% + 5px);
+    }
+
+    .noti-header {
+        padding: 6px 12px;
+    }
+
+    .noti-header-title {
+        font-size: 0.88rem;
+    }
+
+    .noti-tabs {
+        padding: 3px 10px;
+    }
+
+    .noti-tab {
+        padding: 3px 8px;
+        font-size: 0.72rem;
+    }
+
+    /* Reuse enhanced list styles if they are used inside modern, 
+       otherwise target children of modern specifically if structure differs.
+       Assuming modern uses similar inner classes or new ones. 
+       Based on file, it seems modern structure uses .noti-* classes mostly. */
+}
+
+/* Small Mobile / Ultra Compact (< 480px) */
+@media (max-width: 480px) {
+    .notification-dropdown-modern {
+        width: calc(100vw - 78px);
+        right: -50px;
+    }
+
+    .noti-header {
+        padding: 6px 10px;
+    }
+
+    .noti-header-title {
+        font-size: 0.85rem;
+    }
+
+    .noti-header-icon {
+        font-size: 14px !important;
+    }
+
+    .noti-close-btn {
+        font-size: 16px;
+    }
+
+    .noti-tabs {
+        padding: 3px 8px;
+        gap: 2px;
+    }
+
+    .noti-tab {
+        padding: 3px 8px;
+        font-size: 0.68rem;
+    }
+
+    /* Ensure content inside doesn't overflow */
+    .notification-list-enhanced {
+        max-height: 50vh;
+    }
+}
+
+
+
+.noti-tab:not(.active) .noti-tab-badge {
+    background: #e5e7eb;
+    color: #64748b;
+}
+
+.dark .noti-tab:not(.active) .noti-tab-badge {
+    background: #4b5563;
+}
+
+/* --- Notification List --- */
+.noti-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 0;
+    max-height: 450px;
+}
+
+.noti-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.noti-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.noti-list::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    border-radius: 10px;
+}
+
+.dark .noti-list::-webkit-scrollbar-thumb {
+    background: #4b5563;
+}
+
+/* --- Notification Card --- */
+.noti-card {
+    display: flex;
+    gap: 10px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    border-bottom: 1px dashed var(--nt-border-light);
+    position: relative;
+}
+
+.noti-card:last-child {
+    border-bottom: none;
+}
+
+.noti-card:hover {
+    background: var(--nt-hover-bg);
+}
+
+/* Dark Mode Overrides Removed to allow Variables to control theme */
+
+.noti-card.unread {
+    background: var(--nt-unread-bg);
+}
+
+/* --- Card Icon - Subtle background --- */
+.noti-card-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--nt-icon-color);
+    background: var(--nt-icon-bg);
+    border-radius: 8px;
+}
+
+.noti-card-icon svg {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.8;
+}
+
+.noti-card.unread .noti-card-icon {
+    color: #0b5297;
+    background: rgba(11, 82, 151, 0.1);
+}
+
+.dark .noti-card.unread .noti-card-icon {
+    color: #60a5fa;
+    background: rgba(96, 165, 250, 0.12);
+}
+
+/* --- Severity-Specific Icon Colors --- */
+.noti-card-icon.severity-charging {
+    color: #16a34a !important;
+    background: rgba(22, 163, 74, 0.1) !important;
+}
+
+.noti-card-icon.severity-critical,
+.noti-card-icon.severity-high {
+    color: #dc2626 !important;
+    background: rgba(220, 38, 38, 0.08) !important;
+}
+
+.noti-card-icon.severity-medium {
+    color: #ea580c !important;
+    background: rgba(234, 88, 12, 0.08) !important;
+}
+
+.noti-card-icon.severity-low,
+.noti-card-icon.severity-info {
+    color: #0284c7 !important;
+    background: rgba(2, 132, 199, 0.08) !important;
+}
+
+/* --- Card Content --- */
+.noti-card-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.noti-card-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--nt-text-main);
+    line-height: 1.35;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.noti-card-subtitle {
+    font-size: 0.67rem;
+    color: var(--nt-text-sub);
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+}
+
+.noti-vrn {
+    color: #64748b;
+}
+
+.noti-separator {
+    color: #cbd5e1;
+    margin: 0 2px;
+}
+
+/* Inline Severity Tag */
+.noti-severity-tag {
+    font-size: 0.59rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    padding: 1px 6px;
+    border-radius: 8px;
+}
+
+.noti-severity-tag.severity-low,
+.noti-severity-tag.severity-info {
+    background: rgba(2, 132, 199, 0.1);
+    color: #0284c7;
+}
+
+/* --- Card Actions (Analytics Button) --- */
+.noti-card-actions {
+    margin-top: 5px;
+}
+
+.noti-btn-analytics {
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--nt-primary);
+    background: transparent;
+    color: var(--nt-primary);
+    font-size: 0.65rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.noti-btn-analytics:hover {
+    background: var(--nt-primary);
+    color: #fff;
+}
+
+/* --- Right Section (Time + Chevron) --- */
+.noti-card-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0;
+    /* Control spacing manually */
+    min-width: 60px;
+    justify-content: flex-start;
+    /* Don't space-between, use margins */
+    padding-top: 1px;
+}
+
+.noti-time-right {
+    font-size: 0.70rem;
+    color: var(--nt-text-sub);
+    font-weight: 500;
+    white-space: nowrap;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.noti-unread-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--nt-primary);
+    border-radius: 50%;
+    /* Dot sits below time if present */
+}
+
+/* Chevron Icon */
+.noti-chevron {
+    font-size: 16px;
+    color: #cbd5e1;
+    transition: transform 0.2s, color 0.2s;
+    margin-top: auto;
+    /* Always pin to bottom */
+}
+
+.noti-card:hover .noti-chevron {
+    color: var(--nt-text-sub);
+    transform: translateX(2px);
+}
+
+/* --- Empty State --- */
+.noti-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 16px;
+    color: var(--nt-text-sub);
+}
+
+.noti-empty-icon {
+    font-size: 36px !important;
+    opacity: 0.3;
+    margin-bottom: 8px;
+}
+
+.noti-empty p {
+    font-size: 0.75rem;
+    margin: 0;
+}
+
+/* --- Loading State --- */
+.noti-loading {
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+    color: var(--nt-text-sub);
+    font-size: 0.75rem;
+}
+
+/* --- Footer --- */
+.noti-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    border-top: 1px solid #f1f5f9;
+    background: #fafafa;
+}
+
+.dark .noti-footer {
+    background: #111827;
+    border-top-color: #374151;
+}
+
+/* --- Sticky Footer (Full Width) --- */
+.noti-footer-full {
+    background: #f8fafc;
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    padding: 12px;
+    width: 100%;
+    text-align: center;
+    color: var(--nt-primary);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: auto;
+    /* Push to bottom if flex container */
+    position: sticky;
+    bottom: 0;
+}
+
+.dark .noti-footer-full {
+    background: #1f2937;
+    border-top-color: #374151;
+    color: #60a5fa;
+}
+
+.noti-footer-full:hover {
+    background: #f1f5f9;
+    color: #094176;
+}
+
+.dark .noti-footer-full:hover {
+    background: #374151;
+    color: #fff;
+}
+
+.noti-footer-icon {
+    font-size: 16px;
+    transition: transform 0.2s;
+}
+
+.noti-footer-full:hover .noti-footer-icon {
+    transform: translateX(3px);
+}
+
+.noti-btn-mark-read {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    color: var(--nt-text-sub);
+    font-size: 0.68rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.noti-btn-mark-read:hover {
+    border-color: var(--nt-primary);
+    color: var(--nt-primary);
+}
+
+.dark .noti-btn-mark-read {
+    background: #1f2937;
+    border-color: #374151;
+}
+
+.noti-btn-view-all {
+    padding: 5px 14px;
+    border-radius: 6px;
+    border: none;
+    background: var(--nt-primary);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.noti-btn-view-all:hover {
+    background: #094073;
+}
+
+/* --- Responsive --- */
+@media (max-width: 480px) {
+    .notification-dropdown-modern {
+        width: calc(100vw - 78px);
+        right: -50px;
+    }
+
+    .noti-card {
+        padding: 8px 12px;
+    }
+
+    .noti-card-icon {
+        width: 28px;
+        height: 28px;
+    }
+}

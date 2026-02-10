@@ -1,0 +1,569 @@
+:root {
+  --primary-color: #0b5297;
+  --primary-color-dark-hover: #08437a;
+  --primary-text-color: #1e293b;
+  --secondary-text-color: #475569;
+  --border-color: #dee2e6;
+  --border-color-medium: #e2e8f0;
+  --page-background: #fff;
+  --row-background-odd: #eef2f9;
+  --row-background-even: #fff;
+  --row-background-hover: #dbeafe;
+  --row-background-fleet-hover: #e2e8f0;
+  --fleet-row-background: #f8fafc;
+  --pagination-row-background: #f1f5f9;
+  --shadow-color: rgba(160, 160, 160, 0.25);
+}
+
+.dark {
+  --primary-color: #374155;
+  --primary-color-dark-hover: #4a5568;
+  --primary-text-color: #e2e8f0;
+  --secondary-text-color: #a0aec0;
+  --border-color: #4a5568;
+  --border-color-medium: #4a5568;
+  --page-background: #2d3748;
+  --row-background-odd: #2d3748;
+  --row-background-even: #27303f;
+  --row-background-hover: #4a5568;
+  --row-background-fleet-hover: #4a5568;
+  --fleet-row-background: #374151;
+  --pagination-row-background: #27303f;
+  --shadow-color: transparent;
+  --green-text: #60a5fa;
+}
+
+/* --- Base Layout --- */
+#fs-title {
+  color: var(--primary-color);
+  font-family: "Exo 2",sans-serif;
+  font-size: 27px;
+  font-weight: 600;
+  line-height: 32px;
+  padding: 10px;
+}
+.dark #fs-title {
+  color: var(--primary-text-color);
+}
+
+.fs-page {
+  background: var(--page-background);
+  color: var(--primary-text-color);
+  box-shadow: 0px 4px 4px 0px var(--shadow-color);
+  border-radius: 16px;
+  padding: 10px;
+}
+
+.fs-info-message {
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--secondary-text-color);
+}
+
+/* --- KPI Cards --- */
+.fs-kpi-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 10px 0 20px 0;
+}
+
+.fs-kpi-card {
+  background-color: var(--row-background-odd);
+  border: 1px solid var(--border-color-medium);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.dark .fs-kpi-card {
+  background-color: #27303f;
+  border-color: var(--border-color);
+}
+
+.fs-kpi-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.fs-kpi-icon-svg {
+  margin-right: 12px;
+  color: var(--primary-color);
+}
+
+.dark .fs-kpi-icon-svg {
+  color: #a0aec0;
+}
+
+.fs-kpi-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--secondary-text-color);
+}
+
+.fs-kpi-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary-text-color);
+  line-height: 1.2;
+}
+
+.dark .fs-kpi-value {
+  color: var(--green-text, #60a5fa);
+}
+
+.fs-kpi-unit {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--secondary-text-color);
+  margin-left: 8px;
+}
+
+/* --- Controls --- */
+.fs-controls-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  align-items: center;
+  background-color: var(--pagination-row-background);
+  border-radius: 12px;
+  margin: 1rem 0;
+}
+.fs-filter-dropdown {
+  font-family: "Exo 2", sans-serif;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  height: 40px;
+  box-sizing: border-box;
+    background-color: #f8f8f8;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 1em;
+  padding-right: 2.5rem;
+}
+
+.dark .fs-filter-dropdown {
+  background-color: #1f2937;
+  color: var(--primary-text-color);
+  border: 1px solid var(--border-color);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0aec0' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+ 
+
+/* --- Charts --- */
+.fs-charts-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  padding: 20px 0;
+}
+.fs-chart-container {
+  background-color: var(--page-background);
+  border: 1px solid var(--border-color-medium);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+.dark .fs-chart-container {
+  background-color: #27303f;
+  border-color: var(--border-color);
+  box-shadow: none;
+}
+
+/* --- Table Styles --- */
+.fs-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: separate;
+}
+.fs-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  color: #fff;
+  background-color: var(--primary-color);
+  font-size: 18px;
+  font-weight: 600;
+  padding: 12px 15px;
+  text-align: left;
+}
+.fs-table thead th:first-child {
+  border-top-left-radius: 12px;
+}
+.fs-table thead th:last-child {
+  border-top-right-radius: 12px;
+}
+.fs-table td {
+  font-size: 17px;
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+.dark .fs-table td {
+  color: var(--primary-text-color);
+}
+.fs-table tbody .fs-vehicle-row:nth-child(odd) {
+  background-color: var(--row-background-odd);
+}
+.fs-table tbody .fs-vehicle-row:nth-child(even) {
+  background-color: var(--row-background-even);
+}
+.fs-table .fs-vehicle-row:hover {
+  background-color: var(--row-background-hover) !important;
+}
+.fs-fleet-row {
+  background-color: var(--fleet-row-background);
+  font-weight: 600;
+}
+.fs-fleet-row:hover {
+  background-color: var(--row-background-fleet-hover) !important;
+}
+.fs-fleet-row td {
+  vertical-align: middle;
+}
+.fs-vehicle-row td {
+  padding-left: 20px !important;
+}
+
+.fs-fleet-name-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: 18px;
+  color: var(--primary-color);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.dark .fs-fleet-name-button {
+  color: var(--primary-text-color);
+}
+
+.fs-fleet-name-text {
+  margin-right: 10px;
+}
+.fs-expand-icon {
+  display: inline-block;
+  transition: transform 0.2s ease-in-out;
+  margin-right: 12px;
+  font-size: 12px;
+}
+.fs-expand-icon.fs-expanded {
+  transform: rotate(90deg);
+}
+.fs-vehicle-count {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  margin-left: 10px;
+}
+.fs-fleet-aggregate-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-text-color);
+}
+.dark .fs-fleet-aggregate-value {
+  color: var(--green-text);
+}
+
+.fs-sortable {
+    cursor: pointer;
+}
+
+.fs-font-bold {
+    font-weight: 700;
+}
+
+/* --- Pagination & Buttons --- */
+.fs-vehicle-pagination-row td {
+  background-color: var(--pagination-row-background);
+  text-align: center;
+  padding: 12px !important;
+  border-top: 1px solid var(--border-color-medium);
+}
+.fs-vehicle-pagination-text, .fs-pagination-text {
+  margin: 0 1rem;
+  font-size: 16px;
+  color: var(--secondary-text-color);
+  vertical-align: middle;
+}
+.fs-pagination-buttons {
+  padding: 15px 0 5px 0;
+  text-align: center;
+}
+.fs-theme-btn {
+  font-family: "Exo 2", sans-serif !important;
+  text-transform: none !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  height: 40px;
+  padding: 6px 16px !important;
+  box-shadow: none !important;
+}
+.fs-theme-btn-contained {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+.fs-theme-btn-contained:hover {
+  background-color: var(--primary-color-dark-hover) !important;
+}
+.fs-theme-btn-outlined {
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+}
+
+
+/* =================================================================== */
+/* --- FINAL RESPONSIVE STYLES --- */
+/* =================================================================== */
+
+/* For Tablets (e.g., iPad portrait) */
+@media screen and (max-width: 1024px) {
+  .fs-kpi-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .fs-fleet-aggregate-value {
+    display: none; /* Hide aggregate values on tablet and below */
+  }
+}
+
+/* For Mobile Phones */
+@media screen and (max-width: 1260px) {
+  .fs-page {
+    padding: 5px;
+  }
+
+  #fs-title {
+    font-size: 22px;
+  }
+
+  .fs-kpi-container {
+    grid-template-columns: 1fr;
+  }
+
+  .fs-kpi-value {
+    font-size: 24px;
+  }
+
+  /* --- Professional Mobile Table Transformation --- */
+
+  .fs-table thead {
+    display: none;
+  }
+
+  .fs-table .fs-fleet-group {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .fs-table .fs-fleet-row,
+  .fs-table .fs-vehicle-row {
+    display: block;
+    border: 1px solid var(--border-color-medium);
+    margin-bottom: 1rem;
+    border-radius: 8px;
+  }
+  .fs-table td {
+    border-bottom: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px !important;
+    text-align: right;
+  }
+
+  .fs-table td:not(:last-child) {
+    border-bottom: 1px solid var(--border-color-medium);
+  }
+
+  .fs-table .fs-fleet-row td {
+    border-bottom: 1px solid var(--border-color-medium);
+  }
+
+  .fs-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--secondary-text-color);
+    text-align: left;
+    margin-right: 1rem;
+  }
+
+  .dark .fs-table td::before {
+    color: var(--primary-text-color);
+  }
+
+  .fs-table .fs-fleet-row td:first-child {
+    background-color: var(--row-background-odd);
+    border-radius: 8px 8px 0 0;
+  }
+  .fs-table .fs-fleet-row td:first-child::before {
+    content: none;
+  }
+
+  .fs-table .fs-fleet-row .fs-fleet-aggregate-value {
+    display: none;
+  }
+}
+
+/* --- Skeleton Loader Styles --- */ 
+
+.fs-skeleton-wrapper {
+  width: 100%;
+}
+
+.fs-skeleton-card {
+  background-color: #e0e0e0;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark .fs-skeleton-card {
+  background-color: #374155;
+}
+
+.fs-skeleton-line {
+  background-color: #c7c7c7;
+  border-radius: 4px;
+}
+
+.dark .fs-skeleton-line {
+  background-color: #4a5568;
+}
+
+/* Specific shapes for KPI card skeleton */
+.fs-skeleton-card .fs-skeleton-header {
+  width: 60%;
+  height: 20px;
+  margin-bottom: 12px;
+}
+.fs-skeleton-card .fs-skeleton-value {
+  width: 40%;
+  height: 32px;
+}
+
+.fs-controls-container-skeleton {
+    width: 100%;
+    height: 72px;
+    border-radius: 12px;
+    margin: 1rem 0;
+}
+
+/* Specific shapes for Table skeleton */
+.fs-skeleton-table-container {
+  padding: 20px;
+  margin-top: 2rem;
+}
+.fs-skeleton-table-header {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 15px;
+}
+.fs-skeleton-table-row {
+  width: 100%;
+  height: 30px;
+  margin-bottom: 10px;
+}
+.fs-skeleton-table-row:last-child {
+  margin-bottom: 0;
+}
+
+/* Shimmer Animation */
+.fs-skeleton-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+.dark .fs-skeleton-card::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(100, 100, 100, 0.2),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -150%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+
+/* =================================================================== */
+/* --- NEW: MUI Autocomplete & Dark Theme Styles --- */
+/* =================================================================== */
+
+.fs-autocomplete-filter {
+  width: 250px;
+}
+
+/* Style the Autocomplete input field to match the other dropdown */
+.fs-autocomplete-filter .MuiOutlinedInput-root {
+  border-radius: 8px !important;
+  height: 40px;
+  font-family: "Exo 2", sans-serif;
+  font-size: 16px;
+}
+
+.dark .fs-autocomplete-filter .MuiOutlinedInput-root {
+  background-color: #1f2937;
+}
+
+.dark .fs-autocomplete-filter .MuiInputBase-input {
+  color: var(--primary-text-color);
+}
+
+.dark .fs-autocomplete-filter .MuiInputLabel-root {
+  color: var(--secondary-text-color) !important;
+}
+
+.dark .fs-autocomplete-filter .MuiOutlinedInput-notchedOutline {
+  border-color: var(--border-color) !important;
+}
+
+/* This is a global override for the popup list.
+   It's scoped to `body.dark` to only apply in dark mode. */
+body.dark .MuiAutocomplete-popper .MuiPaper-root {
+  background-color: var(--row-background-even);
+  color: var(--primary-text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+/* Style for individual options in the dropdown */
+body.dark .MuiAutocomplete-popper .MuiAutocomplete-option {
+  font-family: "Exo 2", sans-serif;
+  font-size: 16px;
+}
+
+/* Hover/Focus/Selected state for options */
+body.dark .MuiAutocomplete-popper .MuiAutocomplete-option[aria-selected="true"],
+body.dark .MuiAutocomplete-popper .MuiAutocomplete-option.Mui-focused {
+  background-color: var(--row-background-hover) !important;
+}

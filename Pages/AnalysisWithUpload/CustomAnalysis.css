@@ -1,0 +1,522 @@
+/* =================================================================== */
+/* --- THEME COLOR VARIABLES --- */
+/* =================================================================== */
+:root {
+    --primary-color: #0b5297;
+    --primary-color-dark-hover: #08437a;
+    --primary-text-color: #1e293b;
+    --secondary-text-color: #475569;
+    --border-color: #dee2e6;
+    --border-color-medium: #e2e8f0;
+    --page-background: #fff;
+    --row-background-odd: #eef2f9;
+    --row-background-even: #fff;
+    --row-background-hover: #dbeafe;
+    --row-background-fleet-hover: #e2e8f0;
+    --fleet-row-background: #f8fafc;
+    --pagination-row-background: #f1f5f9;
+    --shadow-color: rgba(160, 160, 160, 0.25);
+}
+
+.dark {
+    --primary-color: #374155;
+    --primary-color-dark-hover: #4a5568;
+    --primary-text-color: #e2e8f0;
+    --secondary-text-color: #a0aec0;
+    --border-color: #4a5568;
+    --border-color-medium: #4a5568;
+    --page-background: #2d3748;
+    --row-background-odd: #2d3748;
+    --row-background-even: #27303f;
+    --row-background-hover: #4a5568;
+    --row-background-fleet-hover: #4a5568;
+    --fleet-row-background: #374151;
+    --pagination-row-background: #27303f;
+    --shadow-color: transparent;
+    --green-text: #60a5fa;
+}
+
+/* =================================================================== */
+/* --- PAGE LAYOUT & TITLE --- */
+/* =================================================================== */
+
+/* Styles for the main page title to match the Fleet Summary theme */
+#ca-title {
+    color: var(--primary-color);
+    font-family: "Exo 2", sans-serif; /* Add generic fallback */
+    font-size: 27px;
+    font-weight: 600;
+    line-height: 32px;
+    padding: 10px;
+    margin: 0 0 1rem 0;
+    /* Add some bottom margin */
+}
+
+.dark #ca-title {
+    color: var(--primary-text-color);
+}
+
+/* Use this class on the root div of your component */
+.ca-page {
+    background: var(--page-background);
+    color: var(--primary-text-color);
+    box-shadow: 0px 4px 4px 0px var(--shadow-color);
+    /* From FleetSummary */
+    border-radius: 16px;
+    /* From FleetSummary */
+    padding: 20px;
+    /* Increased padding for better spacing */
+}
+
+/* A unified container for charts, placeholders, and other cards */
+.ca-card-container {
+    background-color: var(--page-background);
+    border: 1px solid var(--border-color-medium);
+    border-radius: 16px;
+    /* From FleetSummary Chart Container */
+    padding: 1rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    /* From FleetSummary Chart Container */
+    margin-top: 1.5rem;
+}
+
+.dark .ca-card-container {
+    background-color: #27303f;
+    border-color: var(--border-color);
+    box-shadow: none;
+}
+
+
+/* =================================================================== */
+/* --- UPDATED: CONTROLS & FORM STYLES --- */
+/* =================================================================== */
+
+.controls-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    /* From FleetSummary */
+    align-items: flex-start;
+    /* FIX: Changed from flex-end to prevent layout shift */
+    background-color: var(--pagination-row-background);
+    /* From FleetSummary */
+    border-radius: 12px;
+    /* From FleetSummary */
+    margin-bottom: 1.5rem;
+    /* Replaced margin-bottom: 24px */
+}
+
+.ca-form-group {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 8px;
+    min-width: 200px;
+}
+
+/* This targets the container div that the react-datepicker library creates */
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+.ca-form-label {
+    margin: 0;
+    text-align: left;
+    color: var(--secondary-text-color);
+    font-size: 15px;
+    font-weight: 600;
+    padding-left: 4px;
+}
+
+/* --- Base Themed Control Styles --- */
+.theme-control {
+    height: 40px;
+    width: 100%;
+    font-family: "Exo 2", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;
+    padding: 5px 15px;
+    color: #fff;
+    background-color: var(--primary-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    /* MODIFIED: Was 5px, now matches FleetSummary buttons */
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.theme-control:is(select) {
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-6.5%200-12.3%203.2-16.2%208.1-3.9%204.9-4.8%2011.6-2.6%2017.9L139.6%20272c5%2010.1%2016.1%2015.6%2027.7%2015.6s22.8-5.5%2027.7-15.6L290.2%2089.9c2.2-6.3%201.3-13-2.6-17.9z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+.theme-control:is(button) {
+    text-align: center;
+}
+
+.theme-control:hover:not(:disabled) {
+    background-color: var(--primary-color-dark-hover);
+}
+
+/* --- FIX: Simplified Professional Focus Style --- */
+/* A single, simple rule for all controls that provides an inset shadow, preventing layout shifts. */
+.theme-control:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.75);
+    transition: box-shadow 0.1s ease-in-out;
+}
+
+/* --- Professional Calendar Z-Index --- */
+/* Ensures the calendar popup appears above other content on the page. */
+.react-datepicker-popper {
+    z-index: 10 !important;
+}
+
+.theme-btn-action {
+    background-color: var(--primary-color);
+}
+
+.theme-btn-action:hover:not(:disabled) {
+    background-color: var(--primary-color-dark-hover);
+}
+
+/* Special override for submit button to match reference theme */
+.theme-btn-submit {
+    background-color: var(--primary-color) !important;
+}
+
+.theme-btn-submit:hover:not(:disabled) {
+    background-color: var(--primary-color-dark-hover) !important;
+    color: white;
+    border: none;
+}
+
+/* .theme-btn-submit:hover {
+  background-color: #ef4444 !important;
+  color: white !important;
+} */
+.theme-btn-submit.is-cancel {
+  background-color: #dc2626; /* red-600 */
+  color: white;
+}
+
+.theme-btn-submit.is-cancel:hover {
+  background-color: #b91c1c; /* red-700 */
+}
+.theme-btn-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.theme-btn-submit:focus,
+.theme-btn-submit:active,
+.theme-btn-submit:focus-visible {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.theme-control.file-input {
+    padding: 0;
+    color: var(--primary-text-color);
+    background-color: var(--page-background);
+}
+
+.theme-control.file-input::file-selector-button {
+    height: 100%;
+    padding: 5px 15px;
+    margin-right: 15px;
+    background-color: var(--secondary-text-color);
+    color: #fff;
+    border: none;
+    border-right: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    font-family: "Exo 2",sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.theme-control.file-input::file-selector-button:hover {
+    background-color: #5a6268;
+}
+
+/* --- Chart Placeholder --- */
+.chart-placeholder-text {
+    height: 450px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary-text-color);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+
+/* --- Professional Tab Interface --- */
+.ca-mode-tabs {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.ca-mode-tab {
+    font-family: "Exo 2",sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--secondary-text-color);
+    background-color: transparent;
+    border: none;
+    padding: 0.5rem 0.25rem;
+    margin-bottom: -1px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+.ca-mode-tab:hover {
+    color: var(--primary-color);
+}
+
+.ca-mode-tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+
+/* --- Layout Helpers & Responsive --- */
+.ca-select-wrapper {
+    flex-grow: 3;
+}
+
+@media (max-width: 575px) {
+    .controls-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .ca-form-group {
+        width: 100%;
+        min-width: 100%;
+        flex-basis: 100%;
+        flex-grow: 0;
+    }
+
+    .controls-container.signal-selector-controls .ca-select-wrapper {
+        min-width: 100%;
+        flex-grow: 0;
+    }
+
+    .ca-form-label {
+        font-size: 14px;
+    }
+
+    .theme-control {
+        height: 38px;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 991px) {
+    .ca-form-group {
+        min-width: 45%;
+        flex-basis: auto;
+    }
+}
+
+@media (min-width: 992px) {
+    .controls-container {
+        flex-wrap: wrap;
+    }
+
+    /* Removed align-items: flex-end here as well for consistency */
+    .ca-form-group {
+        min-width: 200px;
+        flex-grow: 1;
+    }
+}
+
+.controls-container.fetch-mode-controls .ca-form-group {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.controls-container.signal-selector-controls .ca-select-wrapper {
+    flex-grow: 3;
+    min-width: 300px;
+}
+
+.controls-container.signal-selector-controls .ca-form-group {
+    flex-grow: 1;
+}
+
+
+/* --- Dark Mode Overrides --- */
+.dark .ca-form-label {
+    color: var(--secondary-text-color);
+}
+
+.dark .ca-mode-tab:hover,
+.dark .ca-mode-tab.active {
+    color: #a0aec0;
+    border-bottom-color: #a0aec0;
+}
+
+.dark .theme-control:is(select) {
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23a0aec0%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-6.5%200-12.3%203.2-16.2%208.1-3.9%204.9-4.8%2011.6-2.6%2017.9L139.6%20272c5%2010.1%2016.1%2015.6%2027.7%2015.6s22.8-5.5%2027.7-15.6L290.2%2089.9c2.2-6.3%201.3-13-2.6-17.9z%22%2F%3E%3C%2Fsvg%3E');
+}
+
+.dark .theme-control.file-input {
+    color: var(--primary-text-color);
+    background-color: var(--page-background);
+}
+
+.dark .theme-control.file-input::file-selector-button {
+    background-color: #4a5568;
+    border-right-color: var(--border-color);
+}
+
+.dark .theme-control.file-input::file-selector-button:hover {
+    background-color: #5a6268;
+}
+
+/* =================================================================== */
+/* --- SKELETON LOADER STYLES --- */
+/* =================================================================== */
+
+.skeleton-card {
+    background-color: #e0e0e0;
+    position: relative;
+    overflow: hidden;
+}
+
+.dark .skeleton-card {
+    background-color: #374155;
+}
+
+.skeleton-line {
+    background-color: #c7c7c7;
+    border-radius: 6px;
+}
+
+.dark .skeleton-line {
+    background-color: #4a5568;
+}
+
+.skeleton-title {
+    height: 32px;
+    width: 300px;
+    margin-bottom: 1.5rem;
+}
+
+.skeleton-control {
+    height: 40px;
+    width: 100%;
+}
+
+/* MODIFIED: Match new card container style */
+.skeleton-chart {
+    height: 450px;
+    width: 100%;
+    border-radius: 16px;
+}
+
+.skeleton-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 150%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shimmer 1.5s infinite;
+}
+
+.dark .skeleton-card::after {
+    background: linear-gradient(90deg, transparent, rgba(100, 100, 100, 0.2), transparent);
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -150%;
+    }
+
+    100% {
+        left: 150%;
+    }
+}
+
+
+/* button base (high specificity: inside ca-form-group) */
+.ca-form-group .theme-control.theme-btn-submit {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: inline-block;
+  transition: background-color 0.12s ease, transform 0.08s ease;
+  -webkit-appearance: none; /* remove native styles on iOS/Chrome */
+  appearance: none;
+}
+
+/* hover/active */
+.ca-form-group .theme-control.theme-btn-submit:hover {
+  background-color: var(--primary-color-dark-hover);
+}
+
+/* cancel (red) state */
+.ca-form-group .theme-control.theme-btn-submit.is-cancel {
+  background-color: #ff2f2f !important; /* red-600 */
+  color: #fff !important;
+}
+
+.ca-form-group .theme-control.theme-btn-submit.is-cancel:hover {
+  background-color: #820606 !important; /* red-700 */
+}
+
+.dark .ca-form-group .theme-control.theme-btn-submit.is-cancel {
+  background-color: #7f1d1d !important; /* red-600 */
+  color: #fff !important;
+}
+
+.dark .ca-form-group .theme-control.theme-btn-submit.is-cancel:hover {
+  background-color: #991b1b !important; /* red-700 */
+}
+
+/* remove focus / click outline & shadows (important to override other libs) */
+.ca-form-group .theme-control.theme-btn-submit:focus,
+.ca-form-group .theme-control.theme-btn-submit:active,
+.ca-form-group .theme-control.theme-btn-submit:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Disabled appearance — still readable but looks disabled */
+.ca-form-group .theme-control.theme-btn-submit[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* If a library is force-adding inner focus ring, aggressively clear it */
+.ca-form-group .theme-control.theme-btn-submit *:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* ensure text color is forced when some rule overrides it */
+.ca-form-group .theme-control.theme-btn-submit,
+.ca-form-group .theme-control.theme-btn-submit.is-cancel {
+  color: #fff !important;
+}

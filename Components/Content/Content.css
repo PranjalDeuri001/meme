@@ -1,0 +1,62 @@
+.content {
+  grid-area: content;
+  width: 100%;
+  height: calc(100vh - 65px);
+  background-color: #f9f9f9;
+  overflow: auto;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  position: relative; /* Needed for centering the loader */
+  padding: 20px; /* Default padding for desktop */
+  z-index: 1; /* Ensure content is above other elements */
+}
+
+/* Dark mode styling for content area */
+body.dark .content {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+
+/* --- Loader Styles --- */
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.loader {
+  border: 5px solid #f3f3f3; /* Light grey */
+  border-top: 5px solid var(--EKA1); /* Blue */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .content {
+    padding: 15px; /* Reduced padding for tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  .content {
+    padding: 10px; /* Further reduced padding for mobile phones */
+  }
+}

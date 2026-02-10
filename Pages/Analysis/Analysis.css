@@ -1,0 +1,501 @@
+/* src/Pages/Analysis/Analysis.css */
+
+/* ============================================= */
+/* == Base & Layout Styles                  == */
+/* ============================================= */
+.Analysis {
+    color: #000;
+    font-family: Manrope, sans-serif;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 22px;
+    margin-bottom: 20px;
+}
+
+/* ============================================= */
+/* == Selection Menu (UNCHANGED AS REQUESTED) == */
+/* ============================================= */
+.Analysis-Selection-Menu {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+    padding: 25px;
+    box-sizing: border-box;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.Analysis-header {
+    width: 100%;
+    font-family: "Exo 2", sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: #0b5297;
+    text-align: left;
+    padding-bottom: 15px;
+}
+
+.Analysis-Selection-Menu-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end; /* Aligns items based on their bottom edge */
+    gap: 20px;
+}
+
+.Analysis-Selection-Menu-card,
+.custom-multiselect-wrapper {
+  position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto; /* Allow growing and shrinking but respect basis */
+    min-width: 200px; /* Base width before wrapping */
+}
+
+.Analysis-Selection-Menu-Selections-title {
+    margin: 0 0 8px 0;
+    text-align: left;
+    color: #0b5297;
+    font-size: 15px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+/* .Analysis-Selection-Menu-Selections,
+.custom-multiselect-trigger {
+    height: 40px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;
+    padding: 5px 15px;
+    color: #fff;
+    background-color: #0b5297;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+} */
+
+/* Specific style for the Submit button */
+.Analysis-Selection-Menu-card:last-child .Analysis-Selection-Menu-Selections {
+    background-color: #73be44;
+    text-align: center;
+}
+.dark .Analysis-Selection-Menu-card:last-child .Analysis-Selection-Menu-Selections {
+    background-color: #334155;
+    border-color: #475569;
+    color: #E2E8F0;
+    text-align: center;
+}
+
+/* Datepicker specific override */
+.Analysis-Selection-Menu .react-datepicker-wrapper {
+    display: inline-block;
+    width: 100%;
+}
+
+/* ============================================= */
+/* == Custom Multi-Select Component         == */
+/* ============================================= */
+.custom-multiselect-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.custom-multiselect-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #0b5297;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    z-index: 5000;
+    max-height: 250px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.custom-multiselect-list-container {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.custom-multiselect-search-container {
+    padding: 10px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.custom-multiselect-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.custom-multiselect-list-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.custom-multiselect-list-item:hover {
+    background-color: #457cbb;
+}
+
+.custom-multiselect-list-item input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* ============================================= */
+/* == Chart Styles (UI/UX IMPROVEMENT)      == */
+/* ============================================= */
+.Analysis-Charts {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    width: 100%;
+}
+
+/* This is the new "Data-Rich Container" style */
+.chart-card-container {
+    background-color: #ffffff;
+    width: 100%;
+    height: 400px; /* Height is still controlled by CSS */
+    border-radius: 12px;
+    border: 1px solid #e2e8f0; /* Subtle border */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Softer shadow */
+    font-family: "Exo 2", sans-serif;
+    padding: 0; /* Padding is now controlled by the chart's 'grid' */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+/* Ensure old selectors also get the new style for consistency */
+.Battery-Cell-Voltage,
+.Battery-Temperature,
+.Battery-Pack-Current,
+.Battery-Pack-Voltage,
+.coolingPerformance,
+.dutyCycle,
+.hvmonitoring {
+    padding: 0; /* Remove old padding */
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.Analysis-Charts h3 {
+    /* This is no longer used, title is handled by ChartRenderer */
+    display: none;
+}
+
+/* ============================================= */
+/* == "Smart Empty State" (NEW)             == */
+/* ============================================= */
+.Analysis-Empty-State {
+    grid-column: 1 / -1; /* Make it span the full grid width */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    font-family: "Exo 2", sans-serif;
+}
+.Analysis-Empty-State-Icon {
+    color: #0b5297;
+    margin-bottom: 20px;
+}
+.Analysis-Empty-State h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 10px 0;
+}
+.Analysis-Empty-State p {
+    font-size: 16px;
+    color: #666;
+    max-width: 400px;
+    margin: 0;
+}
+
+/* ============================================= */
+/* == Loader & Utility Styles               == */
+/* ============================================= */
+.loader-container {
+   display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.loader {
+   width: 100px;
+    height: 100px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #0b5297;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    transition: border-color 0.3s ease; 
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+/* ============================================= */
+/* == Dark Mode Styles                      == */
+/* ============================================= */
+
+/* Applies a dark background to the entire page body when dark mode is active */
+.dark body {
+    background-color: #0F172A; /* Deep dark blue background */
+}
+
+/* Styles for the main "Trails" heading */
+.dark .Analysis {
+    color: #E2E8F0; /* Light slate gray for high contrast */
+}
+
+/* Styles for the top selection menu container */
+.dark .Analysis-Selection-Menu {
+    background-color: #1E293B; /* Dark slate container background */
+    border: 1px solid #334155;  /* Subtle, lighter border */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Styles for the form field titles (e.g., "Vehicle Type") */
+.dark .Analysis-header,
+.dark .Analysis-Selection-Menu-Selections-title {
+    color: #94A3B8; /* Muted slate gray for labels */
+}
+
+
+
+/* Styles for dropdowns and input fields */
+.dark .Analysis-Selection-Menu-Selections,
+.dark .custom-multiselect-trigger {
+    background-color: #334155; /* Slightly lighter slate for inputs */
+    border-color: #475569;     /* Matching border color */
+    color: #E2E8F0;           /* Light text for readability */
+}
+
+/* Specific styling for custom multi-select dropdown panel */
+.dark .custom-multiselect-panel {
+    background-color: #1E293B;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
+    border: 1px solid #334155;
+    border-top: none;
+}
+
+.dark .custom-multiselect-list-item:hover {
+    background-color: #334155;
+}
+
+/* --- Dark Mode for NEW Chart Cards --- */
+.dark .chart-card-container {
+    background-color: #1E293B;
+    color: #E2E8F0;
+    border: 1px solid #334155;
+    box-shadow: none;
+}
+/* Ensure old selectors get the new style */
+.dark .Battery-Cell-Voltage,
+.dark .Battery-Temperature,
+.dark .Battery-Pack-Current,
+.dark .Battery-Pack-Voltage,
+.dark .coolingPerformance,
+.dark .dutyCycle,
+.dark .hvmonitoring {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    box-shadow: none;
+}
+
+/* --- Dark Mode for NEW Empty State --- */
+.dark .Analysis-Empty-State {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    box-shadow: none;
+}
+.dark .Analysis-Empty-State-Icon {
+    color: #94A3B8;
+}
+.dark .Analysis-Empty-State h2 {
+    color: #E2E8F0;
+}
+.dark .Analysis-Empty-State p {
+    color: #94A3B8;
+}
+
+/* ============================================= */
+/* == Date Picker UI Enhancements           == */
+/* ============================================= */
+
+/* Dim future/disabled dates for better UX in both themes */
+.react-datepicker__day--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* --- DARK MODE FIX FOR DATE PICKER CALENDAR --- */
+.dark .react-datepicker {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    color: #E2E8F0;
+}
+
+.dark .react-datepicker__header {
+    background-color: #1E293B;
+    border-bottom: 1px solid #334155;
+}
+
+.dark .react-datepicker__current-month,
+.dark .react-datepicker__day-name,
+.dark .react-datepicker__day,
+.dark .react-datepicker__time-name {
+    color: #E2E8F0;
+}
+
+.dark .react-datepicker__day:hover {
+    background-color: #334155;
+}
+
+.dark .react-datepicker__day--selected,
+.dark .react-datepicker__day--keyboard-selected {
+    background-color: #475569; /* Use a theme-consistent color */
+    color: #fff;
+}
+
+.dark .react-datepicker__day--today {
+    font-weight: bold;
+    border: 1px solid #475569;
+    border-radius: 0.3rem;
+}
+
+.dark .react-datepicker__navigation-icon::before {
+    border-color: #E2E8F0;
+}
+
+/* ============================================= */
+/* == Responsive Media Queries              == */
+/* ============================================= */
+
+/* For Tablets and Smaller Laptops */
+@media (max-width: 1024px) {
+    .Analysis {
+        font-size: 28px;
+    }
+
+    /* Force a 2-column layout for the form, avoiding the 3x2 state */
+    .Analysis-Selection-Menu-card,
+    .custom-multiselect-wrapper {
+        flex-basis: calc(50% - 10px); /* 2 items per row, accounting for gap */
+        min-width: 0; /* Reset min-width to allow flexible sizing */
+    }
+    
+    /* Make the last item (Submit) take full width */
+    .Analysis-Selection-Menu-card:last-child {
+        flex-basis: 100%;
+    }
+
+    /* Stack charts vertically */
+    .Analysis-Charts {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* For Mobile Devices */
+@media (max-width: 768px) {
+    .Analysis {
+        font-size: 24px;
+    }
+
+    .Analysis-Selection-Menu {
+        padding: 20px; /* Slightly reduce padding on mobile */
+    }
+
+    /* Stack all form controls vertically for a mobile-friendly view */
+    .Analysis-Selection-Menu-buttons {
+        align-items: stretch; /* Make items full width */
+        gap: 15px;
+    }
+
+    /* Ensure each item takes full width in the column layout */
+    .Analysis-Selection-Menu-card,
+    .custom-multiselect-wrapper {
+        width: 100%;
+        flex-basis: auto; /* Reset basis */
+        min-width: 0; /* CRITICAL FIX: Prevents overflow on small screens */
+    }
+
+    .Analysis-Selection-Menu-Selections-title {
+        font-size: 14px;
+    }
+
+    .Analysis-Selection-Menu-Selections,
+    .custom-multiselect-trigger {
+        font-size: 15px;
+    }
+
+    .chart-card-container,
+    .Battery-Cell-Voltage,
+    .Battery-Temperature,
+    .Battery-Pack-Current,
+    .Battery-Pack-Voltage,
+    .coolingPerformance,
+    .dutyCycle,
+    .hvmonitoring {
+        height: 350px;
+    }
+}
+
+/* For Small Mobile Devices */
+@media (max-width: 480px) {
+    .Analysis {
+        font-size: 22px;
+    }
+    
+    .Analysis-Selection-Menu {
+        padding: 15px;
+    }
+
+    .Analysis-Selection-Menu-Selections-title {
+        font-size: 13px;
+    }
+    
+    .Analysis-Selection-Menu-Selections,
+    .custom-multiselect-trigger {
+        height: 40px; /* Keep a decent touch-target height */
+        font-size: 14px;
+    }
+
+    .chart-card-container,
+    .Battery-Cell-Voltage,
+    .Battery-Temperature,
+    .Battery-Pack-Current,
+    .Battery-Pack-Voltage,
+    .coolingPerformance,
+    .dutyCycle,
+    .hvmonitoring {
+        height: 300px;
+    }
+}

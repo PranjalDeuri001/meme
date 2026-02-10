@@ -1,0 +1,2028 @@
+/* ======================================================= */
+/* === 1. Main Layout & Container === */
+/* ======================================================= */
+#Home-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#Home-info {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  border-radius: 10px;
+  padding: 15px;
+  background: #fff;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.15);
+  margin-right: auto;
+}
+
+#Home-vlist-info {
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  /* Premium gap between map and right panel */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-right: auto;
+}
+
+#Home-map-info {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: center;
+  position: relative;
+}
+
+/* ======================================================= */
+/* === 2. Header (Vehicle Status & Badges) === */
+/* ======================================================= */
+#Home-info h2 {
+  color: #0b5297;
+  font-family: "Exo 2", sans-serif;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+  text-align: left;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#Home-VStaus-Total {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+#Home-VStaus-Total p {
+  font-family: "Exo 2", sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1;
+  padding: 8px 12px;
+  margin: 0;
+  border-radius: 4px;
+  background-color: #F3F4F6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  user-select: none;
+  cursor: pointer;
+}
+
+/* Hover state - subtle */
+#Home-VStaus-Total p:hover {
+  background-color: #E5E7EB;
+}
+
+/* Active filter state - background color only */
+#Home-VStaus-Total p.active-status-filter {
+  font-weight: 600;
+}
+
+#Home-VStaus-Total p span {
+  font-size: 1.1em;
+  font-weight: 700;
+}
+
+/* --- Light Mode Header Colors --- */
+#Home-TFS {
+  color: #0b5297;
+}
+
+#Home-TFS.active-status-filter {
+  background-color: rgba(11, 82, 151, 0.12);
+}
+
+#Home-Active {
+  color: #059669;
+}
+
+#Home-Active.active-status-filter {
+  background-color: rgba(5, 150, 105, 0.12);
+}
+
+#Home-Inactive {
+  color: #DC2626;
+}
+
+#Home-Inactive.active-status-filter {
+  background-color: rgba(220, 38, 38, 0.12);
+}
+
+#Home-NoGps {
+  color: #D97706;
+}
+
+#Home-NoGps.active-status-filter {
+  background-color: rgba(217, 119, 6, 0.12);
+}
+
+/* ======================================================= */
+/* === 3. Fleet Cards (12M, 7M, 5T, etc.) === */
+/* ======================================================= */
+.fleet-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+/* Horizontal scroll for screens > 1000px - prevents wrapping */
+@media (min-width: 1001px) {
+  .fleet-card-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    /* iOS smooth scrolling */
+    scrollbar-width: thin;
+    /* Firefox */
+    scrollbar-color: #94A3B8 #E2E8F0;
+    /* Neutral slate colors */
+    gap: 16px;
+    /* Consistent spacing between cards */
+    padding: 8px 4px;
+    /* Prevent card cutoff at edges - horizontal padding for shadows/borders */
+  }
+
+  /* Each card gets fixed width in scroll mode */
+  .fleet-card-grid .fleet-card {
+    flex: 0 0 13rem;
+    min-width: 13rem;
+  }
+
+  /* Ultra-minimalist scrollbar - auto-hide when not hovering */
+  .fleet-card-grid::-webkit-scrollbar {
+    height: 6px;
+    /* Thinner for minimal look */
+  }
+
+  .fleet-card-grid::-webkit-scrollbar-track {
+    background: transparent;
+    /* Invisible track */
+  }
+
+  .fleet-card-grid::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.3);
+    /* Very subtle, semi-transparent */
+    border-radius: 10px;
+    transition: background 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    /* Hidden by default */
+  }
+
+  /* Show scrollbar on container hover */
+  .fleet-card-grid:hover::-webkit-scrollbar-thumb {
+    opacity: 1;
+    /* Fade in on hover */
+    background: rgba(148, 163, 184, 0.5);
+  }
+
+  .fleet-card-grid::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 116, 139, 0.7);
+    /* Slightly darker on direct hover */
+  }
+
+  .fleet-card-grid::-webkit-scrollbar-thumb:active {
+    background: rgba(71, 85, 105, 0.9);
+    /* Visible when actively dragging */
+  }
+
+  /* Dark mode minimalist scrollbar */
+  .dark .fleet-card-grid {
+    scrollbar-color: #475569 #1e293b;
+    /* Slate-600 thumb, Slate-800 track */
+  }
+
+  .dark .fleet-card-grid::-webkit-scrollbar-thumb {
+    background: rgba(71, 85, 105, 0.5);
+  }
+
+  .dark .fleet-card-grid:hover::-webkit-scrollbar-thumb {
+    background: rgba(100, 116, 139, 0.6);
+  }
+
+  .dark .fleet-card-grid:hover::-webkit-scrollbar-thumb {
+    opacity: 1;
+    background: rgba(71, 85, 105, 0.6);
+  }
+
+  .dark .fleet-card-grid::-webkit-scrollbar-thumb:hover {
+    background: rgba(96, 165, 250, 0.7);
+    /* Brand blue on hover */
+  }
+
+  .dark .fleet-card-grid::-webkit-scrollbar-thumb:active {
+    background: rgba(96, 165, 250, 0.9);
+  }
+
+  /* Prevent transform on hover/active in scroll mode - fixes padding issue */
+  .fleet-card-grid .fleet-card.active {
+    transform: none;
+  }
+}
+
+.fleet-card {
+  all: unset;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  min-height: 180px;
+  padding: 9px 7px;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  background-color: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease-in-out;
+}
+
+.fleet-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+}
+
+.fleet-card:focus-visible {
+  outline: 3px solid #60A5FA;
+  outline-offset: 2px;
+}
+
+.fleet-card.active {
+  border-color: #0B5297;
+  /* Use a shadow similar to hover, but with the brand color */
+  box-shadow: 0 10px 15px -3px rgba(11, 82, 151, 0.2), 0 4px 6px -2px rgba(11, 82, 151, 0.1);
+  /* Make it "pop" */
+  transform: translateY(-4px);
+}
+
+.fleet-card-image {
+  position: absolute;
+  z-index: 0;
+  top: 41px;
+  right: -25px;
+  height: 100px;
+  width: auto;
+  opacity: 0.3;
+  transform: scale(1) translateX(0);
+  transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+}
+
+.fleet-card:hover .fleet-card-image,
+.fleet-card.active .fleet-card-image {
+  opacity: 0.8;
+  transform: scale(1.1) translateX(-15px);
+}
+
+.fleet-card-grid .fleet-card[data-model="7m"] .fleet-card-image,
+.fleet-card-grid .fleet-card[data-model="9m"] .fleet-card-image {
+  right: -38px;
+  top: 45px;
+  height: 92px;
+}
+
+/* Special default position for 6S */
+.fleet-card-grid .fleet-card[data-model="6S"] .fleet-card-image {
+  top: 38px;
+  height: 93px;
+}
+
+.fleet-card-grid .fleet-card[data-model="Coach"] .fleet-card-image {
+  right: -35px;
+}
+
+.fleet-card-grid .fleet-card[data-model="3s"] .fleet-card-image {
+  top: 51px;
+  height: 93px;
+}
+
+/* --- "Coming Soon" 5T Styles --- */
+.coming-soon-badge {
+  display: block;
+  width: fit-content;
+  margin: -5px auto 5px auto;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background-color: #D97706;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+
+.fleet-card.is-coming-soon .fleet-card-image {
+  filter: blur(5px) grayscale(30%);
+  opacity: 0.5;
+}
+
+.fleet-card.is-coming-soon:hover .fleet-card-image {
+  filter: blur(4px) grayscale(10%);
+  opacity: 0.7;
+  transform: scale(1.1) translateX(-15px);
+}
+
+.fleet-card.is-coming-soon {
+  opacity: 0.9;
+}
+
+.fleet-card.is-coming-soon:hover {
+  opacity: 1;
+}
+
+/* --- Card Content (Title, Body, Footer) --- */
+.fleet-card-title,
+.fleet-card-header,
+.fleet-card-body,
+.fleet-card-footer {
+  position: relative;
+  z-index: 1;
+}
+
+.fleet-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1F2937;
+  text-align: center;
+  padding-top: 5px;
+}
+
+.fleet-card-body {
+  text-align: left;
+  margin-top: 0px;
+}
+
+.fleet-card-total {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.1;
+  padding-left: 9px;
+}
+
+.fleet-card-total-label {
+  font-size: 0.8rem;
+  color: #6B7280;
+  text-transform: uppercase;
+  display: block;
+  padding-left: 9px;
+}
+
+.fleet-card-footer {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 12px;
+  border-top: 1px solid #E5E7EB;
+}
+
+.fleet-card-status {
+  text-align: center;
+  flex: 1;
+}
+
+.fleet-card-status+.fleet-card-status {
+  border-left: 1px solid #E5E7EB;
+}
+
+.fleet-card-status-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: block;
+  color: #111827;
+}
+
+.fleet-card-status-label {
+  font-size: 0.7rem;
+  color: #6B7280;
+  text-transform: uppercase;
+}
+
+/* --- Light Mode Card Footer Colors --- */
+.fleet-card-status-value.active {
+  color: #059669;
+}
+
+.fleet-card-status-value.inactive {
+  color: #DC2626;
+}
+
+.fleet-card-status-value.nogps {
+  color: #D97706;
+  /* Amber */
+}
+
+/* ======================================================= */
+/* === 4. Data/KPI Cards (Distance, CO2, etc.) === */
+/* ======================================================= */
+#Home-sec-cont-2 {
+  display: grid;
+  align-content: start;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  overflow: auto;
+  padding: 10px;
+  width: 45%;
+  border-radius: 10px;
+}
+
+.Home-DCC {
+  min-width: 200px;
+  height: auto;
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 6px;
+  margin-left: 6px;
+  box-shadow: 0px 4px 4px 0px rgba(160, 160, 160, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.Home-DCC:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.Home-DCC p {
+  color: var(--Greys-Blue-Grey-900, #151d48);
+  margin-top: 20px;
+  text-align: center;
+  font-family: "Exo 2";
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.Home-DCC p+p {
+  margin-top: -20px;
+  color: #425166;
+  text-align: center;
+  font-family: "Exo 2";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.Home-DCC img {
+  margin-top: 22px;
+}
+
+.home-kpi-icon {
+  width: 65px;
+  height: 65px;
+  margin-top: 22px;
+  color: #151d48;
+}
+
+/* --- Light Mode KPI Card Colors --- */
+#Home-sec-cont-2 .Home-DCC:nth-of-type(1) {
+  background: linear-gradient(180deg, #ffe7ea 0%, #f3949eff 100%);
+  border: 1px solid #e6c2c7;
+}
+
+#Home-sec-cont-2 .Home-DCC:nth-of-type(2) {
+  background: linear-gradient(180deg, #e7fef6 0%, #a9dcc9 100%);
+  border: 1px solid #bde7d6;
+}
+
+#Home-sec-cont-2 .Home-DCC:nth-of-type(3) {
+  background: linear-gradient(180deg, #fffaef 0%, #ffebc4 100%);
+  border: 1px solid #e6ddbf;
+}
+
+#Home-sec-cont-2 .Home-DCC:nth-of-type(4) {
+  background: linear-gradient(180deg, #fff3fc 0%, #ffcff2 100%);
+  border: 1px solid #e6c4dc;
+}
+
+#Home-sec-cont-2 .Home-DCC:nth-of-type(5) {
+  background: linear-gradient(180deg, #f1f3ff 0%, #cdd5ff 100%);
+  border: 1px solid #c4c9e6;
+}
+
+#Home-sec-cont-2 .Home-DCC:nth-of-type(6) {
+  background: linear-gradient(180deg, #e6fdffff 0%, #b5f8ff 100%);
+  border: 1px solid #94dce6;
+}
+
+#Home-sec-cont-2 .Home-DCC:nth-of-type(7) {
+  background: linear-gradient(180deg, #fbe4c3ff 0%, #f2aa96 100%);
+  border: 1px solid #f2aa96;
+}
+
+#Home-sec-cont-2 .Home-DCC:nth-of-type(8) {
+  background: linear-gradient(180deg, #EFF5D2 0%, #BFEA7C 100%);
+  border: 1px solid #BFEA7C;
+}
+
+/* ======================================================= */
+/* === 5. Map & Related Components === */
+/* ======================================================= */
+
+#Home-vlist-info .hmap-cont {
+  width: 99%;
+  height: 100%;
+  min-height: calc(100vh - 280px);
+  /* Fixed minimum height to prevent shrinking */
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #eef2f7;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.map-fab {
+  display: none;
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 55px;
+  height: 55px;
+  background-color: var(--EKA1, #17479e);
+  color: white;
+  border-radius: 50%;
+  border: none;
+  font-size: 22px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.map-fab:hover {
+  transform: scale(1.1);
+}
+
+#Home-vlist-info.fullscreen {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 60px);
+  padding: 0;
+  z-index: 2000;
+  background-color: #fff;
+}
+
+.map-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  z-index: 2001;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.map-close-btn:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+  transform: rotate(90deg);
+}
+
+.map-close-btn::before,
+.map-close-btn::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 2px;
+}
+
+.map-close-btn::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.map-close-btn::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* --- Map Filter Button --- */
+.hmap-cont .map-filter-fab {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 5;
+  width: 37px;
+  height: 37px;
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #151d48;
+}
+
+.hmap-cont .map-filter-fab:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Map Filter Popup --- */
+.hmap-cont .map-filter-popup {
+  position: absolute;
+  top: 75px;
+  left: 15px;
+  z-index: 5;
+  width: 250px;
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+  padding: 12px;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transform-origin: top left;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  transform: scale(0.95);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.hmap-cont .map-filter-popup.is-open {
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+.hmap-cont .filter-section {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.hmap-cont .filter-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.hmap-cont .filter-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #151d48;
+  margin-bottom: 8px;
+}
+
+.hmap-cont .checkbox-row,
+.hmap-cont .radio-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.hmap-cont .checkbox-row label,
+.hmap-cont .radio-row label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #333;
+}
+
+.hmap-cont .checkbox-row input[type="checkbox"],
+.hmap-cont .radio-row input[type="radio"] {
+  width: 15px;
+  height: 15px;
+  accent-color: #0b5297;
+}
+
+/* --- Map Info Window (Vehicle) --- */
+.custom-infowindow {
+  min-width: 240px;
+  padding: 4px;
+  font-family: "Exo 2", sans-serif;
+  color: #151d48;
+}
+
+.infowindow-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 8px 3px;
+}
+
+.infowindow-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.infowindow-icon {
+  color: #0b5297;
+  flex-shrink: 0;
+  width: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.infowindow-title {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.title-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: #5a6a85;
+  text-transform: uppercase;
+}
+
+.title-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0b5297;
+}
+
+.infowindow-divider {
+  border: none;
+  height: 1px;
+  background-color: #e0e4e8;
+  margin: 4px 0;
+}
+
+.infowindow-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+  padding: 12px 4px 8px 4px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-item-full {
+  grid-column: 1 / -1;
+}
+
+.stat-icon {
+  color: #425166;
+  flex-shrink: 0;
+  width: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stat-item div {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.stat-value {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #5a6a85;
+}
+
+/* --- Map Info Window (Charger) --- */
+.charger-infowindow {
+  font-family: "Exo 2", sans-serif;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #ffffff;
+  min-width: 240px;
+  max-width: 260px;
+}
+
+.charger-header {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  color: #151d48;
+}
+
+.charger-divider {
+  border: none;
+  height: 1px;
+  margin: 0;
+  background-color: #e2e8f0;
+}
+
+.charger-info-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.charger-info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.charger-info-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #0b5297;
+}
+
+.charger-info-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.charger-info-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+}
+
+.charger-info-value {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: normal;
+  word-break: break-word;
+  color: #334155;
+}
+
+.charger-marker {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.charger-marker:hover {
+  transform: scale(1.1);
+}
+
+.charger-marker.eka-charger .charger-icon {
+  color: #EC6B15;
+}
+
+.charger-marker.puma-charger .charger-icon {
+  color: #000000;
+}
+
+/* ======================================================= */
+/* === 6. Skeleton Loading States === */
+/* ======================================================= */
+.skeleton-card {
+  background-color: transparent;
+}
+
+.skeleton {
+  background-color: #e1e7f0;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -150%;
+  }
+
+  100% {
+    left: 150%;
+  }
+}
+
+.skeleton-title {
+  width: 40%;
+  height: 32px;
+  margin-bottom: 20px;
+}
+
+.skeleton-subtitle {
+  width: 60%;
+  height: 20px;
+}
+
+.skeleton-fleet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.skeleton-data-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  padding: 15px;
+}
+
+.skeleton-data-card {
+  height: 140px;
+}
+
+.fleet-card.skeleton-card-new-base {
+  min-height: 180px;
+  background-color: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.skeleton-image-placeholder {
+  position: absolute;
+  z-index: 0;
+  top: 40px;
+  right: -25px;
+  height: 100px;
+  width: 130px;
+  opacity: 0.2;
+}
+
+.fleet-card.skeleton-card-new-base .fleet-card-footer {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 12px;
+  border-top: 1px solid #E5E7EB;
+}
+
+.skeleton-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.skeleton-text {
+  height: 16px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.skeleton-text-sm {
+  width: 60%;
+  height: 14px;
+}
+
+.skeleton-text-lg {
+  width: 80%;
+  height: 20px;
+}
+
+.skeleton-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 15px;
+}
+
+/* --- Loading Overlay for Map --- */
+.fleet-info-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+  width: 100%;
+  font-size: 1.1rem;
+  color: #5a6a85;
+  font-weight: 500;
+}
+
+.map-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 12px;
+}
+
+.map-loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #0b5297;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: map-rotation 1s linear infinite;
+}
+
+@keyframes map-rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.map-loading-overlay p {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #151d48;
+  margin-top: 15px;
+}
+
+/* Map Empty State (No Vehicles) */
+.map-empty-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  pointer-events: none;
+  /* Allow clicking through to the map */
+}
+
+.map-empty-card {
+  background-color: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  min-width: 300px;
+  max-width: 400px;
+  text-align: center;
+  animation: fadeInScale 0.3s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.map-empty-card p {
+  margin: 0;
+  color: #151d48;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.map-empty-card p:first-child {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+
+/* ======================================================= */
+/* === 7. Dark Mode Overrides === */
+/* ======================================================= */
+
+/* --- Base Layout --- */
+.dark #Home-info,
+.dark #Home-vlist-info {
+  background: #2d3748;
+  color: #fff;
+}
+
+.dark .Home-DCC {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0);
+}
+
+.dark #Home-info h2 {
+  color: #fff;
+}
+
+.dark #Home-vlist-info.fullscreen {
+  background-color: #222;
+}
+
+/* --- Header Badges (Soothing) --- */
+.dark #Home-VStaus-Total p {
+  background-color: #374151;
+  border-color: #4B5563;
+}
+
+.dark #Home-TFS {
+  color: #A5B4FC;
+  /* Soothing Blue */
+  border-color: rgba(165, 180, 252, 0.2);
+}
+
+.dark #Home-Active {
+  color: #6EE7B7;
+  /* Soothing Green */
+  border-color: rgba(110, 231, 183, 0.2);
+}
+
+.dark #Home-Inactive {
+  color: #FCA5A5;
+  /* Soothing Red */
+  border-color: rgba(252, 165, 165, 0.2);
+}
+
+.dark #Home-NoGps {
+  color: #FCD34D;
+  /* Soothing Amber */
+  border-color: rgba(252, 211, 77, 0.2);
+}
+
+/* --- Fleet Cards --- */
+.dark .fleet-card {
+  background-color: #374151;
+  border: 1px solid #4B5563;
+}
+
+.dark .fleet-card.active {
+  border-color: #A5B4FC;
+  /* Use a shadow similar to hover, but with the brand color */
+  box-shadow: 0 10px 15px -3px rgba(165, 180, 252, 0.2), 0 4px 6px -2px rgba(165, 180, 252, 0.1);
+  /* Make it "pop" */
+  transform: translateY(-4px);
+}
+
+.dark .coming-soon-badge {
+  background-color: #FBBF24;
+  color: #1F2937;
+}
+
+.dark .fleet-card-title {
+  color: #F3F4F6;
+}
+
+.dark .fleet-card-total {
+  color: #fff;
+}
+
+.dark .fleet-card-total-label {
+  color: #D1D5DB;
+}
+
+.dark .fleet-card-footer {
+  border-top-color: #4B5563;
+}
+
+.dark .fleet-card-status+.fleet-card-status {
+  border-left-color: #4B5563;
+}
+
+.dark .fleet-card-status-value {
+  color: #fff;
+}
+
+.dark .fleet-card-status-label {
+  color: #D1D5DB;
+}
+
+/* --- Dark Mode Card Footer (Soothing) --- */
+.dark .fleet-card-status-value.active {
+  color: #6EE7B7;
+  /* Soothing Green */
+}
+
+.dark .fleet-card-status-value.inactive {
+  color: #FCA5A5;
+  /* Soothing Red */
+}
+
+.dark .fleet-card-status-value.nogps {
+  color: #FCD34D;
+  /* Soothing Amber */
+}
+
+/* --- Data/KPI Cards --- */
+.dark #Home-sec-cont-2 {
+  background-color: #2d3748;
+}
+
+.dark .Home-DCC {
+  background: #27303f;
+  border: 1px solid #4a5568;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0);
+}
+
+.dark #Home-sec-cont-2 .Home-DCC:nth-of-type(1) {
+  background: none;
+  border: 1px solid #4a5568;
+}
+
+.dark #Home-sec-cont-2 .Home-DCC:nth-of-type(2) {
+  background: none;
+  border: 1px solid #4a5568;
+}
+
+.dark #Home-sec-cont-2 .Home-DCC:nth-of-type(3) {
+  background: none;
+  border: 1px solid #4a5568;
+}
+
+.dark #Home-sec-cont-2 .Home-DCC:nth-of-type(4) {
+  background: none;
+  border: 1px solid #4a5568;
+}
+
+.dark #Home-sec-cont-2 .Home-DCC:nth-of-type(5) {
+  background: none;
+  border: 1px solid #4a5568;
+}
+
+.dark #Home-sec-cont-2 .Home-DCC:nth-of-type(6) {
+  background: none;
+  border: 1px solid #4a5568;
+}
+
+.dark #Home-sec-cont-2 .Home-DCC:nth-of-type(7) {
+  background: none;
+  border: 1px solid #4a5568;
+}
+
+.dark #Home-sec-cont-2 .Home-DCC:nth-of-type(8) {
+  background: none;
+  border: 1px solid #4a5568;
+}
+
+.dark #Home-sec-cont-2 .Home-DCC:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.dark .Home-DCC p:first-of-type {
+  color: #e2e8f0;
+}
+
+.dark .Home-DCC p+p {
+  color: #a0aec0;
+}
+
+.dark .home-kpi-icon {
+  color: #e2e8f0;
+}
+
+/* --- Map Components --- */
+.dark .hmap-cont {
+  border: 1px solid #1a1a1a;
+}
+
+.dark .hmap-cont .map-filter-fab {
+  background-color: rgba(31, 41, 55, 0.92) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45) !important;
+  color: #e5e7eb !important;
+}
+
+.dark .hmap-cont .map-filter-popup {
+  background-color: #2a374a;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark .hmap-cont .filter-section {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark .hmap-cont .filter-title {
+  color: #f0f0f0;
+}
+
+.dark .hmap-cont .checkbox-row label,
+.dark .hmap-cont .radio-row label {
+  color: #eee;
+}
+
+/* --- Map Info Windows --- */
+.dark .custom-infowindow {
+  color: #e2e8f0;
+}
+
+.dark .infowindow-icon {
+  color: #a0aec0 !important;
+}
+
+.dark .title-label {
+  color: #a0aec0;
+}
+
+.dark .title-value {
+  color: #e2e8f0;
+}
+
+.dark .infowindow-divider {
+  background-color: #4a5568;
+}
+
+.dark .stat-icon {
+  color: #a0aec0;
+}
+
+.dark .stat-label {
+  color: #a0aec0;
+}
+
+.charger-infowow.dark,
+.dark .charger-infowindow {
+  background-color: #27303f;
+}
+
+.dark .charger-header {
+  color: #f8fafc;
+}
+
+.dark .charger-divider {
+  background-color: #4a5568;
+}
+
+.dark .charger-info-label {
+  color: #94a3b8;
+}
+
+.dark .charger-info-value {
+  color: #e2e8f0;
+}
+
+.dark .charger-info-icon {
+  color: #a5b4fc;
+}
+
+.dark .charger-marker {
+  background-color: #2d3748;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.dark .charger-marker.eka-charger .charger-icon {
+  color: #F97316;
+}
+
+.dark .charger-marker.puma-charger .charger-icon {
+  color: #34D399;
+}
+
+/* --- Skeletons & Loaders --- */
+.dark .skeleton-card {
+  background-color: transparent;
+}
+
+.dark .skeleton {
+  background-color: #4a5568;
+}
+
+.dark .skeleton::after {
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(100, 100, 100, 0.2),
+      transparent);
+}
+
+.dark .fleet-card.skeleton-card-new-base {
+  background-color: #374151;
+  border: 1px solid #4B5563;
+}
+
+.dark .fleet-card.skeleton-card-new-base .fleet-card-footer {
+  border-top-color: #4B5563;
+}
+
+.dark .fleet-info-loading {
+  color: #a0aec0;
+}
+
+.dark .map-loading-overlay {
+  background-color: rgba(45, 55, 72, 0.7);
+}
+
+.dark .map-loading-overlay p {
+  color: #e2e8f0;
+}
+
+.dark .map-loading-spinner {
+  border: 5px solid #a0aec0;
+  border-bottom-color: transparent;
+}
+
+/* Dark mode for map empty state */
+.dark .map-empty-card {
+  background-color: rgba(45, 55, 72, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.dark .map-empty-card p {
+  color: #e2e8f0;
+}
+
+
+
+/* ======================================================= */
+/* === 8. Media Queries (Responsive) === */
+/* ======================================================= */
+@media (max-width: 1440px) {
+  #Home-vlist-info {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 1200px) {
+  #Home-map {
+    width: 100%;
+    flex-direction: column;
+    font-size: 14px;
+  }
+
+  #Home-vlist-info {
+    flex-direction: row;
+    font-size: 14px;
+    width: 100%;
+  }
+
+  #Home-sec-cont-2 {
+    width: 40%;
+    font-size: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 5px;
+    background-color: white;
+    justify-content: space-evenly;
+    align-content: space-evenly;
+    overflow: auto;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .skeleton-data-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  #Home-vlist-info {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+  }
+
+  #Home-map {
+    width: 100%;
+    min-height: 350px;
+  }
+
+  #Home-sec-cont-2 {
+    width: 103%;
+    height: 105vh;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    overflow: auto;
+  }
+
+  #Home-DCC-Container {
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .Home-DCC {
+    width: auto;
+  }
+}
+
+@media (max-width: 965px) {
+  #Home-sec-cont-2 {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .hmap-cont {
+    width: 98%;
+    height: 86%;
+  }
+
+  .Home-DCC {
+    min-width: auto;
+    width: auto;
+  }
+}
+
+/* Small Tablet / Large Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+  #Home-container {
+    flex-direction: column;
+  }
+
+  #Home-info h2 {
+    font-size: 25px;
+    line-height: 34px;
+    padding-bottom: 1px;
+  }
+
+  .fleet-card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Logic for hiding map and showing button */
+  #Home-vlist-info:not(.fullscreen) .hmap-cont {
+    display: none !important;
+  }
+
+  .map-fab {
+    display: flex;
+  }
+
+  #Home-vlist-info.fullscreen {
+    top: 52px;
+    height: calc(100vh - 52px);
+  }
+
+  #Home-vlist-info.fullscreen .hmap-cont {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #Home-vlist-info.fullscreen #Home-sec-cont-2 {
+    display: none;
+  }
+
+  #Home-TFS,
+  #Home-Trees-Saved {
+    font-size: 19px;
+  }
+
+  .text-sm {
+    font-size: 17px;
+  }
+
+  .Home-DCC img {
+    width: 50px !important;
+    height: auto !important;
+    margin-top: 28px;
+  }
+
+  .Home-DCC p:last-child {
+    font-size: 14px !important;
+  }
+
+  .Home-DCC p+p {
+    margin-top: -10px;
+    line-height: 14px;
+  }
+
+  #Home-sec-cont-2 {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .Home-DCC {
+    width: auto;
+    min-width: 100px;
+  }
+
+  .Home-DCC p {
+    font-size: 17px;
+  }
+
+  .skeleton-data-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skeleton-fleet-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 550px) {
+  .Home-DCC p {
+    font-size: 15px;
+  }
+
+  .Home-DCC p:last-child {
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  #Home-vlist-info {
+    flex-direction: column;
+    height: auto;
+  }
+
+  #Home-vlist-info.fullscreen {
+    top: 48px;
+    height: calc(100vh - 48px);
+  }
+
+  .Home-DCC p {
+    font-size: 11px;
+  }
+
+  #Home-sec-cont-2 {
+    padding: 5px;
+    gap: 5px;
+  }
+
+  #Home-DCC-Container {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .Home-DCC {
+    width: 90%;
+    height: 150px;
+    min-width: 100px;
+  }
+
+  .Home-DCC img {
+    width: 45px !important;
+    height: auto !important;
+  }
+
+  .Home-DCC p:last-child {
+    font-size: 10px !important;
+  }
+
+  .hmap-cont .map-filter-popup {
+    width: calc(100% - 30px);
+  }
+
+  .fleet-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .fleet-card {
+    min-height: 160px;
+    padding: 12px 8px;
+  }
+
+  .fleet-card-total {
+    font-size: 1.6rem;
+  }
+
+  .fleet-card-status-value {
+    font-size: 1rem;
+  }
+
+  .fleet-card-image,
+  .skeleton-image-placeholder {
+    height: 86px;
+    top: 32px;
+    right: -30px;
+  }
+
+  .fleet-card-grid .fleet-card[data-model="7m"] .fleet-card-image,
+  .fleet-card-grid .fleet-card[data-model="9m"] .fleet-card-image {
+    top: 44px;
+    height: 79px;
+  }
+}
+
+/* ======================================================= */
+/* === 10. Tab Switcher for KPI/Vehicle List === */
+/* ======================================================= */
+
+/* Right panel container - PREMIUM */
+.home-right-panel {
+  display: flex;
+  flex-direction: column;
+  width: 42%;
+  min-width: 340px;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 4px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Tab switcher container - COMPACT */
+.home-view-switcher {
+  display: flex;
+  gap: 0;
+  padding: 3px;
+  background: #e2e8f0;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Tab button styles - COMPACT HEIGHT */
+.home-view-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  /* Reduced from 12px 16px */
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #475569;
+  font-family: "Exo 2", sans-serif;
+  font-size: 13px;
+  /* Slightly smaller */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.home-view-tab:hover {
+  background: rgba(255, 255, 255, 0.5);
+  color: #0b5297;
+}
+
+/* Active tab - CLEAN SOLID */
+.home-view-tab.active {
+  background: #0b5297;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(11, 82, 151, 0.3);
+}
+
+.home-view-tab.active svg {
+  color: #ffffff;
+}
+
+/* View content container - ALWAYS START FROM TOP */
+.home-view-content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  /* Force top alignment */
+  align-items: stretch;
+  background: transparent;
+  border-radius: 8px;
+}
+
+/* Make HomeMap (KPI cards) scrollable within */
+.home-view-content #Home-sec-cont-2 {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* Vehicle list wrapper - ALWAYS START FROM TOP */
+.home-vehicle-list-wrapper {
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  /* Force top alignment */
+  align-items: stretch;
+}
+
+.home-vehicle-list-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.home-vehicle-list-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.home-vehicle-list-wrapper::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 3px;
+}
+
+/* Override vehicle selection list styles for home page - FIXED HEIGHT */
+.home-vehicle-list-wrapper #vehicleSelection-info-container-2-vlist {
+  width: 100%;
+  height: 100%;
+  max-height: calc(100vh - 280px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  /* Start from top, not center */
+  align-items: stretch;
+  padding: 5px 0 0 0;
+  /* Small top padding */
+  background: transparent;
+}
+
+/* Scrollable vehicle list */
+.home-vehicle-list-wrapper #vsl-cont {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 20px;
+  padding-right: 5px;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+  gap: 20px;
+  /* User requested gap between cards */
+}
+
+.home-vehicle-list-wrapper #vsl-cont::-webkit-scrollbar {
+  width: 6px;
+}
+
+.home-vehicle-list-wrapper #vsl-cont::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.home-vehicle-list-wrapper #vsl-cont::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 3px;
+}
+
+/* Make vehicle cards display properly in single column with tight spacing */
+.home-vehicle-list-wrapper #vs-lcontainer {
+  width: 100%;
+  min-width: unset;
+  max-width: 100%;
+  margin-bottom: 6px;
+  /* Tight gap between cards */
+  padding: 0;
+}
+
+/* Reduce internal padding of cards */
+.home-vehicle-list-wrapper #vs-lcontainer .vsl-card-content,
+.home-vehicle-list-wrapper #vs-lcontainer .vsl-stats-section {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* Left align the dropdown selector - target ALL possible containers */
+.home-vehicle-list-wrapper .vsl-dropdown-container,
+.home-vehicle-list-wrapper .vehicle-selector-wrapper,
+.home-vehicle-list-wrapper #vehicleSelection-info-container-2-vlist>div:first-child {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 0px;
+  /* User requested 0 margin */
+}
+
+/* Ensure dropdown content alignment */
+.home-vehicle-list-wrapper .vehicle-selector-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Fix dropdown button styling */
+.home-vehicle-list-wrapper .custom-dropdown {
+  width: auto;
+  min-width: 220px;
+}
+
+/* ======================================================= */
+/* === Dark Mode - Tab Switcher === */
+/* ======================================================= */
+
+.dark .home-view-switcher {
+  background: linear-gradient(145deg, #374151 0%, #1f2937 100%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dark .home-view-tab {
+  color: #9ca3af;
+}
+
+.dark .home-view-tab:hover {
+  background: rgba(96, 165, 250, 0.1);
+  color: #60a5fa;
+}
+
+.dark .home-view-tab.active {
+  background: #60a5fa;
+  color: #1f2937;
+}
+
+.dark .home-right-panel {
+  background: linear-gradient(180deg, #374151 0%, #1f2937 100%);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ======================================================= */
+/* === Responsive - Tab Switcher === */
+/* ======================================================= */
+
+@media (max-width: 1024px) {
+  .home-right-panel {
+    width: 50%;
+    min-width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  #Home-vlist-info {
+    flex-direction: column;
+  }
+
+  .home-right-panel {
+    width: 100%;
+    min-width: unset;
+    max-height: 50vh;
+  }
+
+  .home-view-switcher {
+    padding: 6px 8px;
+    margin-bottom: 8px;
+  }
+
+  .home-view-tab {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-view-tab {
+    padding: 6px 10px;
+    font-size: 12px;
+    gap: 4px;
+  }
+
+  .home-view-tab svg {
+    font-size: 16px !important;
+  }
+}

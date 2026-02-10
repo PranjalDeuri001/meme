@@ -1,0 +1,81 @@
+/* src/Components/common/Button.css */
+/* src/index.css */
+
+/* --- GLOBAL THEME COLOR DEFINITIONS --- */
+
+/* :root defines the variables for the default (light) theme */
+:root {
+  --primary-color: #0b5297; /* The blue from your light theme */
+  --primary-color-dark-hover: #08437a; /* A darker blue for hover */
+  --secondary-color: #475569; /* Gray for secondary buttons */
+  --secondary-color-hover: #5a6268;
+  --success-color: #73be44; /* The green for the success button */
+  --success-color-hover: #5a9a31;
+  --text-on-primary: #ffffff; /* Text color on a dark background */
+}
+
+/* .dark redefines the variables for the dark theme */
+.dark {
+  --primary-color: #334155; /* The slate gray from your dark theme */
+  --primary-color-dark-hover: #475569; /* A slightly lighter slate for hover */
+  --secondary-color: #475569;
+  --secondary-color-hover: #5a6268;
+  /* Success color can remain the same or be adjusted for dark mode */
+  --success-color: #73be44;
+  --success-color-hover: #5a9a31;
+  --text-on-primary: #E2E8F0; /* Light gray text for dark mode */
+}
+/* --- Base Button Style --- */
+/* This is the core style for all buttons */
+.btn {
+    height: 40px;
+    width: 100%;
+    font-family: "Exo 2", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 5px 15px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* --- Button Variants --- */
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--text-on-primary);
+    border-color: var(--primary-color);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: var(--secondary-color-hover);
+    border-color: var(--secondary-color-hover);
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    color: var(--text-on-primary);
+    border-color: var(--success-color);
+}
+
+.btn-success:hover:not(:disabled) {
+    background-color: var(--success-color-hover);
+    border-color: var(--success-color-hover);
+}
+
+/* Add more variants as needed, e.g., for destructive actions */
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}

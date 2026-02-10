@@ -1,0 +1,193 @@
+/* MaintenanceAndService.css */
+
+/* --- Theme Variables (from FleetSummary.css) --- */
+:root {
+  --primary-color: #0b5297;
+  --primary-color-dark-hover: #08437a;
+  --primary-text-color: #1e293b;
+  --secondary-text-color: #475569;
+  --border-color: #dee2e6;
+  --border-color-medium: #e2e8f0;
+  --page-background: #fff;
+  --row-background-odd: #eef2f9;
+  --row-background-even: #fff;
+  --row-background-hover: #dbeafe;
+  --shadow-color: rgba(160, 160, 160, 0.25);
+  --success-color: #28a745;
+  --success-color-hover: #218838;
+}
+
+.dark {
+  --primary-color: #374155;
+  --primary-color-dark-hover: #4a5568;
+  --primary-text-color: #e2e8f0;
+  --secondary-text-color: #a0aec0;
+  --border-color: #4a5568;
+  --border-color-medium: #4a5568;
+  --page-background: #2d3748;
+  --row-background-odd: #2d3748;
+  --row-background-even: #27303f;
+  --row-background-hover: #4a5568;
+  --shadow-color: transparent;
+  --success-color: #34d399;
+  --success-color-hover: #10b981;
+}
+
+/* --- Base Layout --- */
+.maintenance-page-container {
+  background: var(--page-background);
+  color: var(--primary-text-color);
+  box-shadow: 0px 4px 4px 0px var(--shadow-color);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.loading-message, .error-message {
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--secondary-text-color);
+}
+
+/* --- Page Header --- */
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  padding: 0 10px;
+}
+
+.page-header h1 {
+  color: var(--primary-color);
+  font-family: "Exo 2", sans-serif;
+  font-size: 27px;
+  font-weight: 600;
+}
+.dark .page-header h1 {
+  color: var(--primary-text-color);
+}
+
+/* --- Themed Buttons (replaces .Raise-btn-primary) --- */
+.ms-theme-btn {
+  font-family: "Exo 2", sans-serif !important;
+  text-transform: none !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  height: 40px;
+  padding: 6px 16px !important;
+  box-shadow: none !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.ms-theme-btn-contained {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+.ms-theme-btn-contained:hover {
+  background-color: var(--primary-color-dark-hover) !important;
+}
+.ms-theme-btn-outlined {
+  border: 1px solid var(--border-color) !important;
+  color: var(--primary-text-color) !important;
+}
+
+/* --- Table Styles --- */
+.ticket-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: separate;
+}
+.ticket-table thead th {
+  position: sticky; top: 0; z-index: 10;
+  color: #fff;
+  background-color: var(--primary-color);
+  font-size: 18px;
+  font-weight: 600;
+  padding: 12px 15px;
+  text-align: left;
+}
+.ticket-table thead th:first-child { border-top-left-radius: 12px; }
+.ticket-table thead th:last-child { border-top-right-radius: 12px; }
+
+.ticket-table td {
+  font-size: 17px;
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--primary-text-color);
+}
+
+.ticket-table tbody tr:nth-child(odd) { background-color: var(--row-background-odd); }
+.ticket-table tbody tr:nth-child(even) { background-color: var(--row-background-even); }
+.ticket-table tbody tr:hover { background-color: var(--row-background-hover) !important; }
+
+.no-tickets-message { text-align: center; padding: 40px; font-style: italic; color: var(--secondary-text-color); }
+.problem-description-cell { max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Status Badge */
+.status { padding: 4px 12px; border-radius: 12px; font-weight: 600; font-size: 12px; text-transform: capitalize; }
+.status-open { background-color: #fff0e1; color: #ff8c00; }
+.status-closed { background-color: #e6f4ea; color: #34a853; }
+.status-in-progress { background-color: #e9f5ff; color: #1a73e8; }
+.dark .status-open { background-color: #5d3a00; color: #ffab40; }
+.dark .status-closed { background-color: #1e4620; color: #81c784; }
+.dark .status-in-progress { background-color: #0b3961; color: #82b1ff; }
+
+/* View Button */
+.view-btn { background: none; border: none; cursor: pointer; padding: 5px; font-size: 1.3rem; color: var(--primary-color); transition: color 0.2s; }
+.view-btn:hover { color: var(--primary-color-dark-hover); }
+.dark .view-btn { color: #a0aec0; }
+
+/* --- Modal & Form Styles --- */
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
+.modal-content { background: var(--page-background); padding: 25px; border-radius: 16px; width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color); }
+.dark .modal-content { background-color: #27303f; }
+
+.modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px; }
+.modal-header h2 { color: var(--primary-color); font-size: 24px; font-weight: 600; margin: 0; }
+.dark .modal-header h2 { color: var(--primary-text-color); }
+.close-button { background: transparent; border: none; font-size: 1.8rem; cursor: pointer; color: var(--secondary-text-color); }
+
+.ticket-form .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px; }
+.ticket-form .form-group { display: flex; flex-direction: column; }
+.ticket-form label { margin-bottom: 8px; font-weight: 600; color: var(--primary-color); font-size: 0.9rem; }
+.dark .ticket-form label { color: var(--secondary-text-color); }
+
+.ticket-form input, .ticket-form select, .ticket-form textarea {
+  width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; box-sizing: border-box; background-color: #f8f8f8; color: var(--primary-text-color); font-family: "Exo 2", sans-serif;
+}
+.dark .ticket-form input, .dark .ticket-form select, .dark .ticket-form textarea {
+  background-color: #1f2937; color: var(--primary-text-color); border-color: var(--border-color);
+}
+.ticket-form textarea { resize: vertical; }
+
+.form-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px; }
+.btn-create { background-color: var(--success-color) !important; color: #fff !important; }
+.btn-create:hover { background-color: var(--success-color-hover) !important; }
+
+/* Ticket View Modal Details */
+.ticket-details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+.detail-item { background-color: var(--row-background-odd); padding: 12px; border-radius: 5px; border-left: 4px solid var(--primary-color); }
+.detail-label { display: block; font-weight: 600; color: var(--primary-color); font-size: 0.85rem; margin-bottom: 4px; }
+.dark .detail-label { color: var(--secondary-text-color); }
+.detail-value { font-size: 1rem; color: var(--primary-text-color); word-wrap: break-word; }
+.detail-item.full-width { grid-column: 1 / -1; }
+
+/* --- Mobile Responsive Styles --- */
+@media screen and (max-width: 767px) {
+  .page-header { flex-direction: column; align-items: flex-start; }
+  .ticket-form .form-row { grid-template-columns: 1fr; gap: 0; }
+  .ticket-form .form-group { margin-bottom: 18px; }
+
+  /* Mobile Table Transformation */
+  .ticket-table thead { display: none; }
+  .ticket-table tr { display: block; border: 1px solid var(--border-color-medium); margin-bottom: 1rem; border-radius: 8px; }
+  .ticket-table td { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px !important; text-align: right; border-bottom: none; }
+  .ticket-table td:not(:last-child) { border-bottom: 1px solid var(--border-color-medium); }
+  .ticket-table td::before { content: attr(data-label); font-weight: 600; color: var(--secondary-text-color); text-align: left; margin-right: 1rem; }
+  .dark .ticket-table td::before { color: var(--primary-text-color); }
+}
