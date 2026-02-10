@@ -12,6 +12,7 @@ dependencies:
   cupertino_icons: any
   http: any
   web_socket_channel: any
+  google_maps_flutter: any
 
 dev_dependencies:
   flutter_test:

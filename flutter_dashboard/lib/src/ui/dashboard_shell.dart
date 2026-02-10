@@ -7,8 +7,15 @@ import '../controllers/dashboard_controller.dart';
 import '../models/dashboard_route.dart';
 import '../models/user_info.dart';
 import 'pages/alerts_page.dart';
+import 'pages/custom_analysis_page.dart';
 import 'pages/feature_placeholder_page.dart';
+import 'pages/fault_database_page.dart';
+import 'pages/fleet_summary_page.dart';
 import 'pages/home_page.dart';
+import 'pages/management_dashboard_page.dart';
+import 'pages/reports_page.dart';
+import 'pages/trip_analysis_page.dart';
+import 'pages/vehicle_status_page.dart';
 
 class DashboardShell extends StatefulWidget {
   const DashboardShell({
@@ -218,34 +225,24 @@ class _DashboardShellState extends State<DashboardShell> {
       case '/alerts-notification':
         return AlertsPage(controller: widget.dashboardController);
       case '/management-dashboard':
-        return const FeaturePlaceholderPage(
-          title: 'Management Dashboard',
-          description:
-              'Container screen for advanced management insights. Attach charts/maps/widgets from the React page into this Flutter screen.',
+        return ManagementDashboardPage(
+          controller: widget.dashboardController,
         );
       case '/fleet-summary':
-        return const FeaturePlaceholderPage(
-          title: 'Fleet Summary',
-          description:
-              'Use getAllDevices + report APIs to mirror fleet-level analytics and tabular summaries.',
+        return FleetSummaryPage(
+          controller: widget.dashboardController,
         );
       case '/device-summary':
-        return const FeaturePlaceholderPage(
-          title: 'Vehicle Status',
-          description:
-              'Use live vehicle stream and metadata to render enterprise status boards and per-vehicle details.',
+        return VehicleStatusPage(
+          controller: widget.dashboardController,
         );
       case '/analysis':
-        return const FeaturePlaceholderPage(
-          title: 'Trip Analysis',
-          description:
-              'Bind chart view endpoint to chart widgets for trip plots and signal trend analysis.',
+        return TripAnalysisPage(
+          controller: widget.dashboardController,
         );
       case '/custom-analysis':
-        return const FeaturePlaceholderPage(
-          title: 'Custom Analysis',
-          description:
-              'Use chart-view transformed row data for custom plotting and CSV-style exploration.',
+        return CustomAnalysisPage(
+          controller: widget.dashboardController,
         );
       case '/trails':
         return const FeaturePlaceholderPage(
@@ -254,16 +251,12 @@ class _DashboardShellState extends State<DashboardShell> {
               'Integrate mapping widgets and selected route traces from historical telemetry.',
         );
       case '/reports':
-        return const FeaturePlaceholderPage(
-          title: 'Reports',
-          description:
-              'Use daily-summary-report and summary-data endpoints with date/period filters.',
+        return ReportsPage(
+          controller: widget.dashboardController,
         );
       case '/faults':
-        return const FeaturePlaceholderPage(
-          title: 'Fault Database',
-          description:
-              'Bind fault API payloads to grouped severity lists and issue drill-down views.',
+        return FaultDatabasePage(
+          controller: widget.dashboardController,
         );
       case '/maintenance-service':
         return const FeaturePlaceholderPage(

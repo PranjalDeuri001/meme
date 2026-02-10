@@ -12,4 +12,11 @@ class AppConfig {
     'WS_URL',
     defaultValue: 'ws://localhost:8002',
   );
+
+  // Used mainly for documentation/diagnostics; native platforms still require
+  // the key to be configured in AndroidManifest.xml / AppDelegate / web index.
+  static const String googleMapsApiKey = String.fromEnvironment(
+    'GOOGLE_MAPS_API_KEY',
+    defaultValue: '',
+  );
 }

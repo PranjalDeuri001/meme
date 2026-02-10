@@ -9,6 +9,7 @@ This folder contains a Flutter implementation of the React dashboard in this rep
 - Live vehicles flow (REST bootstrap + websocket live updates)
 - Fleet metrics flow (websocket `total_data` stream with debounced socket switching)
 - Alerts flow (`/devices/alerts`) with the same priority derivation and data transformation used in `apiSlice.js`
+- Google Maps integration in Home + Management views with live **vehicle clustering by lat/long**
 - Summary/report fetch helpers:
   - `/devices/daily-summary-report/`
   - `/devices/summary-data/`
@@ -32,8 +33,17 @@ All React sidebar routes are represented in Flutter:
 - `/add-vehicle`
 - `/settings`
 
-`Home` and `Live Alerts` are implemented with live data.  
-Remaining pages are scaffolded placeholders ready for widget-level porting.
+Implemented pages:
+
+- Home (live map clustering + status/model filters + fleet metrics)
+- Management Dashboard
+- Fleet Summary
+- Vehicle Status
+- Trip Analysis
+- Custom Analysis (fetch mode + upload JSON mode)
+- Reports
+- Fault Database
+- Live Alerts
 
 ## Run
 
@@ -43,13 +53,17 @@ Remaining pages are scaffolded placeholders ready for widget-level porting.
 ```bash
 flutter create . --platforms=web,android,ios,macos,linux,windows
 flutter pub get
-flutter run -d chrome --dart-define=API_URL=https://<your-api> --dart-define=WS_URL=wss://<your-ws-host>
+flutter run -d chrome \
+  --dart-define=API_URL=https://<your-api> \
+  --dart-define=WS_URL=wss://<your-ws-host> \
+  --dart-define=GOOGLE_MAPS_API_KEY=<your-google-maps-key>
 ```
 
 If you omit `dart-define` values, defaults are:
 
 - `API_URL = http://localhost:8002`
 - `WS_URL = ws://localhost:8002`
+- `GOOGLE_MAPS_API_KEY = ""`
 
 ## Notes
 
@@ -58,3 +72,7 @@ If you omit `dart-define` values, defaults are:
   - metrics socket debounce/switch logic
   - mode derivation (`active`, `inactive`, `nogps`, `pending`)
 - Alerts priority logic mirrors the React code exactly (temperature/brake/thermal/etc -> HIGH, else MEDIUM).
+- For Google Maps, set platform keys after `flutter create .`:
+  - Android: `android/app/src/main/AndroidManifest.xml`
+  - iOS: `ios/Runner/AppDelegate.swift` (or `AppDelegate.m`)
+  - Web: `web/index.html` script tag key

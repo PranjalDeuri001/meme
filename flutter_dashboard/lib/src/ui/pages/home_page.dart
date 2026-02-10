@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../controllers/dashboard_controller.dart';
 import '../../models/vehicle.dart';
+import '../widgets/vehicle_cluster_map.dart';
 
 enum _StatusFilter {
   all,
@@ -79,6 +80,32 @@ class _HomePageState extends State<HomePage> {
               _CountCard(title: 'Inactive', value: '$inactiveCount'),
               _CountCard(title: 'No GPS', value: '$noGpsCount'),
             ],
+          ),
+          const SizedBox(height: 16),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Live Vehicle Map (Clustered)',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    height: 420,
+                    child: vehicles.isEmpty
+                        ? const Center(
+                            child: Text(
+                              'No vehicle GPS points available for current filter.',
+                            ),
+                          )
+                        : VehicleClusterMap(vehicles: vehicles),
+                  ),
+                ],
+              ),
+            ),
           ),
           const SizedBox(height: 16),
           _buildMetricsCard(context),
