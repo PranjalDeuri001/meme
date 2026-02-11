@@ -17,6 +17,7 @@ class DashboardController extends ChangeNotifier {
 
   String? _username;
   String? _selectedDeviceTypeName;
+  Object? _selectedMetricsFilter;
 
   List<Device> _allDevices = <Device>[];
   List<Vehicle> _vehicles = <Vehicle>[];
@@ -39,6 +40,7 @@ class DashboardController extends ChangeNotifier {
 
   String? get username => _username;
   String? get selectedDeviceTypeName => _selectedDeviceTypeName;
+  Object? get selectedMetricsFilter => _selectedMetricsFilter;
 
   List<Device> get allDevices => List<Device>.unmodifiable(_allDevices);
   List<Vehicle> get vehicles => List<Vehicle>.unmodifiable(_vehicles);
@@ -98,7 +100,20 @@ class DashboardController extends ChangeNotifier {
   }
 
   void setSelectedDeviceTypeName(String? value) {
-    _selectedDeviceTypeName = value;
+    final normalized = (value == null || value.trim().isEmpty) ? null : value.trim();
+    _selectedDeviceTypeName = normalized;
+    _selectedMetricsFilter = normalized;
+    _subscribeFleetMetrics();
+    notifyListeners();
+  }
+
+  void setSelectedMetricsFilter(Object? filter) {
+    final normalized = _normalizeMetricsFilter(filter);
+    if (_filtersEqual(_selectedMetricsFilter, normalized)) {
+      return;
+    }
+    _selectedMetricsFilter = normalized;
+    _selectedDeviceTypeName = normalized is String ? normalized : null;
     _subscribeFleetMetrics();
     notifyListeners();
   }
@@ -222,7 +237,7 @@ class DashboardController extends ChangeNotifier {
     _metricsSubscription = _repository
         .watchFleetMetrics(
           username: user,
-          deviceTypeName: _selectedDeviceTypeName,
+          deviceTypeName: _selectedMetricsFilter,
         )
         .listen(
       (FleetMetrics metrics) {
@@ -258,6 +273,7 @@ class DashboardController extends ChangeNotifier {
     _metricsSubscription = null;
     _username = null;
     _selectedDeviceTypeName = null;
+    _selectedMetricsFilter = null;
     _allDevices = <Device>[];
     _vehicles = <Vehicle>[];
     _alerts = <AlertItem>[];
@@ -279,5 +295,45 @@ class DashboardController extends ChangeNotifier {
     _vehiclesSubscription?.cancel();
     _metricsSubscription?.cancel();
     super.dispose();
+  }
+
+  Object? _normalizeMetricsFilter(Object? value) {
+    if (value == null) {
+      return null;
+    }
+    if (value is String) {
+      final trimmed = value.trim();
+      return trimmed.isEmpty ? null : trimmed;
+    }
+    if (value is Map) {
+      return Map<String, dynamic>.from(
+        value.map(
+          (dynamic key, dynamic itemValue) => MapEntry<String, dynamic>(
+            key.toString(),
+            itemValue,
+          ),
+        ),
+      );
+    }
+    return value;
+  }
+
+  bool _filtersEqual(Object? left, Object? right) {
+    if (left is Map && right is Map) {
+      final leftMap = Map<String, dynamic>.from(
+        left.map(
+          (dynamic key, dynamic value) =>
+              MapEntry<String, dynamic>(key.toString(), value),
+        ),
+      );
+      final rightMap = Map<String, dynamic>.from(
+        right.map(
+          (dynamic key, dynamic value) =>
+              MapEntry<String, dynamic>(key.toString(), value),
+        ),
+      );
+      return mapEquals(leftMap, rightMap);
+    }
+    return left == right;
   }
 }

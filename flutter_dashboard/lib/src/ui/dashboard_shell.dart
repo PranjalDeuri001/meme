@@ -14,7 +14,6 @@ import 'pages/fleet_summary_page.dart';
 import 'pages/home_page.dart';
 import 'pages/management_dashboard_page.dart';
 import 'pages/reports_page.dart';
-import 'pages/trip_analysis_page.dart';
 import 'pages/vehicle_status_page.dart';
 
 class DashboardShell extends StatefulWidget {
@@ -144,9 +143,7 @@ class _DashboardShellState extends State<DashboardShell> {
                   ),
                 ),
                 onSelected: (String value) async {
-                  if (value == 'settings') {
-                    widget.appController.setSelectedPath('/settings');
-                  } else if (value == 'logout') {
+                  if (value == 'logout') {
                     await widget.onLogout();
                   }
                 },
@@ -157,10 +154,6 @@ class _DashboardShellState extends State<DashboardShell> {
                       child: _UserInfoRow(user: user),
                     ),
                     const PopupMenuDivider(),
-                    const PopupMenuItem<String>(
-                      value: 'settings',
-                      child: Text('Settings'),
-                    ),
                     const PopupMenuItem<String>(
                       value: 'logout',
                       child: Text('Logout'),
@@ -236,19 +229,9 @@ class _DashboardShellState extends State<DashboardShell> {
         return VehicleStatusPage(
           controller: widget.dashboardController,
         );
-      case '/analysis':
-        return TripAnalysisPage(
-          controller: widget.dashboardController,
-        );
       case '/custom-analysis':
         return CustomAnalysisPage(
           controller: widget.dashboardController,
-        );
-      case '/trails':
-        return const FeaturePlaceholderPage(
-          title: 'Daily Trails',
-          description:
-              'Integrate mapping widgets and selected route traces from historical telemetry.',
         );
       case '/reports':
         return ReportsPage(
@@ -258,23 +241,11 @@ class _DashboardShellState extends State<DashboardShell> {
         return FaultDatabasePage(
           controller: widget.dashboardController,
         );
-      case '/maintenance-service':
-        return const FeaturePlaceholderPage(
-          title: 'Maintenance & Service',
-          description:
-              'Implement planned maintenance schedules, ticketing, and service status cards.',
-        );
       case '/add-vehicle':
         return const FeaturePlaceholderPage(
           title: 'Add Vehicle',
           description:
               'Implement vehicle onboarding form and server mutation endpoint integration.',
-        );
-      case '/settings':
-        return const FeaturePlaceholderPage(
-          title: 'User Settings',
-          description:
-              'Implement profile, security, language, and preference modules.',
         );
       default:
         return FeaturePlaceholderPage(

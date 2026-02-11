@@ -42,22 +42,10 @@ const List<DashboardRoute> kAllDashboardRoutes = <DashboardRoute>[
     featureName: 'Vehicle Status',
   ),
   DashboardRoute(
-    path: '/analysis',
-    title: 'Trip Analysis',
-    icon: Icons.timeline,
-    featureName: 'Trip Analysis',
-  ),
-  DashboardRoute(
     path: '/custom-analysis',
     title: 'Custom Analysis',
     icon: Icons.calculate_rounded,
     featureName: 'Custom Analysis',
-  ),
-  DashboardRoute(
-    path: '/trails',
-    title: 'Daily Trails',
-    icon: Icons.route_rounded,
-    featureName: 'Trails',
   ),
   DashboardRoute(
     path: '/reports',
@@ -78,21 +66,9 @@ const List<DashboardRoute> kAllDashboardRoutes = <DashboardRoute>[
     featureName: 'Live Alerts',
   ),
   DashboardRoute(
-    path: '/maintenance-service',
-    title: 'Maintenance & Service',
-    icon: Icons.build,
-    featureName: 'Maintenance & Service',
-  ),
-  DashboardRoute(
     path: '/add-vehicle',
     title: 'Add Vehicle',
     icon: Icons.add_circle,
     featureName: 'Add Vehicle',
-  ),
-  DashboardRoute(
-    path: '/settings',
-    title: 'User Settings',
-    icon: Icons.settings,
-    alwaysVisible: true,
   ),
 ];
