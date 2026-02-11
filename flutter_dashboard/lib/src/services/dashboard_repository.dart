@@ -269,6 +269,18 @@ class DashboardRepository {
     return const <dynamic>[];
   }
 
+  Future<List<dynamic>> getAllDataReport({
+    required String username,
+  }) async {
+    final response = await _apiClient.getJson(
+      '/devices/all-data-report/',
+      queryParameters: <String, String>{
+        'username': username,
+      },
+    );
+    return _extractList(response);
+  }
+
   Future<List<AlertItem>> getAlerts({
     required String username,
   }) async {

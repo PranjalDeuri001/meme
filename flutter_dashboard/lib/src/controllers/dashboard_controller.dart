@@ -187,6 +187,16 @@ class DashboardController extends ChangeNotifier {
     );
   }
 
+  Future<List<dynamic>> fetchAllDataReport() async {
+    final user = _username;
+    if (user == null || user.trim().isEmpty) {
+      return const <dynamic>[];
+    }
+    return _repository.getAllDataReport(
+      username: user,
+    );
+  }
+
   Future<List<dynamic>> fetchChartViewData({
     required String deviceId,
     required DateTime date,
