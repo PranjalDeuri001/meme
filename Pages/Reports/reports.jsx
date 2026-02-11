@@ -753,6 +753,17 @@ function Individual() {
         ],
       },
       {
+        title: t("reports.alertReport", "Alert Report"),
+        columns: [
+          "Date",
+          "Alert_Type",
+          "Start_Time",
+          "End_Time",
+          "VRN",
+          "Severity",
+        ],
+      },
+      {
         title: t("reports.vehicleStatusReport"),
         columns: [
           "Trip_Id",
