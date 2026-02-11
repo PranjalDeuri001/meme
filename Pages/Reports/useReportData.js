@@ -493,8 +493,12 @@ export const useReportData = (
         let itemsPerPage = 100;
 
         if (reportType === "MIS Report") {
-          // MIS Report logic (omitted for brevity)
-          transformedData = [];
+          transformedData = processNestedPostResponseHierarchical(
+            apiData && typeof apiData === "object" ? apiData : {},
+            { arrayKey: "trips", startKey: "start_time", endKey: "end_time" }
+          );
+          if (Array.isArray(apiData)) transformedData = apiData;
+          else if (apiData?.results) transformedData = Array.isArray(apiData.results) ? apiData.results : transformedData;
         } else {
           const POST_REPORTS = [
             "Daily Summary Report",
@@ -623,6 +627,13 @@ export const useReportData = (
 
     if (reportType === "MIS Report" && !username) return;
 
+    const baseUrlNormalized = typeof backendUrl === "string" ? backendUrl.replace(/\/$/, "") : "";
+    if (!baseUrlNormalized && reportType !== "MIS Report") {
+      toast.error(t("userAlerts.failedToFetchData"));
+      setIsLoading(false);
+      return;
+    }
+
     setData([]);
     setCurrentPage(1);
 
@@ -636,7 +647,14 @@ export const useReportData = (
     ];
 
     if (POST_REPORTS.includes(reportType)) {
-      const url = `${backendUrl}/devices/reports/`;
+      const deviceList = Array.isArray(deviceId) ? deviceId : (deviceId ? [deviceId] : []);
+      const validDevices = deviceList.filter((d) => d != null && String(d).trim() !== "");
+      if (validDevices.length === 0 && reportType !== "Fault Report") {
+        toast.error(t("userAlerts.pleaseSelectValidVrnChassisNumebr"));
+        setIsLoading(false);
+        return;
+      }
+      const url = `${baseUrlNormalized}/devices/reports/`;
       setBaseUrl(url);
       const reportTypeMapping = {
         "Daily Summary Report": "daily_summary_report",
@@ -647,16 +665,15 @@ export const useReportData = (
         "Fault Report": "fault_report",
       };
       const payload = {
-        devices: Array.isArray(deviceId) ? deviceId : [deviceId],
+        devices: validDevices.length > 0 ? validDevices : [""],
         start_date: startDate,
         end_date: endDate,
-        vehicle_type: vehicleType,
+        vehicle_type: vehicleType || "",
         report_type: reportTypeMapping[reportType],
+        ...(username && { username }),
       };
 
       if (reportType === "Fault Report" && fleet) {
-        // If fleet is a string, wrap it; if array, use as is. 
-        // Based on other usage, fleet might be array or string.
         payload.fleet_name = Array.isArray(fleet) ? fleet : [fleet];
       }
 
@@ -677,9 +694,14 @@ export const useReportData = (
 
     let initialApiUrl;
     if (reportType === "MIS Report") {
+      const fleetParam = Array.isArray(deviceId) ? (deviceId[0] ?? "") : (deviceId ?? "");
+      if (!fleetParam || !username) {
+        setIsLoading(false);
+        return;
+      }
       initialApiUrl = apiUrlGenerator(
-        backendUrl,
-        deviceId,
+        baseUrlNormalized,
+        fleetParam,
         username,
         startDate,
         endDate,
@@ -689,14 +711,14 @@ export const useReportData = (
       const formattedStartDate = formatDateForAPI(startDate);
       const formattedEndDate = formatDateForAPI(endDate);
       initialApiUrl = apiUrlGenerator(
-        backendUrl,
+        baseUrlNormalized,
         formattedStartDate,
         formattedEndDate,
         vehicleType,
         username
       );
     } else {
-      initialApiUrl = apiUrlGenerator(backendUrl, deviceId, startDate, endDate);
+      initialApiUrl = apiUrlGenerator(baseUrlNormalized, deviceId, startDate, endDate);
     }
 
     if (initialApiUrl) {
