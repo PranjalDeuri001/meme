@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -32,6 +33,8 @@ class _VehicleClusterMapState extends State<VehicleClusterMap> {
   bool _trafficEnabled = false;
   MapType _mapType = MapType.normal;
   bool _didAutoCenter = false;
+  String? _lastClusterTapKey;
+  DateTime? _lastClusterTapTime;
 
   @override
   void initState() {
@@ -87,6 +90,11 @@ class _VehicleClusterMapState extends State<VehicleClusterMap> {
           scrollGesturesEnabled: true,
           rotateGesturesEnabled: true,
           tiltGesturesEnabled: true,
+          gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+            Factory<OneSequenceGestureRecognizer>(
+              () => EagerGestureRecognizer(),
+            ),
+          },
           zoomControlsEnabled: true,
           onMapCreated: (GoogleMapController controller) {
             _mapController = controller;
@@ -434,9 +442,24 @@ class _VehicleClusterMapState extends State<VehicleClusterMap> {
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
       infoWindow: InfoWindow(
         title: '${vehicles.length} vehicles',
-        snippet: 'Tap to zoom in',
+        snippet: 'Double tap to zoom in',
       ),
       onTap: () {
+        final now = DateTime.now();
+        final isDoubleTap = _lastClusterTapKey == key &&
+            _lastClusterTapTime != null &&
+            now.difference(_lastClusterTapTime!) <=
+                const Duration(milliseconds: 350);
+
+        _lastClusterTapKey = key;
+        _lastClusterTapTime = now;
+
+        // Single tap behavior: let InfoWindow show the vehicle count.
+        // Double tap behavior: zoom in to cluster center.
+        if (!isDoubleTap) {
+          return;
+        }
+
         final controller = _mapController;
         if (controller == null) {
           return;
