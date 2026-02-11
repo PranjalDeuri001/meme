@@ -12,10 +12,12 @@ class VehicleClusterMap extends StatefulWidget {
     super.key,
     required this.vehicles,
     this.initialZoom = 5,
+    this.filterSignature,
   });
 
   final List<Vehicle> vehicles;
   final double initialZoom;
+  final String? filterSignature;
 
   @override
   State<VehicleClusterMap> createState() => _VehicleClusterMapState();
@@ -49,6 +51,9 @@ class _VehicleClusterMapState extends State<VehicleClusterMap> {
         _centerMapToVehicles();
       }
     }
+    if (oldWidget.filterSignature != widget.filterSignature) {
+      _fitToVisibleVehicles();
+    }
   }
 
   @override
@@ -78,6 +83,10 @@ class _VehicleClusterMapState extends State<VehicleClusterMap> {
           markers: _markers,
           compassEnabled: true,
           myLocationButtonEnabled: false,
+          zoomGesturesEnabled: true,
+          scrollGesturesEnabled: true,
+          rotateGesturesEnabled: true,
+          tiltGesturesEnabled: true,
           zoomControlsEnabled: true,
           onMapCreated: (GoogleMapController controller) {
             _mapController = controller;
@@ -150,6 +159,40 @@ class _VehicleClusterMapState extends State<VehicleClusterMap> {
             ),
           ),
         ),
+        Positioned(
+          bottom: 16,
+          right: 12,
+          child: Card(
+            elevation: 4,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(
+                    tooltip: 'Zoom in',
+                    visualDensity: VisualDensity.compact,
+                    onPressed: _zoomIn,
+                    icon: const Icon(Icons.add),
+                  ),
+                  IconButton(
+                    tooltip: 'Zoom out',
+                    visualDensity: VisualDensity.compact,
+                    onPressed: _zoomOut,
+                    icon: const Icon(Icons.remove),
+                  ),
+                  const Divider(height: 1),
+                  IconButton(
+                    tooltip: 'Fit selected vehicles',
+                    visualDensity: VisualDensity.compact,
+                    onPressed: _fitToVisibleVehicles,
+                    icon: const Icon(Icons.fit_screen),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -176,18 +219,7 @@ class _VehicleClusterMapState extends State<VehicleClusterMap> {
       return;
     }
 
-    final bounds = _computeBounds(vehicles);
-    controller
-        .animateCamera(CameraUpdate.newLatLngBounds(bounds, 60))
-        .catchError((_) {
-      // On first frame some map implementations can reject bounds animation.
-      final center = _centroidOfVehicles(vehicles);
-      if (center != null) {
-        controller.animateCamera(
-          CameraUpdate.newLatLngZoom(center, 8),
-        );
-      }
-    });
+    _animateToBounds(controller, _computeBounds(vehicles), fallbackVehicles: vehicles);
   }
 
   List<Vehicle> _validVehicles(List<Vehicle> vehicles) {
@@ -277,6 +309,63 @@ class _VehicleClusterMapState extends State<VehicleClusterMap> {
 
     setState(() {
       _markers = markers;
+    });
+  }
+
+  void _zoomIn() {
+    final controller = _mapController;
+    if (controller == null) {
+      return;
+    }
+    final nextZoom = (_zoom + 1).clamp(3, 20).toDouble();
+    controller.animateCamera(CameraUpdate.zoomTo(nextZoom));
+  }
+
+  void _zoomOut() {
+    final controller = _mapController;
+    if (controller == null) {
+      return;
+    }
+    final nextZoom = (_zoom - 1).clamp(3, 20).toDouble();
+    controller.animateCamera(CameraUpdate.zoomTo(nextZoom));
+  }
+
+  void _fitToVisibleVehicles() {
+    final controller = _mapController;
+    if (controller == null) {
+      return;
+    }
+    final vehicles = _validVehicles(widget.vehicles);
+    if (vehicles.isEmpty) {
+      controller.animateCamera(
+        CameraUpdate.newLatLngZoom(_indiaCenter, widget.initialZoom),
+      );
+      return;
+    }
+    if (vehicles.length == 1) {
+      controller.animateCamera(
+        CameraUpdate.newLatLngZoom(
+          LatLng(vehicles.first.latitude, vehicles.first.longitude),
+          14,
+        ),
+      );
+      return;
+    }
+    _animateToBounds(controller, _computeBounds(vehicles), fallbackVehicles: vehicles);
+  }
+
+  void _animateToBounds(
+    GoogleMapController controller,
+    LatLngBounds bounds, {
+    required List<Vehicle> fallbackVehicles,
+  }) {
+    controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 60)).catchError((_) {
+      final center = _centroidOfVehicles(fallbackVehicles);
+      if (center != null) {
+        controller.animateCamera(
+          CameraUpdate.newLatLngZoom(center, 8),
+        );
+      }
     });
   }
 

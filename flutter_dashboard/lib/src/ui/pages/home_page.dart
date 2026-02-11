@@ -25,11 +25,28 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   _StatusFilter _statusFilter = _StatusFilter.all;
+  final Set<String> _selectedVehicleTypes = <String>{};
 
   @override
   Widget build(BuildContext context) {
     final controller = widget.controller;
-    final vehicles = controller.filteredVehicles.where((Vehicle vehicle) {
+    final allVehicles = controller.productionVehicles;
+    final availableTypes = <String>{
+      ...allVehicles
+          .map((Vehicle v) => v.vehicleType)
+          .where((String value) => value.trim().isNotEmpty && value != 'N/A'),
+    }.toList()
+      ..sort();
+    final selectedTypesForSignature = _selectedVehicleTypes.toList()..sort();
+    final filterSignature =
+        '${_statusFilter.name}:${selectedTypesForSignature.join(',')}';
+
+    final vehicles = allVehicles.where((Vehicle vehicle) {
+      final typeMatch = _selectedVehicleTypes.isEmpty ||
+          _selectedVehicleTypes.contains(vehicle.vehicleType);
+      if (!typeMatch) {
+        return false;
+      }
       switch (_statusFilter) {
         case _StatusFilter.all:
           return true;
@@ -42,7 +59,6 @@ class _HomePageState extends State<HomePage> {
       }
     }).toList();
 
-    final allVehicles = controller.productionVehicles;
     final activeCount =
         allVehicles.where((Vehicle v) => v.mode == VehicleMode.active).length;
     final inactiveCount =
@@ -69,7 +85,9 @@ class _HomePageState extends State<HomePage> {
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: <Widget>[
-          _buildModelFilterSection(controller),
+          _buildModelFilterSection(availableTypes),
+          const SizedBox(height: 12),
+          _buildStatusFilter(),
           const SizedBox(height: 12),
           Wrap(
             spacing: 12,
@@ -101,7 +119,10 @@ class _HomePageState extends State<HomePage> {
                               'No vehicle GPS points available for current filter.',
                             ),
                           )
-                        : VehicleClusterMap(vehicles: vehicles),
+                        : VehicleClusterMap(
+                            vehicles: vehicles,
+                            filterSignature: filterSignature,
+                          ),
                   ),
                 ],
               ),
@@ -109,27 +130,12 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 16),
           _buildMetricsCard(context),
-          const SizedBox(height: 16),
-          _buildStatusFilter(),
-          const SizedBox(height: 12),
-          if (vehicles.isEmpty)
-            const Card(
-              child: Padding(
-                padding: EdgeInsets.all(24),
-                child: Text('No vehicles found for current filters.'),
-              ),
-            )
-          else
-            ...vehicles.map(_VehicleTile.new),
         ],
       ),
     );
   }
 
-  Widget _buildModelFilterSection(DashboardController controller) {
-    final selectedModel = controller.selectedDeviceTypeName;
-    final models = controller.availableDeviceTypes;
-
+  Widget _buildModelFilterSection(List<String> vehicleTypes) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -147,18 +153,34 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 ChoiceChip(
                   label: const Text('All'),
-                  selected: selectedModel == null,
-                  onSelected: (_) => controller.setSelectedDeviceTypeName(null),
+                  selected: _selectedVehicleTypes.isEmpty,
+                  onSelected: (_) {
+                    setState(() {
+                      _selectedVehicleTypes.clear();
+                    });
+                    widget.controller.setSelectedDeviceTypeName(null);
+                  },
                 ),
-                ...models.map(
+                ...vehicleTypes.map(
                   (String model) => ChoiceChip(
                     label: Text(model),
-                    selected: selectedModel == model,
+                    selected: _selectedVehicleTypes.contains(model),
                     onSelected: (_) {
-                      if (selectedModel == model) {
-                        controller.setSelectedDeviceTypeName(null);
+                      setState(() {
+                        if (_selectedVehicleTypes.contains(model)) {
+                          _selectedVehicleTypes.remove(model);
+                        } else {
+                          _selectedVehicleTypes.add(model);
+                        }
+                      });
+
+                      // Keep KPI socket filtering aligned:
+                      // single selected type => subscribe to that type, else all.
+                      if (_selectedVehicleTypes.length == 1) {
+                        widget.controller
+                            .setSelectedDeviceTypeName(_selectedVehicleTypes.first);
                       } else {
-                        controller.setSelectedDeviceTypeName(model);
+                        widget.controller.setSelectedDeviceTypeName(null);
                       }
                     },
                   ),
@@ -285,66 +307,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _VehicleTile extends StatelessWidget {
-  const _VehicleTile(this.vehicle);
-
-  final Vehicle vehicle;
-
-  @override
-  Widget build(BuildContext context) {
-    final modeColor = switch (vehicle.mode) {
-      VehicleMode.active => Colors.green,
-      VehicleMode.inactive => Colors.orange,
-      VehicleMode.nogps => Colors.redAccent,
-      VehicleMode.pending => Colors.blueGrey,
-    };
-
-    final modeLabel = switch (vehicle.mode) {
-      VehicleMode.active => 'ACTIVE',
-      VehicleMode.inactive => 'INACTIVE',
-      VehicleMode.nogps => 'NO GPS',
-      VehicleMode.pending => 'PENDING',
-    };
-
-    return Card(
-      margin: const EdgeInsets.only(bottom: 10),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: modeColor.withOpacity(0.15),
-          child: Icon(Icons.directions_bus, color: modeColor),
-        ),
-        title: Text(vehicle.displayId),
-        subtitle: Text(
-          '${vehicle.vehicleType} • ${vehicle.city} • Speed ${vehicle.speed.toStringAsFixed(1)}',
-        ),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: BoxDecoration(
-                color: modeColor.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(999),
-              ),
-              child: Text(
-                modeLabel,
-                style: TextStyle(
-                  color: modeColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 11,
-                ),
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text('SOC: ${vehicle.soc ?? 'N/A'}'),
           ],
         ),
       ),
