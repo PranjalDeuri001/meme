@@ -3,7 +3,16 @@ import 'package:flutter/material.dart';
 import '../../controllers/dashboard_controller.dart';
 
 enum _ReportType {
-  dailySummary,
+  canReport,
+  coolingReport,
+  energyConsumptionReport,
+  chargingReport,
+  dailySummaryReport,
+  faultReport,
+  alertReport,
+  vehicleStatusReport,
+  misReport,
+  dodReport,
   summaryData,
 }
 
@@ -20,7 +29,7 @@ class ReportsPage extends StatefulWidget {
 }
 
 class _ReportsPageState extends State<ReportsPage> {
-  _ReportType _reportType = _ReportType.dailySummary;
+  _ReportType _reportType = _ReportType.dailySummaryReport;
   DateTime _startDate = DateTime.now();
   DateTime _endDate = DateTime.now();
   String _period = 'today';
@@ -48,10 +57,47 @@ class _ReportsPageState extends State<ReportsPage> {
               children: <Widget>[
                 DropdownButton<_ReportType>(
                   value: _reportType,
+                  isExpanded: true,
                   items: const <DropdownMenuItem<_ReportType>>[
                     DropdownMenuItem<_ReportType>(
-                      value: _ReportType.dailySummary,
+                      value: _ReportType.canReport,
+                      child: Text('CAN Report'),
+                    ),
+                    DropdownMenuItem<_ReportType>(
+                      value: _ReportType.faultReport,
+                      child: Text('Fault Report'),
+                    ),
+                    DropdownMenuItem<_ReportType>(
+                      value: _ReportType.dailySummaryReport,
                       child: Text('Daily Summary Report'),
+                    ),
+                    DropdownMenuItem<_ReportType>(
+                      value: _ReportType.chargingReport,
+                      child: Text('Charging Report'),
+                    ),
+                    DropdownMenuItem<_ReportType>(
+                      value: _ReportType.energyConsumptionReport,
+                      child: Text('Energy Consumption Report'),
+                    ),
+                    DropdownMenuItem<_ReportType>(
+                      value: _ReportType.vehicleStatusReport,
+                      child: Text('Vehicle Status Report'),
+                    ),
+                    DropdownMenuItem<_ReportType>(
+                      value: _ReportType.misReport,
+                      child: Text('MIS Report'),
+                    ),
+                    DropdownMenuItem<_ReportType>(
+                      value: _ReportType.coolingReport,
+                      child: Text('Cooling Report'),
+                    ),
+                    DropdownMenuItem<_ReportType>(
+                      value: _ReportType.dodReport,
+                      child: Text('DOD Report'),
+                    ),
+                    DropdownMenuItem<_ReportType>(
+                      value: _ReportType.alertReport,
+                      child: Text('Alert Report'),
                     ),
                     DropdownMenuItem<_ReportType>(
                       value: _ReportType.summaryData,
@@ -69,7 +115,7 @@ class _ReportsPageState extends State<ReportsPage> {
                     });
                   },
                 ),
-                if (_reportType == _ReportType.dailySummary) ...<Widget>[
+                if (_reportType != _ReportType.summaryData) ...<Widget>[
                   OutlinedButton.icon(
                     onPressed: () => _pickDate(isStart: true),
                     icon: const Icon(Icons.calendar_today),
@@ -115,19 +161,43 @@ class _ReportsPageState extends State<ReportsPage> {
           children: const <Widget>[
             _ReportHintCard(
               title: 'CAN Report',
-              subtitle: 'Signal traces and ECU data windows.',
+              subtitle: 'WheelSpeed, Pack_Voltage, Pack_Current, MCU_Power, DCDC_Voltage.',
+            ),
+            _ReportHintCard(
+              title: 'Cooling Report',
+              subtitle: 'MotorTemp, MCUTemp, DCDC_Temp, Sink_Temp, PumpSpeed.',
+            ),
+            _ReportHintCard(
+              title: 'Energy Consumption Report',
+              subtitle: 'Trip_Num, Net_Energy, Traction, Regeneration, Distance, Consumption_Rate.',
             ),
             _ReportHintCard(
               title: 'Charging Report',
-              subtitle: 'Sessions, durations, and charging energy.',
+              subtitle: 'Cycle, Start_Time, End_Time, Unit, Duration, Location, Insufficiency.',
             ),
             _ReportHintCard(
-              title: 'Energy Consumption',
-              subtitle: 'Traction vs regeneration analysis.',
+              title: 'Daily Summary Report',
+              subtitle: 'Trip_Id, SOC_Start, SOC_End, RunTime, IdleTime, Max_Speed, Avg_Speed.',
             ),
             _ReportHintCard(
-              title: 'Alert/Fault Reports',
-              subtitle: 'Operational incident logs by severity.',
+              title: 'Fault Report',
+              subtitle: 'Operational incident logs by severity and device.',
+            ),
+            _ReportHintCard(
+              title: 'Alert Report',
+              subtitle: 'Date, Alert_Type, Start_Time, End_Time, VRN, Severity.',
+            ),
+            _ReportHintCard(
+              title: 'Vehicle Status Report',
+              subtitle: 'Trip and session status by vehicle.',
+            ),
+            _ReportHintCard(
+              title: 'MIS Report',
+              subtitle: 'Maintenance and service reports by fleet.',
+            ),
+            _ReportHintCard(
+              title: 'DOD Report',
+              subtitle: 'Depth of discharge analysis and battery metrics.',
             ),
           ],
         ),
@@ -185,13 +255,21 @@ class _ReportsPageState extends State<ReportsPage> {
 
     try {
       late final List<dynamic> rows;
-      if (_reportType == _ReportType.dailySummary) {
+      if (_reportType == _ReportType.dailySummaryReport) {
         rows = await widget.controller.fetchDailySummaryReport(
           startDate: _startDate,
           endDate: _endDate,
         );
-      } else {
+      } else if (_reportType == _ReportType.summaryData) {
         rows = await widget.controller.fetchSummaryData(period: _period);
+      } else {
+        // CAN, Fault, Charging, Energy, Cooling, DOD, Alert, Vehicle Status, MIS
+        // require fleet/vehicle selection - use Daily Summary as placeholder
+        // until full API integration is added
+        rows = await widget.controller.fetchDailySummaryReport(
+          startDate: _startDate,
+          endDate: _endDate,
+        );
       }
       setState(() {
         _rows = rows;
