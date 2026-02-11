@@ -167,40 +167,6 @@ class _VehicleClusterMapState extends State<VehicleClusterMap> {
             ),
           ),
         ),
-        Positioned(
-          bottom: 16,
-          right: 12,
-          child: Card(
-            elevation: 4,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  IconButton(
-                    tooltip: 'Zoom in',
-                    visualDensity: VisualDensity.compact,
-                    onPressed: _zoomIn,
-                    icon: const Icon(Icons.add),
-                  ),
-                  IconButton(
-                    tooltip: 'Zoom out',
-                    visualDensity: VisualDensity.compact,
-                    onPressed: _zoomOut,
-                    icon: const Icon(Icons.remove),
-                  ),
-                  const Divider(height: 1),
-                  IconButton(
-                    tooltip: 'Fit selected vehicles',
-                    visualDensity: VisualDensity.compact,
-                    onPressed: _fitToVisibleVehicles,
-                    icon: const Icon(Icons.fit_screen),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
       ],
     );
   }
@@ -318,24 +284,6 @@ class _VehicleClusterMapState extends State<VehicleClusterMap> {
     setState(() {
       _markers = markers;
     });
-  }
-
-  void _zoomIn() {
-    final controller = _mapController;
-    if (controller == null) {
-      return;
-    }
-    final nextZoom = (_zoom + 1).clamp(3, 20).toDouble();
-    controller.animateCamera(CameraUpdate.zoomTo(nextZoom));
-  }
-
-  void _zoomOut() {
-    final controller = _mapController;
-    if (controller == null) {
-      return;
-    }
-    final nextZoom = (_zoom - 1).clamp(3, 20).toDouble();
-    controller.animateCamera(CameraUpdate.zoomTo(nextZoom));
   }
 
   void _fitToVisibleVehicles() {
