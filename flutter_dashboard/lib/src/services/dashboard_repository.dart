@@ -337,6 +337,9 @@ class DashboardRepository {
     if (response is List) {
       return List<dynamic>.from(response);
     }
+    if (response is Map && response['data'] is List) {
+      return List<dynamic>.from(response['data'] as List);
+    }
     if (response is Map && response['results'] is List) {
       return List<dynamic>.from(response['results'] as List);
     }
