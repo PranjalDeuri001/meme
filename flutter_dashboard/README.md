@@ -64,7 +64,7 @@ If you omit `dart-define` values, defaults are:
 - `API_URL = http://localhost:8002`
 - `WS_URL = ws://localhost:8002`
 - `GOOGLE_MAPS_API_KEY = ""`
-- `ENABLE_IOS_GOOGLE_MAPS = false`
+- `ENABLE_IOS_GOOGLE_MAPS = true`
 
 ## Notes
 
@@ -118,12 +118,17 @@ import GoogleMaps
 </dict>
 ```
 
-4) Then enable iOS map rendering:
+4) iOS map rendering is enabled by default in code. Run normally:
 
 ```bash
 flutter run \
   --dart-define=API_URL=http://192.168.24.130:8002 \
   --dart-define=WS_URL=ws://192.168.24.130:8002 \
-  --dart-define=GOOGLE_MAPS_API_KEY=<YOUR_GOOGLE_MAPS_KEY> \
-  --dart-define=ENABLE_IOS_GOOGLE_MAPS=true
+  --dart-define=GOOGLE_MAPS_API_KEY=<YOUR_GOOGLE_MAPS_KEY>
+```
+
+Optional: if you need to temporarily disable iOS maps for debugging, use:
+
+```bash
+--dart-define=ENABLE_IOS_GOOGLE_MAPS=false
 ```

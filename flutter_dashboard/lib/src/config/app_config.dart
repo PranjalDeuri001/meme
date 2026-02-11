@@ -21,9 +21,9 @@ class AppConfig {
   );
 
   // Safety switch for iOS Google Maps rendering.
-  // Keep false until native iOS key wiring is completed in AppDelegate.
+  // Enabled by default for IPA builds; set to false only when debugging crashes.
   static const bool enableIosGoogleMaps = bool.fromEnvironment(
     'ENABLE_IOS_GOOGLE_MAPS',
-    defaultValue: false,
+    defaultValue: true,
   );
 }
