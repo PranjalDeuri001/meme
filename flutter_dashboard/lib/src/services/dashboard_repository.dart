@@ -305,6 +305,144 @@ class DashboardRepository {
     return mapped;
   }
 
+  /// Fetch report via POST to /devices/reports/ (Daily Summary, Charging, Energy, Vehicle Status, Alert, Fault)
+  Future<List<dynamic>> postReport({
+    required List<String> deviceIds,
+    required String startDate,
+    required String endDate,
+    required String vehicleType,
+    required String reportType,
+    List<String>? fleetNames,
+  }) async {
+    final payload = <String, dynamic>{
+      'devices': deviceIds,
+      'start_date': startDate,
+      'end_date': endDate,
+      'vehicle_type': vehicleType,
+      'report_type': reportType,
+    };
+    if (fleetNames != null && fleetNames.isNotEmpty) {
+      payload['fleet_name'] = fleetNames;
+    }
+    final response = await _apiClient.postJson(
+      '/devices/reports/',
+      payload: payload,
+    );
+    return _extractReportFromPostResponse(response, reportType);
+  }
+
+  List<dynamic> _extractReportFromPostResponse(dynamic response, String reportType) {
+    if (response is List) return List<dynamic>.from(response);
+    if (response is! Map) return const <dynamic>[];
+    final resp = response as Map;
+    if (resp['results'] is List) return List<dynamic>.from(resp['results'] as List);
+    // POST reports return { "date": [ { vehicle with trips/sessions }, ... ], ... }
+    final flattened = <Map<String, dynamic>>[];
+    for (final entry in resp.entries) {
+      if (entry.key == 'results' || entry.key == 'data') continue;
+      if (entry.value is! List) continue;
+      for (final item in entry.value as List) {
+        if (item is! Map) continue;
+        final map = Map<String, dynamic>.from(item as Map);
+        final nestedKey = map.containsKey('trips') ? 'trips' : (map.containsKey('sessions') ? 'sessions' : null);
+        if (nestedKey != null && map[nestedKey] is List) {
+          for (final sub in map[nestedKey] as List) {
+            if (sub is Map) {
+              final row = <String, dynamic>{'Date': entry.key.toString()};
+              for (final k in map.keys) {
+                if (k != nestedKey) row[k] = map[k];
+              }
+              row.addAll(Map<String, dynamic>.from(sub as Map));
+              flattened.add(row);
+            }
+          }
+        } else {
+          final row = Map<String, dynamic>.from({'Date': entry.key.toString()});
+          row.addAll(map);
+          flattened.add(row);
+        }
+      }
+    }
+    return flattened;
+  }
+
+  /// CAN Report - GET /devices/detail
+  Future<List<dynamic>> getCanReport({
+    required String deviceId,
+    required String startDateTime,
+    required String endDateTime,
+  }) async {
+    final response = await _apiClient.getJson(
+      '/devices/detail',
+      queryParameters: <String, String>{
+        'start_time': startDateTime,
+        'end_time': endDateTime,
+        'imei': deviceId,
+      },
+    );
+    return _extractList(response);
+  }
+
+  /// Fault Report - GET /devices/faults/
+  Future<List<dynamic>> getFaultReport({
+    required String startDate,
+    required String endDate,
+    required String vehicleType,
+    required String username,
+  }) async {
+    final response = await _apiClient.getJson(
+      '/devices/faults/',
+      queryParameters: <String, String>{
+        'report': 'true',
+        'start_date': startDate,
+        'end_date': endDate,
+        'device_type': vehicleType,
+        'username': username,
+      },
+    );
+    return _extractList(response);
+  }
+
+  /// Cooling, DOD - GET /devices/calculate-report (single device)
+  Future<List<dynamic>> getCalculateReport({
+    required String deviceId,
+    required String startDate,
+    required String endDate,
+    required String reportParamName,
+  }) async {
+    final response = await _apiClient.getJson(
+      '/devices/calculate-report/',
+      queryParameters: <String, String>{
+        'start_date': startDate,
+        'end_date': endDate,
+        'device_id': deviceId,
+        reportParamName: 'true',
+      },
+    );
+    return _extractList(response);
+  }
+
+  /// MIS Report - GET /devices/mis-report/
+  Future<List<dynamic>> getMisReport({
+    required String fleetName,
+    required String startDate,
+    required String endDate,
+    required String username,
+    required String reportType,
+  }) async {
+    final response = await _apiClient.getJson(
+      '/devices/mis-report/',
+      queryParameters: <String, String>{
+        'fleet_name': fleetName,
+        'start_date': startDate,
+        'end_date': endDate,
+        'username': username,
+        'report_type': reportType,
+      },
+    );
+    return _extractList(response);
+  }
+
   Future<List<dynamic>> getChartViewData({
     required String deviceId,
     required DateTime date,

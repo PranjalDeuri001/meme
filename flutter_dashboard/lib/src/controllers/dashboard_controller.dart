@@ -207,6 +207,72 @@ class DashboardController extends ChangeNotifier {
     );
   }
 
+  /// Fetch report matching main branch report types and API
+  Future<List<dynamic>> fetchReport({
+    required String reportType,
+    required List<String> deviceIds,
+    required String startDate,
+    required String endDate,
+    required String vehicleType,
+    List<String>? fleetNames,
+    String? startDateTime,
+    String? endDateTime,
+  }) async {
+    final user = _username;
+    if (user == null || user.trim().isEmpty) return const <dynamic>[];
+
+    switch (reportType) {
+      case 'daily_summary_report':
+      case 'charging_report':
+      case 'energy_consumption_report':
+      case 'vehicle_status_report':
+      case 'alert_report':
+      case 'fault_report':
+        return _repository.postReport(
+          deviceIds: deviceIds,
+          startDate: startDate,
+          endDate: endDate,
+          vehicleType: vehicleType,
+          reportType: reportType,
+          fleetNames: reportType == 'fault_report' ? fleetNames : null,
+        );
+      case 'can_report':
+        if (deviceIds.isEmpty || startDateTime == null || endDateTime == null) {
+          return const <dynamic>[];
+        }
+        return _repository.getCanReport(
+          deviceId: deviceIds.first,
+          startDateTime: startDateTime,
+          endDateTime: endDateTime,
+        );
+      case 'cooling_report':
+      case 'dod_report':
+        if (deviceIds.isEmpty) return const <dynamic>[];
+        final paramName = reportType == 'cooling_report' ? 'cooling_report' : 'dod';
+        return _repository.getCalculateReport(
+          deviceId: deviceIds.first,
+          startDate: startDate,
+          endDate: endDate,
+          reportParamName: paramName,
+        );
+      case 'mis_report':
+        if (fleetNames == null || fleetNames.isEmpty) return const <dynamic>[];
+        final days = DateTime.parse(endDate).difference(DateTime.parse(startDate)).inDays + 1;
+        String misType = 'daily';
+        if (days >= 30) misType = 'monthly';
+        else if (days >= 7) misType = 'weekly';
+        return _repository.getMisReport(
+          fleetName: fleetNames.first,
+          startDate: startDate,
+          endDate: endDate,
+          username: user,
+          reportType: misType,
+        );
+      default:
+        return const <dynamic>[];
+    }
+  }
+
   void _subscribeVehicles() {
     final user = _username;
     if (user == null || user.trim().isEmpty) {
