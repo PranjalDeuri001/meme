@@ -1,0 +1,23 @@
+name: flutter_dashboard
+description: Flutter port of the React fleet dashboard.
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: any
+  http: any
+  web_socket_channel: any
+  google_maps_flutter: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: any
+
+flutter:
+  uses-material-design: true

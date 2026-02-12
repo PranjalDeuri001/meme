@@ -57,6 +57,8 @@ function ReportTable({
   const [allColumns, setAllColumns] = useState([]);
   const [expandedRows, setExpandedRows] = useState({});
   const { t } = useTranslation();
+  const user = useSelector(selectCurrentUser);
+  const username = user?.username;
 
   useEffect(() => {
     if (data.length > 0) {
@@ -92,7 +94,7 @@ function ReportTable({
 
   const handleExport = async () => {
     const { start_date, end_date } = fetchParams;
-    if (!reportName || !backendUrl || !start_date || !end_date) {
+    if (!reportName || !start_date || !end_date) {
       toast.error(t("userAlerts.exportParamsMissing"));
       return;
     }
@@ -118,7 +120,8 @@ function ReportTable({
 
       if (POST_REPORTS.includes(reportName)) {
         // --- POST EXPORT LOGIC ---
-        const url = `${backendUrl}/devices/reports/`;
+        const baseUrl = (backendUrl || "").replace(/\/$/, "") || "http://localhost:8002";
+        const url = `${baseUrl}/devices/reports/`;
         const reportTypeMapping = {
           "Daily Summary Report": "daily_summary_report",
           "Charging Report": "charging_report",
@@ -128,15 +131,17 @@ function ReportTable({
           "Fault Report": "fault_report",
         };
 
+        const deviceList = Array.isArray(fetchParams.device_id)
+          ? fetchParams.device_id
+          : (fetchParams.device_id ? [fetchParams.device_id] : []);
         const payload = {
-          devices: Array.isArray(fetchParams.device_id)
-            ? fetchParams.device_id
-            : [fetchParams.device_id],
+          devices: deviceList.length > 0 ? deviceList : [""],
           start_date: start_date,
           end_date: end_date,
-          vehicle_type: vehicleType,
+          vehicle_type: vehicleType || "",
           report_type: reportTypeMapping[reportName],
-          is_export: true, // Parameter in body
+          is_export: true,
+          ...(username && { username }),
         };
 
         if (reportName === "Fault Report" && fetchParams.fleet) {
@@ -153,12 +158,13 @@ function ReportTable({
         blob = await response.blob();
       } else {
         // --- STANDARD GET EXPORT LOGIC ---
+        const baseUrl = (backendUrl || "").replace(/\/$/, "") || "http://localhost:8002";
         const apiUrlGenerator = API_ENDPOINTS[reportName];
         let exportUrl = "";
 
         if (reportName === "MIS Report") {
           exportUrl = apiUrlGenerator(
-            backendUrl,
+            baseUrl,
             fetchParams.fleet,
             username,
             start_date,
@@ -168,7 +174,7 @@ function ReportTable({
           );
         } else {
           exportUrl = apiUrlGenerator(
-            backendUrl,
+            baseUrl,
             fetchParams.device_id,
             start_date,
             end_date,

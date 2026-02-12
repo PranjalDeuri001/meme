@@ -51,7 +51,7 @@ function MonthlySummary({ vehicles }) {
 
   const handleMonthChange = (e) => setMonth(e.target.value);
 
-  const backendUrl = import.meta.env.VITE_API_URL;
+  const backendUrl = import.meta.env.VITE_API_URL_3;
 
   const handleSubmit = () => {
     if (vehicleType && vehicle && month) {

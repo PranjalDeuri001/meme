@@ -212,7 +212,7 @@ function Individual() {
   const calendarRef = useRef(null);
   const dateTimeButtonRef = useRef(null);
 
-  const backendUrl = import.meta.env.VITE_API_URL_3;
+  const backendUrl = import.meta.env.VITE_API_URL_3 || "http://localhost:8002";
 
   const MULTI_SELECT_REPORTS = [
     "Daily Summary Report",

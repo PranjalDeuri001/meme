@@ -1,10 +1,10 @@
-// src/store/apiSlice.js
+// store/apiSlice.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RobustWebSocket } from "../utils/RobustWebSocket";
 import { socketManager } from "./socketManager";
 
-const backendUrl = import.meta.env.VITE_API_URL_3;
-const webSocketUrl = import.meta.env.VITE_WS_URL;
+const backendUrl = import.meta.env.VITE_API_URL_3 || "http://localhost:8002";
+const webSocketUrl = import.meta.env.VITE_WS_URL || "ws://localhost:8002";
 
 const isSignalInvalid = (value) =>
   value === undefined || value === null || value === "N" || value === 0;

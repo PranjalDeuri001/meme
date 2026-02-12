@@ -1,0 +1,4 @@
+# Environment - copy .env.example to .env and configure
+.env
+.env.local
+.env.*.local
